@@ -32,6 +32,7 @@ func main() {
 	err = components.InitMongoDB()
 	dhelpers.CheckErr(err)
 	components.InitCron()
+	components.InitLastFm()
 
 	// start metrics
 	metrics.Init()

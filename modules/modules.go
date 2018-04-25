@@ -1,15 +1,15 @@
 package modules
 
 import (
-	"gitlab.com/project-d-collab/Worker/modules/lastfm"
+	"gitlab.com/project-d-collab/Worker/modules/lastfm-servertoptracks"
 	"gitlab.com/project-d-collab/dhelpers"
 )
 
 // Module is an interface for all modules
-type Module interface {
+type Job interface {
 
-	// GetJobs returns all jobs of a module
-	GetJobs() []dhelpers.Job
+	// GetJob returns the job information
+	GetJob() dhelpers.Job
 
 	// GetTranslationFiles returns all translation files for the module
 	GetTranslationFiles() []string
@@ -22,7 +22,7 @@ type Module interface {
 }
 
 var (
-	moduleList = []Module{
-		&lastfm.Module{},
+	jobList = []Job{
+		&lastfm_servertoptracks.Job{},
 	}
 )

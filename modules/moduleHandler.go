@@ -1,49 +1,39 @@
 package modules
 
 import (
-	"strings"
-
 	"gitlab.com/project-d-collab/dhelpers"
 	"gitlab.com/project-d-collab/dhelpers/cache"
 )
 
-// Init initializes all plugins
+// Init initializes all Jobs
 func Init() {
 	var err error
-	cache.GetLogger().Infoln("Initializing Modules....")
+	cache.GetLogger().Infoln("Initializing Jobs....")
 
-	for _, module := range moduleList {
-		module.Init()
-		for _, translationFileName := range module.GetTranslationFiles() {
+	for _, job := range jobList {
+		job.Init()
+		for _, translationFileName := range job.GetTranslationFiles() {
 			_, err = cache.GetLocalizationBundle().LoadMessageFile("./translations/" + translationFileName)
 			if err != nil {
 				panic(err)
 			}
 			cache.GetLogger().Infoln("Loaded " + translationFileName)
 		}
-		jobs := module.GetJobs()
-		for _, job := range jobs {
-			err = cache.GetCron().AddFunc(job.Cron, job.Job)
-			dhelpers.CheckErr(err)
-			if job.AtLaunch {
-				job.Job()
-			}
-			cache.GetLogger().Infoln("Initialized Module for Jobs", "["+job.Name+" ("+job.Cron+")"+"]")
+		err = cache.GetCron().AddFunc(job.GetJob().Cron, job.GetJob().Job)
+		dhelpers.CheckErr(err)
+		if job.GetJob().AtLaunch {
+			go job.GetJob().Job()
 		}
+		cache.GetLogger().Infoln("Initialized Job", job.GetJob().Name, "["+job.GetJob().Cron+"]")
 	}
 }
 
-// Uninit uninitialize all plugins on succesfull shutdown
+// Uninit uninitialize all jobs on succesfull shutdown
 func Uninit() {
-	cache.GetLogger().Infoln("Uninitializing Modules....")
+	cache.GetLogger().Infoln("Uninitializing Jobs....")
 
-	for _, module := range moduleList {
-		module.Uninit()
-		jobs := module.GetJobs()
-		jobNames := make([]string, 0)
-		for _, job := range jobs {
-			jobNames = append(jobNames, job.Name+" ("+job.Cron+")")
-		}
-		cache.GetLogger().Infoln("Uninitialized Module for Jobs", "["+strings.Join(jobNames, ", ")+"]")
+	for _, job := range jobList {
+		job.Uninit()
+		cache.GetLogger().Infoln("Uninitialized Job", job.GetJob().Name, "["+job.GetJob().Cron+"]")
 	}
 }
