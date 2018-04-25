@@ -5,7 +5,7 @@ import (
 	"gitlab.com/project-d-collab/dhelpers"
 )
 
-// Module is an interface for all modules
+// Job is an interface for all modules
 type Job interface {
 
 	// GetJob returns the job information
@@ -23,6 +23,6 @@ type Job interface {
 
 var (
 	jobList = []Job{
-		&lastfm_servertoptracks.Job{},
+		&lastfmservertoptracks.Job{},
 	}
 )

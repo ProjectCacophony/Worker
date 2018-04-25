@@ -1,4 +1,4 @@
-package lastfm_servertoptracks
+package lastfmservertoptracks
 
 import (
 	"time"
@@ -55,9 +55,10 @@ func JobServerStats() {
 
 	// Get Stats from LastFM
 	lastFmUserPeriodStats := make([]lastFmPeriodUserStats, 0)
+	var topTracks []dhelpers.LastfmTrackData
 	for _, period := range periods {
 		for _, entry := range entryBucket {
-			topTracks, err := dhelpers.LastFmGetTopTracks(entry.LastFmUsername, 50, period)
+			topTracks, err = dhelpers.LastFmGetTopTracks(entry.LastFmUsername, 100, period)
 			dhelpers.CheckErr(err)
 
 			if len(topTracks) <= 0 {
@@ -69,6 +70,7 @@ func JobServerStats() {
 			userPeriodStat.Period = period
 
 			for _, track := range topTracks {
+				track.URL = dhelpers.EscapeLinkForMarkdown(track.URL)
 				userPeriodStat.Tracks = append(userPeriodStat.Tracks, track)
 			}
 			lastFmUserPeriodStats = append(lastFmUserPeriodStats, userPeriodStat)
@@ -121,6 +123,7 @@ func JobServerStats() {
 							guildCombinedStat.Tracks = append(guildCombinedStat.Tracks, track)
 						}
 					}
+					guildCombinedStat.NumberOfUsers++
 				}
 			}
 

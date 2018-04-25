@@ -1,4 +1,4 @@
-package lastfm_servertoptracks
+package lastfmservertoptracks
 
 import (
 	"github.com/sirupsen/logrus"
@@ -6,14 +6,14 @@ import (
 	"gitlab.com/project-d-collab/dhelpers/cache"
 )
 
-// Module is a struct for the module
+// Job is a struct for the module
 type Job struct{}
 
 var (
 	jobName = "LastFM:ServerTopTracks"
 )
 
-// GetJobs defines all jobs
+// GetJob defines all jobs
 func (j *Job) GetJob() dhelpers.Job {
 	return dhelpers.Job{
 		Name:     jobName,
