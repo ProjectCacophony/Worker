@@ -17,19 +17,21 @@ func New() *restful.WebService {
 		Consumes(restful.MIME_JSON).
 		Produces(restful.MIME_JSON)
 
-	service.Route(service.GET("/cron").To(getCronStats))
+	service.Route(service.GET("").To(getStats))
 
 	return service
 }
 
-func getCronStats(_ *restful.Request, response *restful.Response) {
-	var result []apihelper.WorkerJobInformation
+func getStats(_ *restful.Request, response *restful.Response) {
+	var result apihelper.WorkerStatus
 	for _, entry := range cache.GetCron().Entries() {
-		result = append(result, apihelper.WorkerJobInformation{
+		result.Entries = append(result.Entries, apihelper.WorkerJobInformation{
 			Function: runtime.FuncForPC(reflect.ValueOf(entry.Job).Pointer()).Name(),
 			Next:     entry.Next,
 			Prev:     entry.Prev,
 		})
 	}
+	result.Service = apihelper.GenerateServiceInformation()
+	result.Available = true
 	response.WriteEntity(result) // nolint: errcheck
 }

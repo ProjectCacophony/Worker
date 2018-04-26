@@ -10,7 +10,6 @@ import (
 
 	"github.com/emicklei/go-restful"
 	"gitlab.com/project-d-collab/Worker/api"
-	"gitlab.com/project-d-collab/Worker/metrics"
 	"gitlab.com/project-d-collab/Worker/modules"
 	"gitlab.com/project-d-collab/dhelpers"
 	"gitlab.com/project-d-collab/dhelpers/cache"
@@ -28,6 +27,7 @@ func main() {
 	var err error
 
 	// Set up components
+	components.InitMetrics()
 	components.InitLogger("Worker")
 	err = components.InitSentry()
 	dhelpers.CheckErr(err)
@@ -37,9 +37,6 @@ func main() {
 	dhelpers.CheckErr(err)
 	components.InitCron()
 	components.InitLastFm()
-
-	// start metrics
-	metrics.Init()
 
 	// Setup all modules
 	modules.Init()
