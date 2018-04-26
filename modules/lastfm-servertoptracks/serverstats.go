@@ -3,6 +3,8 @@ package lastfmservertoptracks
 import (
 	"time"
 
+	"strings"
+
 	"github.com/bradfitz/slice"
 	"github.com/json-iterator/go"
 	"gitlab.com/project-d-collab/SqsProcessor/models"
@@ -20,21 +22,21 @@ type lastFmPeriodUserStats struct {
 
 // JobServerStats builds server Last.FM stats
 func JobServerStats() {
-	// TODO: error handling
+	// Error Handling
+	defer dhelpers.JobErrorHandler(jobName)
+
 	// TODO: skip last fm users not found
 	// init variables
 	duration := time.Minute * 1
 
 	// start job if none is running yet
 	start, locker, err := dhelpers.JobStart(jobName, duration)
-	if locker != nil {
-		defer locker.Unlock() // nolint: errcheck
-	}
 	dhelpers.CheckErr(err)
 	if !start {
 		logger().Warnln("skipped running job because it is still running")
 		return
 	}
+	defer locker.Unlock() // nolint: errcheck
 
 	startAt := time.Now()
 	logger().Infoln("starting")
@@ -59,6 +61,11 @@ func JobServerStats() {
 	for _, period := range periods {
 		for _, entry := range entryBucket {
 			topTracks, err = dhelpers.LastFmGetTopTracks(entry.LastFmUsername, 100, period)
+			if err != nil {
+				if strings.Contains(err.Error(), "User not found") {
+					continue
+				}
+			}
 			dhelpers.CheckErr(err)
 
 			if len(topTracks) <= 0 {
