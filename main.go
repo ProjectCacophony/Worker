@@ -6,6 +6,10 @@ import (
 	"syscall"
 	"time"
 
+	"net/http"
+
+	"github.com/emicklei/go-restful"
+	"gitlab.com/project-d-collab/Worker/api"
 	"gitlab.com/project-d-collab/Worker/metrics"
 	"gitlab.com/project-d-collab/Worker/modules"
 	"gitlab.com/project-d-collab/dhelpers"
@@ -41,6 +45,13 @@ func main() {
 	modules.Init()
 
 	cache.GetLogger().Infoln("Worker booting completed, took", time.Since(started).String())
+
+	// start api
+	go func() {
+		restful.Add(api.New())
+		cache.GetLogger().Fatal(http.ListenAndServe(os.Getenv("API_ADDRESS"), nil))
+	}()
+	cache.GetLogger().Infoln("started API on", os.Getenv("API_ADDRESS"))
 
 	// channel for bot shutdown
 	sc := make(chan os.Signal, 1)

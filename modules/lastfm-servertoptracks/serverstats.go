@@ -25,7 +25,6 @@ func JobServerStats() {
 	// Error Handling
 	defer dhelpers.JobErrorHandler(jobName)
 
-	// TODO: skip last fm users not found
 	// init variables
 	duration := time.Minute * 1
 
