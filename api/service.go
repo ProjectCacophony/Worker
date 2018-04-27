@@ -33,5 +33,5 @@ func getStats(_ *restful.Request, response *restful.Response) {
 	}
 	result.Service = apihelper.GenerateServiceInformation()
 	result.Available = true
-	response.WriteEntity(result) // nolint: errcheck
+	response.WriteEntity(result) // nolint: errcheck, gas
 }

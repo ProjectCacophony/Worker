@@ -75,10 +75,9 @@ func JobServerStats() {
 			userPeriodStat.UserID = entry.UserID
 			userPeriodStat.Period = period
 
-			for _, track := range topTracks {
-				track.URL = dhelpers.EscapeLinkForMarkdown(track.URL)
-				userPeriodStat.Tracks = append(userPeriodStat.Tracks, track)
-			}
+			// add tracks
+			userPeriodStat.Tracks = append(userPeriodStat.Tracks, topTracks...)
+
 			lastFmUserPeriodStats = append(lastFmUserPeriodStats, userPeriodStat)
 
 			// renew lock
