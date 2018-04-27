@@ -155,6 +155,7 @@ func JobServerStats() {
 
 	// store stats in redis
 	for _, combinedGuildStat := range combinedGuildStats {
+		combinedGuildStat.CachedAt = time.Now()
 		marshalled, err := jsoniter.Marshal(combinedGuildStat)
 		dhelpers.CheckErr(err)
 
