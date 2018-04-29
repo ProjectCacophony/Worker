@@ -34,19 +34,20 @@ func JobFeed() {
 
 	// worker code
 	// get all entries to check
-	var uncheckedFeedEntries []models.GallFeedEntry
-	err = mdb.Iter(models.GallTable.DB().Find(nil)).All(&uncheckedFeedEntries)
+	var feedEntries []models.GallFeedEntry
+	err = mdb.Iter(models.GallTable.DB().Find(nil)).All(&feedEntries)
 	dhelpers.CheckErr(err)
 
 	// renew lock
-	locker.Lock()
+	locker.Lock() // nolint: errcheck
 
+	// bundle entries
 	// don't check channels that don't access anymore, or without necessary permissions
-	var feedEntries []models.GallFeedEntry
+	bundledEntries := make(map[string][]models.GallFeedEntry)
 	var channel *discordgo.Channel
 	var botIDForGuild string
 	var apermissions int
-	for _, entry := range uncheckedFeedEntries {
+	for _, entry := range feedEntries {
 		// channel exists
 		channel, err = state.Channel(entry.ChannelID)
 		if err != nil {
@@ -75,48 +76,52 @@ func JobFeed() {
 			continue
 		}
 
-		// add to checked entries if everything is good
-		feedEntries = append(feedEntries, entry)
+		// bundle feed entry if everything is good
+		bundledEntries[entry.BoardID] = append(bundledEntries[entry.BoardID], entry)
 	}
 
 	// check feeds
-	for _, entry := range feedEntries {
+	for boardID, entries := range bundledEntries {
+		// check bundle feeds
 		var posts []ginside.Post
-		if !entry.MinorGallery {
-			posts, err = ginside.BoardRecommendedPosts(entry.BoardID)
+		if !entries[0].MinorGallery {
+			posts, err = ginside.BoardRecommendedPosts(boardID)
 			if err != nil {
-				logger().Errorln("unable to check feed for", entry.BoardID+":", err.Error())
+				logger().Errorln("unable to check feed for", boardID+":", err.Error())
 				continue
 			}
 		} else {
-			posts, err = ginside.BoardMinorRecommendedPosts(entry.BoardID)
+			posts, err = ginside.BoardMinorRecommendedPosts(boardID)
 			if err != nil {
-				logger().Errorln("unable to check feed for", entry.BoardID+":", err.Error())
+				logger().Errorln("unable to check feed for", boardID+":", err.Error())
 				continue
 			}
 		}
 
-		for _, post := range posts {
-			// skip posts before last check
-			if post.Date.Before(entry.LastCheck) {
-				continue
+		// check entries
+		for _, entry := range entries {
+			for _, post := range posts {
+				// skip posts before last check
+				if post.Date.Before(entry.LastCheck) {
+					continue
+				}
+
+				go func(gEntry models.GallFeedEntry, gPost ginside.Post) {
+					defer dhelpers.JobErrorHandler(jobName)
+
+					err = postPost(gEntry, gPost)
+					dhelpers.CheckErr(err)
+				}(entry, post)
 			}
 
-			go func(gEntry models.GallFeedEntry, gPost ginside.Post) {
-				defer dhelpers.JobErrorHandler(jobName)
-
-				err = postPost(gEntry, gPost)
-				dhelpers.CheckErr(err)
-			}(entry, post)
+			// update last checked time (TODO: possible to update field without updating whole entry?)
+			entry.LastCheck = time.Now()
+			err = mdb.UpdateID(models.GallTable, entry.ID, entry)
+			dhelpers.CheckErr(err)
 		}
-
-		// update last checked time (TODO: possible to update field without updating whole entry?)
-		entry.LastCheck = time.Now()
-		err = mdb.UpdateID(models.GallTable, entry.ID, entry)
-		dhelpers.CheckErr(err)
 
 		// renew lock
-		locker.Lock()
+		locker.Lock() // nolint: errcheck
 	}
 
 	logger().Infoln("finished, took", time.Since(startAt).String())
