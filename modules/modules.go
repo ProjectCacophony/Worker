@@ -1,6 +1,7 @@
 package modules
 
 import (
+	"gitlab.com/project-d-collab/Worker/modules/gall-feed"
 	"gitlab.com/project-d-collab/Worker/modules/lastfm-servertoptracks"
 	"gitlab.com/project-d-collab/dhelpers"
 )
@@ -24,5 +25,6 @@ type Job interface {
 var (
 	jobList = []Job{
 		&lastfmservertoptracks.Job{},
+		&gallfeed.Job{},
 	}
 )

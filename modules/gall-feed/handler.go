@@ -1,4 +1,4 @@
-package lastfmservertoptracks
+package gallfeed
 
 import (
 	"github.com/sirupsen/logrus"
@@ -10,22 +10,24 @@ import (
 type Job struct{}
 
 var (
-	jobName = "LastFM:ServerTopTracks"
+	jobName = "Gall:Feed"
 )
 
 // GetJob defines all jobs
 func (j *Job) GetJob() dhelpers.Job {
 	return dhelpers.Job{
 		Name:     jobName,
-		Cron:     "@every 6h",
-		Job:      JobServerStats,
-		AtLaunch: false,
+		Cron:     "@every 5m",
+		Job:      JobFeed,
+		AtLaunch: true,
 	}
 }
 
 // GetTranslationFiles defines all translation files for the module
 func (j *Job) GetTranslationFiles() []string {
-	return []string{}
+	return []string{
+		"gall.en.toml",
+	}
 }
 
 // Init is called on bot startup
