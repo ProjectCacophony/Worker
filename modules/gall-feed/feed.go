@@ -38,6 +38,9 @@ func JobFeed() {
 	err = mdb.Iter(models.GallTable.DB().Find(nil)).All(&uncheckedFeedEntries)
 	dhelpers.CheckErr(err)
 
+	// renew lock
+	locker.Lock()
+
 	// don't check channels that don't access anymore, or without necessary permissions
 	var feedEntries []models.GallFeedEntry
 	var channel *discordgo.Channel
@@ -111,6 +114,9 @@ func JobFeed() {
 		entry.LastCheck = time.Now()
 		err = mdb.UpdateID(models.GallTable, entry.ID, entry)
 		dhelpers.CheckErr(err)
+
+		// renew lock
+		locker.Lock()
 	}
 
 	logger().Infoln("finished, took", time.Since(startAt).String())
