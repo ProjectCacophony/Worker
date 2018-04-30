@@ -5,8 +5,8 @@ import (
 	"runtime"
 
 	"github.com/emicklei/go-restful"
-	"gitlab.com/project-d-collab/dhelpers/apihelper"
-	"gitlab.com/project-d-collab/dhelpers/cache"
+	"gitlab.com/Cacophony/dhelpers/apihelper"
+	"gitlab.com/Cacophony/dhelpers/cache"
 )
 
 // New creates a new restful Web Service for reporting information about the worker

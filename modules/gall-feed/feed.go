@@ -5,11 +5,11 @@ import (
 
 	"github.com/Seklfreak/ginside"
 	"github.com/bwmarrin/discordgo"
-	"gitlab.com/project-d-collab/SqsProcessor/models"
-	"gitlab.com/project-d-collab/SqsProcessor/modules/gall"
-	"gitlab.com/project-d-collab/dhelpers"
-	"gitlab.com/project-d-collab/dhelpers/mdb"
-	"gitlab.com/project-d-collab/dhelpers/state"
+	"gitlab.com/Cacophony/SqsProcessor/models"
+	"gitlab.com/Cacophony/SqsProcessor/modules/gall"
+	"gitlab.com/Cacophony/dhelpers"
+	"gitlab.com/Cacophony/dhelpers/mdb"
+	"gitlab.com/Cacophony/dhelpers/state"
 )
 
 // JobFeed posts new Gall Feed posts

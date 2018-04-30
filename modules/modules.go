@@ -1,9 +1,9 @@
 package modules
 
 import (
-	"gitlab.com/project-d-collab/Worker/modules/gall-feed"
-	"gitlab.com/project-d-collab/Worker/modules/lastfm-servertoptracks"
-	"gitlab.com/project-d-collab/dhelpers"
+	"gitlab.com/Cacophony/Worker/modules/gall-feed"
+	"gitlab.com/Cacophony/Worker/modules/lastfm-servertoptracks"
+	"gitlab.com/Cacophony/dhelpers"
 )
 
 // Job is an interface for all modules

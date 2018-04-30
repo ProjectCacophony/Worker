@@ -9,11 +9,11 @@ import (
 	"net/http"
 
 	"github.com/emicklei/go-restful"
-	"gitlab.com/project-d-collab/Worker/api"
-	"gitlab.com/project-d-collab/Worker/modules"
-	"gitlab.com/project-d-collab/dhelpers"
-	"gitlab.com/project-d-collab/dhelpers/cache"
-	"gitlab.com/project-d-collab/dhelpers/components"
+	"gitlab.com/Cacophony/Worker/api"
+	"gitlab.com/Cacophony/Worker/modules"
+	"gitlab.com/Cacophony/dhelpers"
+	"gitlab.com/Cacophony/dhelpers/cache"
+	"gitlab.com/Cacophony/dhelpers/components"
 )
 
 var (

@@ -2,8 +2,8 @@ package gallfeed
 
 import (
 	"github.com/sirupsen/logrus"
-	"gitlab.com/project-d-collab/dhelpers"
-	"gitlab.com/project-d-collab/dhelpers/cache"
+	"gitlab.com/Cacophony/dhelpers"
+	"gitlab.com/Cacophony/dhelpers/cache"
 )
 
 // Job is a struct for the module
