@@ -90,6 +90,8 @@ func JobFeed() {
 			continue
 		}
 
+		var latestEntryTime time.Time
+
 		// check entries
 		for _, entry := range entries {
 			for _, post := range feed.Items {
@@ -99,6 +101,10 @@ func JobFeed() {
 					post.Link == "" ||
 					post.Title == "" {
 					continue
+				}
+
+				if post.PublishedParsed.After(latestEntryTime) {
+					latestEntryTime = *post.PublishedParsed
 				}
 
 				// skip posts before last check
@@ -115,7 +121,7 @@ func JobFeed() {
 			}
 
 			// update last checked time (TODO: possible to update field without updating whole entry?)
-			entry.LastCheck = time.Now()
+			entry.LastCheck = latestEntryTime
 			err = mdb.UpdateID(models.FeedTable, entry.ID, entry)
 			dhelpers.CheckErr(err)
 		}
