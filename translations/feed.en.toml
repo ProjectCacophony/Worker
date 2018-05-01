@@ -1,0 +1,3 @@
+FeedEmbedTitle = "New post on {{.entry.FeedTitle}}"
+FeedEmbedDescription = "[{{.post.Title}}]({{MarkdownLinkEscape .post.Link}}){{if (and .post.Author .post.Author.Name)}}\nby {{.post.Author}}{{end}}"
+FeedEmbedFooter = "posted "

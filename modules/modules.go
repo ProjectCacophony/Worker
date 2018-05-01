@@ -1,6 +1,7 @@
 package modules
 
 import (
+	"gitlab.com/Cacophony/Worker/modules/feed-feed"
 	"gitlab.com/Cacophony/Worker/modules/gall-feed"
 	"gitlab.com/Cacophony/Worker/modules/lastfm-servertoptracks"
 	"gitlab.com/Cacophony/dhelpers"
@@ -26,5 +27,6 @@ var (
 	jobList = []Job{
 		&lastfmservertoptracks.Job{},
 		&gallfeed.Job{},
+		&feedfeed.Job{},
 	}
 )

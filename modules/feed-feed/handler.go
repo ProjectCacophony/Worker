@@ -1,4 +1,4 @@
-package gallfeed
+package feedfeed
 
 import (
 	"github.com/sirupsen/logrus"
@@ -10,7 +10,7 @@ import (
 type Job struct{}
 
 var (
-	jobName = "Gall:Feed"
+	jobName = "Feed:Feed"
 )
 
 // GetJob defines all jobs
@@ -19,14 +19,14 @@ func (j *Job) GetJob() dhelpers.Job {
 		Name:     jobName,
 		Cron:     "@every 5m",
 		Job:      JobFeed,
-		AtLaunch: false,
+		AtLaunch: true,
 	}
 }
 
 // GetTranslationFiles defines all translation files for the module
 func (j *Job) GetTranslationFiles() []string {
 	return []string{
-		"gall.en.toml",
+		"feed.en.toml",
 	}
 }
 
