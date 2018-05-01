@@ -19,7 +19,7 @@ func (j *Job) GetJob() dhelpers.Job {
 		Name:     jobName,
 		Cron:     "@every 5m",
 		Job:      JobFeed,
-		AtLaunch: false,
+		AtLaunch: true,
 	}
 }
 

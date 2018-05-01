@@ -108,7 +108,7 @@ func JobFeed() {
 				}
 
 				// skip posts before last check
-				if post.PublishedParsed.Before(entry.LastCheck) {
+				if !post.PublishedParsed.After(entry.LastCheck) {
 					continue
 				}
 
@@ -121,9 +121,11 @@ func JobFeed() {
 			}
 
 			// update last checked time (TODO: possible to update field without updating whole entry?)
-			entry.LastCheck = latestEntryTime
-			err = mdb.UpdateID(models.FeedTable, entry.ID, entry)
-			dhelpers.CheckErr(err)
+			if !entry.LastCheck.Equal(latestEntryTime) {
+				entry.LastCheck = latestEntryTime
+				err = mdb.UpdateID(models.FeedTable, entry.ID, entry)
+				dhelpers.CheckErr(err)
+			}
 		}
 
 		// renew lock
