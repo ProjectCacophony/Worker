@@ -9,6 +9,11 @@ before_script:
   - cd ${GOPATH}/src/gitlab.com/${CI_PROJECT_NAMESPACE}
   - ln -s ${CI_PROJECT_DIR}
   - cd ${CI_PROJECT_NAME}
+  # get discordgo dev branch
+  - go get github.com/bwmarrin/discordgo
+  - cd ${GOPATH}/src/github.com/bwmarrin/discordgo
+  - git checkout develop
+  - cd ${GOPATH}/src/gitlab.com/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}
   # install dependencies
   - go get -v ./...
   - go get -v golang.org/x/tools/cmd/goimports
@@ -20,4 +25,4 @@ testing:
   script:
     - diff <(goimports -d .) <(echo -n)
     - go test -v -race ./...
-    - gometalinter.v2 ./... --deadline 15m
+    - gometalinter.v2 ./... --deadline 60m -j 3

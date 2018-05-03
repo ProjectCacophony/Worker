@@ -112,6 +112,8 @@ func JobFeed() {
 					continue
 				}
 
+				// TODO: safety check (max one hour old)
+
 				go func(gEntry models.FeedEntry, gPost *gofeed.Item) {
 					defer dhelpers.JobErrorHandler(jobName)
 
@@ -142,12 +144,17 @@ func postPost(entry models.FeedEntry, post gofeed.Item) (err error) {
 		return err
 	}
 
+	var author gofeed.Person
+	if post.Author != nil {
+		author = *post.Author
+	}
+
 	message := &discordgo.MessageSend{
 		Content: "<" + post.Link + ">",
 		Embed: &discordgo.MessageEmbed{
 			URL:         post.Link,
 			Title:       dhelpers.Tf("FeedEmbedTitle", "entry", entry),
-			Description: dhelpers.Tf("FeedEmbedDescription", "post", post),
+			Description: dhelpers.Tf("FeedEmbedDescription", "post", post, "author", author),
 			Timestamp:   dhelpers.DiscordTime(*post.PublishedParsed),
 			Footer: &discordgo.MessageEmbedFooter{
 				Text: dhelpers.T("FeedEmbedFooter"),
