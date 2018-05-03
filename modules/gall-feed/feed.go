@@ -12,6 +12,12 @@ import (
 	"gitlab.com/Cacophony/dhelpers/state"
 )
 
+type boardCheckBundleInfo struct {
+	BoardID     string
+	Minor       bool
+	Recommended bool
+}
+
 // JobFeed posts new Gall Feed posts
 func JobFeed() {
 	// Error Handling
@@ -43,10 +49,11 @@ func JobFeed() {
 
 	// bundle entries
 	// don't check channels that don't access anymore, or without necessary permissions
-	bundledEntries := make(map[string][]models.GallFeedEntry)
+	bundledEntries := make(map[boardCheckBundleInfo][]models.GallFeedEntry)
 	var channel *discordgo.Channel
 	var botIDForGuild string
 	var apermissions int
+	var addedToBundle bool
 	for _, entry := range feedEntries {
 		// channel exists
 		channel, err = state.Channel(entry.ChannelID)
@@ -77,23 +84,37 @@ func JobFeed() {
 		}
 
 		// bundle feed entry if everything is good
-		bundledEntries[entry.BoardID] = append(bundledEntries[entry.BoardID], entry)
+		addedToBundle = false
+		for key := range bundledEntries {
+			if key.BoardID != entry.BoardID || key.Minor != entry.MinorGallery || key.Recommended != entry.Recommended {
+				continue
+			}
+			bundledEntries[key] = append(bundledEntries[key], entry)
+			addedToBundle = true
+		}
+		if !addedToBundle {
+			bundledEntries[boardCheckBundleInfo{
+				BoardID:     entry.BoardID,
+				Minor:       entry.MinorGallery,
+				Recommended: entry.Recommended,
+			}] = []models.GallFeedEntry{entry}
+		}
 	}
 
 	// check feeds
-	for boardID, entries := range bundledEntries {
+	for checkInfo, entries := range bundledEntries {
 		// check bundle feeds
 		var posts []ginside.Post
-		if !entries[0].MinorGallery {
-			posts, err = ginside.BoardRecommendedPosts(boardID)
+		if !checkInfo.Minor {
+			posts, err = ginside.BoardPosts(checkInfo.BoardID, checkInfo.Recommended)
 			if err != nil {
-				logger().Errorln("unable to check feed for", boardID+":", err.Error())
+				logger().Errorln("unable to check feed for", checkInfo.BoardID+":", err.Error())
 				continue
 			}
 		} else {
-			posts, err = ginside.BoardMinorRecommendedPosts(boardID)
+			posts, err = ginside.BoardMinorPosts(checkInfo.BoardID, checkInfo.Recommended)
 			if err != nil {
-				logger().Errorln("unable to check feed for", boardID+":", err.Error())
+				logger().Errorln("unable to check feed for", checkInfo.BoardID+":", err.Error())
 				continue
 			}
 		}
