@@ -133,7 +133,7 @@ func JobFeed() {
 					continue
 				}
 
-				// TODO: safety check (max one hour old)
+				// TODO: safety check (max one hour old, and limit amount of posts)
 
 				go func(gEntry models.GallFeedEntry, gPost ginside.Post) {
 					defer dhelpers.JobErrorHandler(jobName)
