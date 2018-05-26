@@ -5,6 +5,8 @@ import (
 
 	"strings"
 
+	"context"
+
 	"github.com/bradfitz/slice"
 	"github.com/json-iterator/go"
 	"gitlab.com/Cacophony/SqsProcessor/models"
@@ -59,7 +61,7 @@ func JobServerStats() {
 	var topTracks []dhelpers.LastfmTrackData
 	for _, period := range periods {
 		for _, entry := range entryBucket {
-			topTracks, err = dhelpers.LastFmGetTopTracks(entry.LastFmUsername, 100, period)
+			topTracks, err = dhelpers.LastFmGetTopTracks(context.Background(), entry.LastFmUsername, 100, period)
 			if err != nil {
 				if strings.Contains(err.Error(), "User not found") {
 					continue
