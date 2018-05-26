@@ -3,8 +3,11 @@ package gallfeed
 import (
 	"time"
 
+	"context"
+
 	"github.com/Seklfreak/ginside"
 	"github.com/bwmarrin/discordgo"
+	"github.com/opentracing/opentracing-go"
 	"gitlab.com/Cacophony/SqsProcessor/models"
 	"gitlab.com/Cacophony/SqsProcessor/modules/gall"
 	"gitlab.com/Cacophony/Worker/metrics"
@@ -23,6 +26,10 @@ type boardCheckBundleInfo struct {
 func JobFeed() {
 	// Error Handling
 	defer dhelpers.JobErrorHandler(jobName)
+
+	// start span
+	span, _ := opentracing.StartSpanFromContext(context.Background(), jobName)
+	defer span.Finish()
 
 	// init variables
 	duration := time.Minute * 1

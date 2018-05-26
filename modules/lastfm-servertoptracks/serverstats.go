@@ -9,6 +9,7 @@ import (
 
 	"github.com/bradfitz/slice"
 	"github.com/json-iterator/go"
+	"github.com/opentracing/opentracing-go"
 	"gitlab.com/Cacophony/SqsProcessor/models"
 	"gitlab.com/Cacophony/dhelpers"
 	"gitlab.com/Cacophony/dhelpers/cache"
@@ -29,6 +30,10 @@ func JobServerStats() {
 
 	// init variables
 	duration := time.Minute * 1
+
+	// start span
+	span, ctx := opentracing.StartSpanFromContext(context.Background(), jobName)
+	defer span.Finish()
 
 	// start job if none is running yet
 	start, locker, err := dhelpers.JobStart(jobName, duration)
@@ -61,7 +66,7 @@ func JobServerStats() {
 	var topTracks []dhelpers.LastfmTrackData
 	for _, period := range periods {
 		for _, entry := range entryBucket {
-			topTracks, err = dhelpers.LastFmGetTopTracks(context.Background(), entry.LastFmUsername, 100, period)
+			topTracks, err = dhelpers.LastFmGetTopTracks(ctx, entry.LastFmUsername, 100, period)
 			if err != nil {
 				if strings.Contains(err.Error(), "User not found") {
 					continue

@@ -1,10 +1,12 @@
 package feedfeed
 
 import (
+	"context"
 	"time"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/mmcdole/gofeed"
+	"github.com/opentracing/opentracing-go"
 	"gitlab.com/Cacophony/SqsProcessor/models"
 	feedModule "gitlab.com/Cacophony/SqsProcessor/modules/feed"
 	"gitlab.com/Cacophony/Worker/metrics"
@@ -17,6 +19,10 @@ import (
 func JobFeed() {
 	// Error Handling
 	defer dhelpers.JobErrorHandler(jobName)
+
+	// start span
+	span, _ := opentracing.StartSpanFromContext(context.Background(), jobName)
+	defer span.Finish()
 
 	// init variables
 	duration := time.Minute * 1

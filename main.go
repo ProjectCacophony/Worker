@@ -39,6 +39,12 @@ func main() {
 	dhelpers.CheckErr(err)
 	components.InitCron()
 	components.InitLastFm()
+	err = components.InitTracer("Worker")
+	dhelpers.CheckErr(err)
+	defer func() {
+		uninitTracerErr := components.UninitTracer()
+		dhelpers.CheckErr(uninitTracerErr)
+	}()
 
 	// Setup all modules
 	modules.Init()
