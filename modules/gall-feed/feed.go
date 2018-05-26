@@ -7,6 +7,7 @@ import (
 	"github.com/bwmarrin/discordgo"
 	"gitlab.com/Cacophony/SqsProcessor/models"
 	"gitlab.com/Cacophony/SqsProcessor/modules/gall"
+	"gitlab.com/Cacophony/Worker/metrics"
 	"gitlab.com/Cacophony/dhelpers"
 	"gitlab.com/Cacophony/dhelpers/mdb"
 	"gitlab.com/Cacophony/dhelpers/state"
@@ -101,8 +102,13 @@ func JobFeed() {
 		}
 	}
 
+	var checkedAt time.Time
+	var postedForEntry int
+	var alreadyPosted bool
+
 	// check feeds
 	for checkInfo, entries := range bundledEntries {
+		checkedAt = time.Now()
 		// check bundle feeds
 		var posts []ginside.Post
 		if !checkInfo.Minor {
@@ -119,22 +125,46 @@ func JobFeed() {
 			}
 		}
 
-		var latestEntryTime time.Time
-
 		// check entries
 		for _, entry := range entries {
-			for _, post := range posts {
-				if post.Date.After(latestEntryTime) {
-					latestEntryTime = post.Date
-				}
+			postedForEntry = 0
 
-				// skip posts before last check
-				if !post.Date.After(entry.LastCheck) {
+			for _, post := range posts {
+				// skip posts before feed adding check
+				if !post.Date.After(entry.AddedAt) {
 					continue
 				}
 
-				// TODO: safety check (max one hour old, and limit amount of posts)
+				// skip already posted posts
+				alreadyPosted = false
+				for _, postedPostID := range entry.PostedPostIDs {
+					if postedPostID != gall.GetEntryID(post) {
+						continue
+					}
+					alreadyPosted = true
+					break
+				}
+				if alreadyPosted {
+					continue
+				}
 
+				// skip too old posts
+				if time.Since(post.Date) > time.Hour*1 {
+					continue
+				}
+				// don't post more than five per check
+				if postedForEntry > 5 {
+					continue
+				}
+
+				// increase posts per check counter
+				postedForEntry++
+				// add posted post ID to database entry for deduplication
+				entry.PostedPostIDs = append(entry.PostedPostIDs, gall.GetEntryID(post))
+				// increase metrics gall posts counter
+				metrics.GallFeedPosts.Add(1)
+
+				// start goroutine to post
 				go func(gEntry models.GallFeedEntry, gPost ginside.Post) {
 					defer dhelpers.JobErrorHandler(jobName)
 
@@ -143,12 +173,10 @@ func JobFeed() {
 				}(entry, post)
 			}
 
-			// update last checked time (TODO: possible to update field without updating whole entry?)
-			if !entry.LastCheck.Equal(latestEntryTime) {
-				entry.LastCheck = latestEntryTime
-				err = mdb.UpdateID(models.GallTable, entry.ID, entry)
-				dhelpers.CheckErr(err)
-			}
+			// update last checked time
+			entry.LastCheck = checkedAt
+			err = mdb.UpdateID(models.GallTable, entry.ID, entry)
+			dhelpers.CheckErr(err)
 		}
 
 		// renew lock
