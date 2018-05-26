@@ -4,25 +4,26 @@ import (
 	"reflect"
 	"runtime"
 
-	"github.com/emicklei/go-restful"
+	"net/http"
+
+	muxtrace "github.com/DataDog/dd-trace-go/contrib/gorilla/mux"
+	"github.com/json-iterator/go"
+	"gitlab.com/Cacophony/dhelpers"
 	"gitlab.com/Cacophony/dhelpers/apihelper"
 	"gitlab.com/Cacophony/dhelpers/cache"
 )
 
 // New creates a new restful Web Service for reporting information about the worker
-func New() *restful.WebService {
-	service := new(restful.WebService)
-	service.
-		Path("/stats").
-		Consumes(restful.MIME_JSON).
-		Produces(restful.MIME_JSON)
+func New() *muxtrace.Router {
+	mux := muxtrace.NewRouter(muxtrace.WithServiceName("Worker-API"))
 
-	service.Route(service.GET("").To(getStats))
+	mux.HandleFunc("/stats", getStats)
 
-	return service
+	return mux
 }
 
-func getStats(_ *restful.Request, response *restful.Response) {
+func getStats(w http.ResponseWriter, _ *http.Request) {
+	// gather data
 	var result apihelper.WorkerStatus
 	for _, entry := range cache.GetCron().Entries() {
 		result.Entries = append(result.Entries, apihelper.WorkerJobInformation{
@@ -33,5 +34,10 @@ func getStats(_ *restful.Request, response *restful.Response) {
 	}
 	result.Service = apihelper.GenerateServiceInformation()
 	result.Available = true
-	response.WriteEntity(result) // nolint: errcheck, gas
+
+	// return result
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	err := jsoniter.NewEncoder(w).Encode(result)
+	dhelpers.LogError(err)
 }
