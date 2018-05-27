@@ -155,8 +155,8 @@ func JobFeed() {
 					continue
 				}
 
-				// skip too old posts
-				if time.Since(post.Date) > time.Hour*1 {
+				// skip too old posts, older than 72 hours (it can take a while until post reaches enough upvotes)
+				if time.Since(post.Date) > time.Hour*72 {
 					continue
 				}
 				// don't post more than five per check
