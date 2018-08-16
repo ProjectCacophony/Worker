@@ -11,6 +11,8 @@ import (
 
 	"strings"
 
+	"sync"
+
 	"gitlab.com/Cacophony/Worker/api"
 	"gitlab.com/Cacophony/Worker/modules"
 	"gitlab.com/Cacophony/dhelpers"
@@ -68,16 +70,42 @@ func main() {
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
 	<-sc
+	// create sync.WaitGroup for all shutdown goroutines
+	var exitGroup sync.WaitGroup
 
-	// shutdown api server
-	apiServerShutdownContext, apiServerCancel := context.WithTimeout(context.Background(), time.Second*15)
-	defer apiServerCancel()
-	err = apiServer.Shutdown(apiServerShutdownContext)
-	dhelpers.LogError(err)
+	// cron manager stopping goroutine
+	exitGroup.Add(1)
+	go func() {
+		// stop cron manager
+		cache.GetLogger().Infoln("Stopping cron manager…")
+		cache.GetCron().Stop()
+		cache.GetLogger().Infoln("Stopped cron manager")
+		exitGroup.Done()
+	}()
 
-	// stop cron manager
-	cache.GetCron().Stop()
+	// API Server shutdown goroutine
+	exitGroup.Add(1)
+	go func() {
+		// shutdown api server
+		cache.GetLogger().Infoln("Shutting API server down…")
+		err = apiServer.Shutdown(context.Background())
+		dhelpers.LogError(err)
+		cache.GetLogger().Infoln("Shut API server down")
+		exitGroup.Done()
+	}()
 
-	// Uninit all modules
-	modules.Uninit()
+	// wait for all shutdown goroutines to finish and then close channel finished
+	finished := make(chan bool)
+	go func() {
+		exitGroup.Wait()
+		close(finished)
+	}()
+
+	// wait 60 second for everything to finish, or shut it down anyway
+	select {
+	case <-finished:
+		cache.GetLogger().Infoln("shutdown successful")
+	case <-time.After(60 * time.Second):
+		cache.GetLogger().Infoln("forcing shutdown after 60 seconds")
+	}
 }
