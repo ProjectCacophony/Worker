@@ -169,6 +169,8 @@ func JobFeed() {
 	}
 
 	logger().Infoln("finished, took", time.Since(startAt).String())
+	err = dhelpers.JobFinishSuccess(healthcheckURL)
+	dhelpers.LogError(err)
 }
 
 func postPost(entry models.FeedEntry, post gofeed.Item) (err error) {

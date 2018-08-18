@@ -21,6 +21,8 @@ type Job interface {
 
 	// Unit runs at worker shutdown
 	Uninit()
+
+	SetHealthcheckURL(string)
 }
 
 var (

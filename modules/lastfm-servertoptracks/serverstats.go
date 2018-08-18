@@ -96,9 +96,10 @@ func JobServerStats() {
 	combinedGuildStats := make([]dhelpers.LastFmGuildTopTracks, 0)
 	allGuildIDs, err := state.AllGuildIDs()
 	dhelpers.CheckErr(err)
+	var memberIDs []string
 	for _, period := range periods {
 		for _, guildID := range allGuildIDs {
-			memberIDs, err := state.GuildUserIDs(guildID)
+			memberIDs, err = state.GuildUserIDs(guildID)
 			dhelpers.CheckErr(err)
 
 			if len(memberIDs) <= 0 {
@@ -160,9 +161,10 @@ func JobServerStats() {
 	}
 
 	// store stats in redis
+	var marshalled []byte
 	for _, combinedGuildStat := range combinedGuildStats {
 		combinedGuildStat.CachedAt = time.Now()
-		marshalled, err := jsoniter.Marshal(combinedGuildStat)
+		marshalled, err = jsoniter.Marshal(combinedGuildStat)
 		dhelpers.CheckErr(err)
 
 		err = cache.GetRedisClient().Set(
@@ -177,4 +179,6 @@ func JobServerStats() {
 	}
 
 	logger().Infoln("finished, took", time.Since(startAt).String())
+	err = dhelpers.JobFinishSuccess(healthcheckURL)
+	dhelpers.LogError(err)
 }

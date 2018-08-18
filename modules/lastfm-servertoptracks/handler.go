@@ -10,7 +10,8 @@ import (
 type Job struct{}
 
 var (
-	jobName = "LastFM:ServerTopTracks"
+	jobName        = "LastFM:ServerTopTracks"
+	healthcheckURL string
 )
 
 // GetJob defines all jobs
@@ -34,6 +35,11 @@ func (j *Job) Init() {
 
 // Uninit is called on normal bot shutdown
 func (j *Job) Uninit() {
+}
+
+// SetHealthcheckURL is called to inject the healthcheck URL if exists
+func (j *Job) SetHealthcheckURL(URL string) {
+	healthcheckURL = URL
 }
 
 func logger() *logrus.Entry {

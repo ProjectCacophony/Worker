@@ -43,6 +43,9 @@ func main() {
 	components.InitLastFm()
 	err = components.InitTracer("Worker")
 	dhelpers.CheckErr(err)
+	if os.Getenv("HEALTHCHECKSIO_API_KEY") != "" {
+		components.InitHealthchecksIO()
+	}
 
 	// Setup all modules
 	modules.Init()
