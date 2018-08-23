@@ -91,7 +91,7 @@ func main() {
 	go func() {
 		// shutdown api server
 		cache.GetLogger().Infoln("Shutting API server down…")
-		err = apiServer.Shutdown(context.Background())
+		err = apiServer.Shutdown(context.TODO())
 		dhelpers.LogError(err)
 		cache.GetLogger().Infoln("Shut API server down")
 		exitGroup.Done()

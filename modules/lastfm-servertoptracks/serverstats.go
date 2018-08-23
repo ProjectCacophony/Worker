@@ -13,7 +13,6 @@ import (
 	"gitlab.com/Cacophony/SqsProcessor/models"
 	"gitlab.com/Cacophony/dhelpers"
 	"gitlab.com/Cacophony/dhelpers/cache"
-	"gitlab.com/Cacophony/dhelpers/mdb"
 	"gitlab.com/Cacophony/dhelpers/state"
 )
 
@@ -32,7 +31,7 @@ func JobServerStats() {
 	duration := time.Minute * 1
 
 	// start span
-	span, ctx := opentracing.StartSpanFromContext(context.Background(), jobName)
+	span, ctx := opentracing.StartSpanFromContext(context.TODO(), jobName)
 	defer span.Finish()
 
 	// start job if none is running yet
@@ -58,8 +57,10 @@ func JobServerStats() {
 	}
 
 	var entryBucket []models.LastFmEntry
-	err = mdb.Iter(models.LastFmTable.DB().Find(nil)).All(&entryBucket)
+	err = models.LastFmRepository.Find(context.TODO(), nil, &entryBucket)
 	dhelpers.CheckErr(err)
+
+	logger().Infoln("found", len(entryBucket), "account(s) to check")
 
 	// Get Stats from LastFM
 	lastFmUserPeriodStats := make([]lastFmPeriodUserStats, 0)

@@ -7,12 +7,12 @@ import (
 
 	"github.com/Seklfreak/ginside"
 	"github.com/bwmarrin/discordgo"
+	"github.com/mongodb/mongo-go-driver/bson"
 	"github.com/opentracing/opentracing-go"
 	"gitlab.com/Cacophony/SqsProcessor/models"
 	"gitlab.com/Cacophony/SqsProcessor/modules/gall"
 	"gitlab.com/Cacophony/Worker/metrics"
 	"gitlab.com/Cacophony/dhelpers"
-	"gitlab.com/Cacophony/dhelpers/mdb"
 	"gitlab.com/Cacophony/dhelpers/state"
 )
 
@@ -28,7 +28,7 @@ func JobFeed() {
 	defer dhelpers.JobErrorHandler(jobName)
 
 	// start span
-	span, _ := opentracing.StartSpanFromContext(context.Background(), jobName)
+	span, _ := opentracing.StartSpanFromContext(context.TODO(), jobName)
 	defer span.Finish()
 
 	// init variables
@@ -49,8 +49,10 @@ func JobFeed() {
 	// worker code
 	// get all entries to check
 	var feedEntries []models.GallFeedEntry
-	err = mdb.Iter(models.GallTable.DB().Find(nil)).All(&feedEntries)
+	err = models.GallRepository.Find(context.TODO(), nil, &feedEntries)
 	dhelpers.CheckErr(err)
+
+	logger().Infoln("found", len(feedEntries), "feed entries to check")
 
 	// renew lock
 	locker.Lock() // nolint: errcheck
@@ -66,28 +68,28 @@ func JobFeed() {
 		// channel exists
 		channel, err = state.Channel(entry.ChannelID)
 		if err != nil {
-			logger().Info("skipped", mdb.IDToHuman(entry.ID), "because channel is not available")
+			logger().Info("skipped", entry.ID.String(), "because channel is not available")
 			continue
 		}
 
 		// get correct bot ID
 		botIDForGuild, err = state.BotIDForGuild(channel.GuildID)
 		if err != nil {
-			logger().Info("skipped", mdb.IDToHuman(entry.ID), "because it was not possible to get a bot ID")
+			logger().Info("skipped", entry.ID.String(), "because it was not possible to get a bot ID")
 			continue
 		}
 
 		// get bot permissions in channel
 		apermissions, err = state.UserChannelPermissions(botIDForGuild, entry.ChannelID)
 		if err != nil {
-			logger().Info("skipped", mdb.IDToHuman(entry.ID), "because it was not possible to access the permissions")
+			logger().Info("skipped", entry.ID.String(), "because it was not possible to access the permissions")
 			continue
 		}
 
 		// can send messages and embed links?
 		if apermissions&discordgo.PermissionSendMessages != discordgo.PermissionSendMessages ||
 			apermissions&discordgo.PermissionEmbedLinks != discordgo.PermissionEmbedLinks {
-			logger().Info("skipped", mdb.IDToHuman(entry.ID), "because the bot has missings permissions")
+			logger().Info("skipped", entry.ID.String(), "because the bot has missings permissions")
 			continue
 		}
 
@@ -182,7 +184,9 @@ func JobFeed() {
 
 			// update last checked time
 			entry.LastCheck = checkedAt
-			err = mdb.UpdateID(models.GallTable, entry.ID, entry)
+			err = models.GallRepository.UpdateByID(
+				context.TODO(), *entry.ID, bson.NewDocument(bson.EC.Interface("$set", entry)),
+			)
 			dhelpers.CheckErr(err)
 		}
 
