@@ -1,0 +1,5 @@
+"feed.post.content" = "<{{.post.Link}}>"
+"feed.post.embed.title" = "New post on {{.entry.Name}}"
+"feed.post.embed.description" = "[{{Escape .post.Title}}]({{EscapeLink .post.Link}})\
+{{if .post.Author}}\nby {{Escape .post.Author.Name}}{{end}}"
+"feed.post.embed.footer.text" = "posted "

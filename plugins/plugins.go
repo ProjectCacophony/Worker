@@ -5,6 +5,7 @@ import (
 	"github.com/jinzhu/gorm"
 	"gitlab.com/Cacophony/Worker/plugins/common"
 	"gitlab.com/Cacophony/Worker/plugins/gall"
+	"gitlab.com/Cacophony/Worker/plugins/rss"
 	"gitlab.com/Cacophony/go-kit/featureflag"
 	"gitlab.com/Cacophony/go-kit/interfaces"
 	"gitlab.com/Cacophony/go-kit/state"
@@ -29,6 +30,7 @@ type Plugin interface {
 var (
 	PluginList = []Plugin{
 		&gall.Plugin{},
+		&rss.Plugin{},
 	}
 
 	LocalisationsList []interfaces.Localisation
