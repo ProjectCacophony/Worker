@@ -1,3 +1,0 @@
-GallFeedEmbedTitle = "New post on {{.entry.BoardID}}"
-GallFeedEmbedDescription = "[{{.post.Title}}]({{MarkdownLinkEscape .post.URL}})\nby {{.post.Author}}"
-GallFeedEmbedFooter = "powered by gall.dcinside.com | posted "
