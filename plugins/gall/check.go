@@ -22,7 +22,7 @@ const (
 func (p *Plugin) checkBundles(run *common.Run, bundles boardCheckBundle) {
 	var err error
 
-	run.Logger().Debug("checking bundles",
+	run.Logger().Info("checking bundles",
 		zap.Int("amount", len(bundles)),
 	)
 
