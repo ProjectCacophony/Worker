@@ -16,9 +16,8 @@ import (
 )
 
 const (
-	checkInterval = time.Second * 1
+	checkInterval = time.Minute * 10
 	limit         = 10
-	// checkInterval = time.Minute * 10 TODO
 
 	selectQuery = `
 UPDATE gall_entries
