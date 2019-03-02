@@ -20,7 +20,7 @@ type boardCheckBundle map[boardCheckBundleInfo][]Entry
 func (p *Plugin) bundleEntries(run *common.Run, entries []Entry) boardCheckBundle {
 	var err error
 
-	run.Logger().Info("bundling entries",
+	run.Logger().Debug("bundling entries",
 		zap.Int("amount", len(entries)),
 	)
 
@@ -32,7 +32,7 @@ func (p *Plugin) bundleEntries(run *common.Run, entries []Entry) boardCheckBundl
 
 		_, err = p.state.Channel(entry.ChannelID)
 		if err != nil {
-			logger.Warn("skipped entry because of error",
+			logger.Debug("skipped entry because of error",
 				zap.Error(err),
 			)
 			continue
@@ -40,7 +40,7 @@ func (p *Plugin) bundleEntries(run *common.Run, entries []Entry) boardCheckBundl
 
 		botID, err := p.state.BotForGuild(entry.GuildID)
 		if err != nil {
-			logger.Warn("skipped entry because of error",
+			logger.Debug("skipped entry because of error",
 				zap.Error(err),
 			)
 			continue
@@ -49,7 +49,7 @@ func (p *Plugin) bundleEntries(run *common.Run, entries []Entry) boardCheckBundl
 			discordgo.PermissionSendMessages,
 			discordgo.PermissionEmbedLinks,
 		) {
-			logger.Warn("skipped entry because of error",
+			logger.Debug("skipped entry because of error",
 				zap.Error(errors.New("missing required permissions")),
 			)
 			continue

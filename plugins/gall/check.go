@@ -22,7 +22,7 @@ const (
 func (p *Plugin) checkBundles(run *common.Run, bundles boardCheckBundle) {
 	var err error
 
-	run.Logger().Info("checking bundles",
+	run.Logger().Debug("checking bundles",
 		zap.Int("amount", len(bundles)),
 	)
 
@@ -37,6 +37,7 @@ func (p *Plugin) checkBundles(run *common.Run, bundles boardCheckBundle) {
 		if !checkInfo.Minor {
 			posts, err = p.gall.BoardPosts(run.Context(), checkInfo.BoardID, checkInfo.Recommended)
 			if err != nil {
+				// TODO: send to raven
 				logger.Error("failure checking board posts",
 					zap.Error(err),
 				)
@@ -45,6 +46,7 @@ func (p *Plugin) checkBundles(run *common.Run, bundles boardCheckBundle) {
 		} else {
 			posts, err = p.gall.BoardMinorPosts(run.Context(), checkInfo.BoardID, checkInfo.Recommended)
 			if err != nil {
+				// TODO: send to raven
 				logger.Error("failure checking minor board posts",
 					zap.Error(err),
 				)
@@ -103,6 +105,7 @@ func (p *Plugin) checkEntry(run *common.Run, entry Entry, posts []ginside.Post) 
 
 		err = p.post(run, entry, post)
 		if err != nil {
+			// TODO: send to raven
 			logger.Error("failure posting post",
 				zap.Error(err),
 			)
