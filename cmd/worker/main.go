@@ -8,6 +8,13 @@ import (
 	"syscall"
 	"time"
 
+	"gitlab.com/Cacophony/go-kit/featureflag"
+
+	"gitlab.com/Cacophony/go-kit/state"
+
+	"gitlab.com/Cacophony/Worker/pkg/scheduler"
+	"gitlab.com/Cacophony/Worker/plugins"
+
 	"gitlab.com/Cacophony/go-kit/errortracking"
 
 	"github.com/go-redis/redis"
@@ -58,16 +65,6 @@ func main() {
 		)
 	}
 
-	// init GORM
-	gormDB, err := gorm.Open("postgres", config.DBDSN)
-	if err != nil {
-		logger.Fatal("unable to initialise GORM session",
-			zap.Error(err),
-		)
-	}
-	// gormDB.SetLogger(logger) TODO: write logger
-	defer gormDB.Close()
-
 	// init redis
 	redisClient := redis.NewClient(&redis.Options{
 		Addr:     config.RedisAddress,
@@ -80,13 +77,50 @@ func main() {
 		)
 	}
 
-	// // init feature flagger
-	// featureFlagger, err := featureflag.New(&config.FeatureFlag)
-	// if err != nil {
-	// 	logger.Fatal("unable to initialise feature flagger",
-	// 		zap.Error(err),
-	// 	)
-	// }
+	// init GORM
+	gormDB, err := gorm.Open("postgres", config.DBDSN)
+	if err != nil {
+		logger.Fatal("unable to initialise GORM session",
+			zap.Error(err),
+		)
+	}
+	// gormDB.SetLogger(logger) TODO: write logger
+	defer gormDB.Close()
+
+	// init state
+	botIDs := make([]string, len(config.DiscordTokens))
+	var i int
+	for botID := range config.DiscordTokens {
+		botIDs[i] = botID
+		i++
+	}
+	stateClient := state.NewSate(redisClient, botIDs)
+
+	// init feature flagger
+	featureFlagger, err := featureflag.New(&config.FeatureFlag)
+	if err != nil {
+		logger.Fatal("unable to initialise feature flagger",
+			zap.Error(err),
+		)
+	}
+
+	// init plugins
+	plugins.StartPlugins(
+		logger.With(zap.String("feature", "start_plugins")),
+		gormDB,
+		redisClient,
+		config.DiscordTokens,
+		stateClient,
+		featureFlagger,
+	)
+
+	// init scheduler
+	sched := scheduler.NewScheduler(
+		logger.With(zap.String("feature", "scheduler")),
+	)
+	go func() {
+		sched.Start()
+	}()
 
 	// init http server
 	httpRouter := api.NewRouter()
@@ -115,6 +149,15 @@ func main() {
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*15)
 	defer cancel()
+
+	plugins.StopPlugins(
+		logger.With(zap.String("feature", "stop_plugins")),
+		gormDB,
+		redisClient,
+		config.DiscordTokens,
+		stateClient,
+		featureFlagger,
+	)
 
 	err = httpServer.Shutdown(ctx)
 	if err != nil {
