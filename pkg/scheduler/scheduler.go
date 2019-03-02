@@ -27,7 +27,7 @@ func (s *Scheduler) Start() {
 	for {
 		for _, plugin := range plugins.PluginList {
 
-			run := common.NewRun()
+			run := common.NewRun(plugin.Name())
 
 			logger := s.logger.With(
 				zap.String("plugin", plugin.Name()),

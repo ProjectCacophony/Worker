@@ -28,28 +28,16 @@ func (p *Plugin) checkBundles(run *common.Run, bundles boardCheckBundle) {
 
 	var posts []ginside.Post
 	for checkInfo, entries := range bundles {
-		logger := run.Logger().With(
-			zap.String("board_id", checkInfo.BoardID),
-			zap.Bool("board_recommended", checkInfo.Recommended),
-			zap.Bool("board_minor", checkInfo.Minor),
-		)
-
 		if !checkInfo.Minor {
 			posts, err = p.gall.BoardPosts(run.Context(), checkInfo.BoardID, checkInfo.Recommended)
 			if err != nil {
-				// TODO: send to raven
-				logger.Error("failure checking board posts",
-					zap.Error(err),
-				)
+				run.Except(err)
 				continue
 			}
 		} else {
 			posts, err = p.gall.BoardMinorPosts(run.Context(), checkInfo.BoardID, checkInfo.Recommended)
 			if err != nil {
-				// TODO: send to raven
-				logger.Error("failure checking minor board posts",
-					zap.Error(err),
-				)
+				run.Except(err)
 				continue
 			}
 		}
@@ -105,10 +93,7 @@ func (p *Plugin) checkEntry(run *common.Run, entry Entry, posts []ginside.Post) 
 
 		err = p.post(run, entry, post)
 		if err != nil {
-			// TODO: send to raven
-			logger.Error("failure posting post",
-				zap.Error(err),
-			)
+			run.Except(err)
 		}
 		posted++
 	}
