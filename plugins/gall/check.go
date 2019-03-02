@@ -111,7 +111,7 @@ func (p *Plugin) checkEntry(run *common.Run, entry Entry, posts []ginside.Post) 
 	}
 }
 
-func (p *Plugin) post(run *common.Run, entry Entry, post ginside.Post) error {
+func (p *Plugin) post(_ *common.Run, entry Entry, post ginside.Post) error {
 
 	botID, err := p.state.BotForGuild(entry.GuildID)
 	if err != nil {

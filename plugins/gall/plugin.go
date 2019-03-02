@@ -90,7 +90,7 @@ func (p *Plugin) Run(run *common.Run) (err error) {
 
 	tx, err := p.db.DB().BeginTx(run.Context(), nil)
 	if err != nil {
-		tx.Rollback()
+		tx.Rollback() // nolint: errcheck
 		return err
 	}
 
@@ -99,11 +99,11 @@ func (p *Plugin) Run(run *common.Run) (err error) {
 		time.Now().Add(-checkInterval), limit,
 	)
 	if err != nil {
-		tx.Rollback()
+		tx.Rollback() // nolint: errcheck
 		return err
 	}
 
-	defer tx.Commit()
+	defer tx.Commit() // nolint: errcheck
 
 	var entries []Entry
 	for rows.Next() {
