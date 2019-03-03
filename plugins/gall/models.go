@@ -3,6 +3,8 @@ package gall
 import (
 	"time"
 
+	"gitlab.com/Cacophony/go-kit/feed"
+
 	"github.com/lib/pq"
 
 	"github.com/jinzhu/gorm"
@@ -18,7 +20,9 @@ type Entry struct {
 	BoardID      string
 	MinorGallery bool
 	Recommended  bool
-	LastCheck    time.Time
+
+	LastCheck time.Time
+	feed.Check
 }
 
 func (*Entry) TableName() string {

@@ -1,6 +1,7 @@
 package rss
 
 import (
+	"database/sql"
 	"strings"
 	"time"
 
@@ -12,6 +13,8 @@ import (
 
 	"gitlab.com/Cacophony/Worker/plugins/common"
 	"go.uber.org/zap"
+
+	kitFeed "gitlab.com/Cacophony/go-kit/feed"
 )
 
 const (
@@ -20,7 +23,7 @@ const (
 	postsPerCheckLimit = 5
 )
 
-func (p *Plugin) checkBundles(run *common.Run, bundles boardCheckBundle) {
+func (p *Plugin) checkBundles(run *common.Run, tx *sql.Tx, bundles boardCheckBundle) {
 	var err error
 
 	run.Logger().Info("checking bundles",
@@ -32,16 +35,34 @@ func (p *Plugin) checkBundles(run *common.Run, bundles boardCheckBundle) {
 		feed, err = getFeed(p.httpClient, p.parser, checkInfo.FeedURL)
 		if err != nil {
 			run.Except(err)
+
+			err = checkSet(run.Context(), tx, kitFeed.ErrorStatus, err.Error(), entries...)
+			if err != nil {
+				run.Except(err)
+			}
 			continue
 		}
 
 		for _, entry := range entries {
-			p.checkEntry(run, entry, feed)
+			err = p.checkEntry(run, entry, feed)
+			if err != nil {
+				run.Except(err)
+
+				err = checkSet(run.Context(), tx, kitFeed.ErrorStatus, err.Error(), entry)
+				if err != nil {
+					run.Except(err)
+				}
+			} else {
+				err = checkSet(run.Context(), tx, kitFeed.SuccessStatus, "", entry)
+				if err != nil {
+					run.Except(err)
+				}
+			}
 		}
 	}
 }
 
-func (p *Plugin) checkEntry(run *common.Run, entry Entry, feed *gofeed.Feed) {
+func (p *Plugin) checkEntry(run *common.Run, entry Entry, feed *gofeed.Feed) error {
 	var posted int
 
 	for _, post := range feed.Items {
@@ -51,27 +72,27 @@ func (p *Plugin) checkEntry(run *common.Run, entry Entry, feed *gofeed.Feed) {
 		)
 
 		if posted > postsPerCheckLimit {
-			logger.Debug("skipping post because of the posts per check limit")
+			// logger.Debug("skipping post because of the posts per check limit")
 			break
 		}
 
 		if post.PublishedParsed == nil {
-			logger.Debug("skipping post because post date is empty")
+			// logger.Debug("skipping post because post date is empty")
 			continue
 		}
 
 		if post.Link == "" {
-			logger.Debug("skipping post because post link is empty")
+			// logger.Debug("skipping post because post link is empty")
 			continue
 		}
 
 		if !post.PublishedParsed.After(entry.CreatedAt) {
-			logger.Debug("skipping post because post date is not after entry creation date")
+			// logger.Debug("skipping post because post date is not after entry creation date")
 			continue
 		}
 
 		if time.Since(*post.PublishedParsed) > ageLimit {
-			logger.Debug("skipping post because of the age limit")
+			// logger.Debug("skipping post because of the age limit")
 			continue
 		}
 
@@ -80,13 +101,10 @@ func (p *Plugin) checkEntry(run *common.Run, entry Entry, feed *gofeed.Feed) {
 			entry.ID, post.GUID, post.Link,
 		)
 		if err != nil && !strings.Contains(err.Error(), "record not found") {
-			logger.Debug("skipping post because of error",
-				zap.Error(err),
-			)
-			continue
+			return err
 		}
 		if existingPost != nil {
-			logger.Debug("skipping post because it has already been posted")
+			// logger.Debug("skipping post because it has already been posted")
 			continue
 		}
 
@@ -94,10 +112,12 @@ func (p *Plugin) checkEntry(run *common.Run, entry Entry, feed *gofeed.Feed) {
 
 		err = p.post(run, entry, post)
 		if err != nil {
-			run.Except(err)
+			return err
 		}
 		posted++
 	}
+
+	return nil
 }
 
 func (p *Plugin) post(_ *common.Run, entry Entry, post *gofeed.Item) error {

@@ -125,7 +125,7 @@ func (p *Plugin) Run(run *common.Run) (err error) {
 
 	bundles := p.bundleEntries(run, entries)
 
-	p.checkBundles(run, bundles)
+	p.checkBundles(run, tx, bundles)
 
 	return nil
 }

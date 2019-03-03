@@ -1,7 +1,13 @@
 package gall
 
 import (
+	"context"
+	"database/sql"
+	"strconv"
+	"strings"
+
 	"github.com/jinzhu/gorm"
+	"gitlab.com/Cacophony/go-kit/feed"
 )
 
 func postAdd(
@@ -25,4 +31,26 @@ func postFind(db *gorm.DB, where ...interface{}) (*Post, error) {
 		return nil, err
 	}
 	return &post, err
+}
+
+func checkSet(ctx context.Context, tx *sql.Tx, status feed.Status, message string, entries ...Entry) error {
+	var ids []string // nolint: prealloc
+	for _, entry := range entries {
+		if entry.ID == 0 {
+			continue
+		}
+
+		ids = append(ids, strconv.FormatUint(uint64(entry.ID), 10))
+	}
+
+	if len(ids) == 0 {
+		return nil
+	}
+
+	_, err := tx.ExecContext(ctx, `
+UPDATE gall_entries
+SET check_status = $2, check_message = $3
+WHERE id in ($1)
+`, strings.Join(ids, ","), status, message)
+	return err
 }

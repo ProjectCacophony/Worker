@@ -3,6 +3,8 @@ package rss
 import (
 	"time"
 
+	"gitlab.com/Cacophony/go-kit/feed"
+
 	"github.com/lib/pq"
 
 	"github.com/jinzhu/gorm"
@@ -20,6 +22,7 @@ type Entry struct {
 	FeedURL string
 
 	LastCheck time.Time
+	feed.Check
 }
 
 func (*Entry) TableName() string {

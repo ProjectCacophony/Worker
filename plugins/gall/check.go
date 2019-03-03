@@ -1,8 +1,11 @@
 package gall
 
 import (
+	"database/sql"
 	"strings"
 	"time"
+
+	"gitlab.com/Cacophony/go-kit/feed"
 
 	"github.com/bwmarrin/discordgo"
 
@@ -19,7 +22,7 @@ const (
 	postsPerCheckLimit = 5
 )
 
-func (p *Plugin) checkBundles(run *common.Run, bundles boardCheckBundle) {
+func (p *Plugin) checkBundles(run *common.Run, tx *sql.Tx, bundles boardCheckBundle) {
 	var err error
 
 	run.Logger().Info("checking bundles",
@@ -32,23 +35,46 @@ func (p *Plugin) checkBundles(run *common.Run, bundles boardCheckBundle) {
 			posts, err = p.gall.BoardPosts(run.Context(), checkInfo.BoardID, checkInfo.Recommended)
 			if err != nil {
 				run.Except(err)
+
+				err = checkSet(run.Context(), tx, feed.ErrorStatus, err.Error(), entries...)
+				if err != nil {
+					run.Except(err)
+				}
 				continue
 			}
 		} else {
 			posts, err = p.gall.BoardMinorPosts(run.Context(), checkInfo.BoardID, checkInfo.Recommended)
 			if err != nil {
 				run.Except(err)
+
+				err = checkSet(run.Context(), tx, feed.ErrorStatus, err.Error(), entries...)
+				if err != nil {
+					run.Except(err)
+				}
 				continue
 			}
 		}
 
 		for _, entry := range entries {
-			p.checkEntry(run, entry, posts)
+			err = p.checkEntry(run, entry, posts)
+			if err != nil {
+				run.Except(err)
+
+				err = checkSet(run.Context(), tx, feed.ErrorStatus, err.Error(), entry)
+				if err != nil {
+					run.Except(err)
+				}
+			} else {
+				err = checkSet(run.Context(), tx, feed.SuccessStatus, "", entry)
+				if err != nil {
+					run.Except(err)
+				}
+			}
 		}
 	}
 }
 
-func (p *Plugin) checkEntry(run *common.Run, entry Entry, posts []ginside.Post) {
+func (p *Plugin) checkEntry(run *common.Run, entry Entry, posts []ginside.Post) error {
 	var posted int
 
 	for _, post := range posts {
@@ -60,17 +86,17 @@ func (p *Plugin) checkEntry(run *common.Run, entry Entry, posts []ginside.Post) 
 		)
 
 		if posted > postsPerCheckLimit {
-			logger.Debug("skipping post because of the posts per check limit")
+			// logger.Debug("skipping post because of the posts per check limit")
 			break
 		}
 
 		if !post.Date.After(entry.CreatedAt) {
-			logger.Debug("skipping post because post date is not after entry creation date")
+			// logger.Debug("skipping post because post date is not after entry creation date")
 			continue
 		}
 
 		if time.Since(post.Date) > ageLimit {
-			logger.Debug("skipping post because of the age limit")
+			// logger.Debug("skipping post because of the age limit")
 			continue
 		}
 
@@ -79,13 +105,10 @@ func (p *Plugin) checkEntry(run *common.Run, entry Entry, posts []ginside.Post) 
 			entry.ID, post.ID,
 		)
 		if err != nil && !strings.Contains(err.Error(), "record not found") {
-			logger.Debug("skipping post because of error",
-				zap.Error(err),
-			)
-			continue
+			return err
 		}
 		if existingPost != nil {
-			logger.Debug("skipping post because it has already been posted")
+			// logger.Debug("skipping post because it has already been posted")
 			continue
 		}
 
@@ -93,10 +116,12 @@ func (p *Plugin) checkEntry(run *common.Run, entry Entry, posts []ginside.Post) 
 
 		err = p.post(run, entry, post)
 		if err != nil {
-			run.Except(err)
+			return err
 		}
 		posted++
 	}
+
+	return nil
 }
 
 func (p *Plugin) post(_ *common.Run, entry Entry, post ginside.Post) error {
