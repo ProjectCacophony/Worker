@@ -1,5 +1,5 @@
 "gall.post.content" = "<{{.post.URL}}>"
 "gall.post.embed.title" = "New post on {{.board.BoardID}}"
 "gall.post.embed.description" = "[{{Escape .post.Title}}]({{EscapeLink .post.URL}})\nby {{Escape .post.Author}}"
-"gall.post.embed.footer.text" = "powered by gall.dcinside.com | posted "
+"gall.post.embed.footer.text" = "powered by gall.dcinside.com • posted "
 "gall.post.embed.footer.icon-url" = "https://i.imgur.com/tIYs6jt.png"

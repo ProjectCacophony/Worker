@@ -18,7 +18,7 @@ import (
 )
 
 const (
-	color              = 4220112
+	color              = 15885602           // #F26522
 	ageLimit           = time.Hour * 24 * 3 // three days
 	postsPerCheckLimit = 5
 )
@@ -145,7 +145,11 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post *gofeed.Item) error {
 				Timestamp:   post.PublishedParsed.Format(time.RFC3339),
 				Color:       color,
 				Footer: &discordgo.MessageEmbedFooter{
-					Text: "feed.post.embed.footer.text",
+					Text:    "feed.post.embed.footer.text",
+					IconURL: "gall.post.embed.footer.icon-url",
+				},
+				Thumbnail: &discordgo.MessageEmbedThumbnail{
+					URL: getThumbnailURL(post),
 				},
 			},
 		},

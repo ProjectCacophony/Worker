@@ -17,7 +17,7 @@ import (
 )
 
 const (
-	color              = 4220112
+	color              = 4220112            // #4064D0
 	ageLimit           = time.Hour * 24 * 3 // three days
 	postsPerCheckLimit = 5
 )
