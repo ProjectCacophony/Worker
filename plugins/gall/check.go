@@ -34,22 +34,22 @@ func (p *Plugin) checkBundles(run *common.Run, tx *sql.Tx, bundles boardCheckBun
 		if !checkInfo.Minor {
 			posts, err = p.gall.BoardPosts(run.Context(), checkInfo.BoardID, checkInfo.Recommended)
 			if err != nil {
-				run.Except(err)
+				run.Except(err, "board_id", checkInfo.BoardID)
 
 				err = checkSet(run.Context(), tx, feed.ErrorStatus, err.Error(), entries...)
 				if err != nil {
-					run.Except(err)
+					run.Except(err, "board_id", checkInfo.BoardID)
 				}
 				continue
 			}
 		} else {
 			posts, err = p.gall.BoardMinorPosts(run.Context(), checkInfo.BoardID, checkInfo.Recommended)
 			if err != nil {
-				run.Except(err)
+				run.Except(err, "board_id", checkInfo.BoardID)
 
 				err = checkSet(run.Context(), tx, feed.ErrorStatus, err.Error(), entries...)
 				if err != nil {
-					run.Except(err)
+					run.Except(err, "board_id", checkInfo.BoardID)
 				}
 				continue
 			}
@@ -58,16 +58,16 @@ func (p *Plugin) checkBundles(run *common.Run, tx *sql.Tx, bundles boardCheckBun
 		for _, entry := range entries {
 			err = p.checkEntry(run, entry, posts)
 			if err != nil {
-				run.Except(err)
+				run.Except(err, "board_id", checkInfo.BoardID)
 
 				err = checkSet(run.Context(), tx, feed.ErrorStatus, err.Error(), entry)
 				if err != nil {
-					run.Except(err)
+					run.Except(err, "board_id", checkInfo.BoardID)
 				}
 			} else {
 				err = checkSet(run.Context(), tx, feed.SuccessStatus, "", entry)
 				if err != nil {
-					run.Except(err)
+					run.Except(err, "board_id", checkInfo.BoardID)
 				}
 			}
 		}

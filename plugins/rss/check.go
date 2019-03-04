@@ -34,11 +34,11 @@ func (p *Plugin) checkBundles(run *common.Run, tx *sql.Tx, bundles boardCheckBun
 	for checkInfo, entries := range bundles {
 		feed, err = getFeed(p.httpClient, p.parser, checkInfo.FeedURL)
 		if err != nil {
-			run.Except(err)
+			run.Except(err, "feed_url", checkInfo.FeedURL)
 
 			err = checkSet(run.Context(), tx, kitFeed.ErrorStatus, err.Error(), entries...)
 			if err != nil {
-				run.Except(err)
+				run.Except(err, "feed_url", checkInfo.FeedURL)
 			}
 			continue
 		}
@@ -46,16 +46,16 @@ func (p *Plugin) checkBundles(run *common.Run, tx *sql.Tx, bundles boardCheckBun
 		for _, entry := range entries {
 			err = p.checkEntry(run, entry, feed)
 			if err != nil {
-				run.Except(err)
+				run.Except(err, "feed_url", checkInfo.FeedURL)
 
 				err = checkSet(run.Context(), tx, kitFeed.ErrorStatus, err.Error(), entry)
 				if err != nil {
-					run.Except(err)
+					run.Except(err, "feed_url", checkInfo.FeedURL)
 				}
 			} else {
 				err = checkSet(run.Context(), tx, kitFeed.SuccessStatus, "", entry)
 				if err != nil {
-					run.Except(err)
+					run.Except(err, "feed_url", checkInfo.FeedURL)
 				}
 			}
 		}

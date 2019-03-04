@@ -7,7 +7,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func (r *Run) Except(err error) {
+func (r *Run) Except(err error, fields ...string) {
 	if err == nil {
 		return
 	}
@@ -18,16 +18,23 @@ func (r *Run) Except(err error) {
 		doLog = false
 	}
 
+	data := map[string]string{
+		"plugin": r.Plugin,
+		"launch": r.Launch.String(),
+	}
+	for i := range fields {
+		if i%2 == 0 && len(fields) > i+1 {
+			data[fields[i]] = fields[i+1]
+		}
+	}
+
 	if doLog {
 		r.Logger().Error("error occurred while executing run", zap.Error(err))
 
 		if raven.DefaultClient != nil {
 			raven.CaptureError(
 				err,
-				map[string]string{
-					"plugin": r.Plugin,
-					"launch": r.Launch.String(),
-				},
+				data,
 			)
 		}
 	}
