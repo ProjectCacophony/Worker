@@ -146,7 +146,7 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post *gofeed.Item) error {
 				Color:       color,
 				Footer: &discordgo.MessageEmbedFooter{
 					Text:    "feed.post.embed.footer.text",
-					IconURL: "gall.post.embed.footer.icon-url",
+					IconURL: "feed.post.embed.footer.icon-url",
 				},
 				Thumbnail: &discordgo.MessageEmbedThumbnail{
 					URL: getThumbnailURL(post),

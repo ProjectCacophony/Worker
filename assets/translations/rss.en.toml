@@ -3,4 +3,4 @@
 "feed.post.embed.description" = "[{{Escape .post.Title}}]({{EscapeLink .post.Link}})\
 {{if .post.Author}}\nby {{Escape .post.Author.Name}}{{end}}"
 "feed.post.embed.footer.text" = "posted "
-"gall.post.embed.footer.icon-url" = "https://i.imgur.com/p7RBDVC.png"
+"feed.post.embed.footer.icon-url" = "https://i.imgur.com/p7RBDVC.png"
