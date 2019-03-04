@@ -2,7 +2,7 @@ module gitlab.com/Cacophony/Worker
 
 require (
 	cloud.google.com/go v0.36.0 // indirect
-	github.com/Seklfreak/ginside v0.0.0-20190227190605-24d9329935a4
+	github.com/Seklfreak/ginside v0.0.0-20190304181936-3c6d866dc362
 	github.com/Unleash/unleash-client-go v0.0.0-20190225211619-9febc6ff26f4 // indirect
 	github.com/bwmarrin/discordgo v0.19.0
 	github.com/denisenkom/go-mssqldb v0.0.0-20190204142019-df6d76eb9289 // indirect
