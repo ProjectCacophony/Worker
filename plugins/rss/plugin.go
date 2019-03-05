@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/go-redis/redis"
+
 	"gitlab.com/Cacophony/go-kit/state"
 
 	"github.com/mmcdole/gofeed"
@@ -47,6 +49,7 @@ type Plugin struct {
 	tokens     map[string]string
 	parser     *gofeed.Parser
 	httpClient *http.Client
+	redis      *redis.Client
 }
 
 func (p *Plugin) Name() string {
@@ -67,6 +70,7 @@ func (p *Plugin) Start(params common.StartParameters) error {
 	p.httpClient = &http.Client{
 		Timeout: time.Second * 60,
 	}
+	p.redis = params.Redis
 
 	return nil
 }

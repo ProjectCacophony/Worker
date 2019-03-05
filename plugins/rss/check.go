@@ -133,6 +133,7 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post *gofeed.Item) error {
 	}
 
 	messages, err := discord.SendComplexWithVars(
+		p.redis,
 		session,
 		p.Localisations(),
 		entry.ChannelID,
@@ -153,6 +154,7 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post *gofeed.Item) error {
 				},
 			},
 		},
+		false, // TODO: add DM support
 		"post", post, "entry", entry,
 	)
 	if err != nil {

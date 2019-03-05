@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/go-redis/redis"
+
 	"gitlab.com/Cacophony/go-kit/state"
 
 	"github.com/Seklfreak/ginside"
@@ -47,6 +49,7 @@ type Plugin struct {
 	db     *gorm.DB
 	gall   *ginside.GInside
 	tokens map[string]string
+	redis  *redis.Client
 }
 
 func (p *Plugin) Name() string {
@@ -67,6 +70,8 @@ func (p *Plugin) Start(params common.StartParameters) error {
 	p.gall = ginside.NewGInside(&http.Client{
 		Timeout: 60 * time.Second,
 	})
+
+	p.redis = params.Redis
 
 	return nil
 }

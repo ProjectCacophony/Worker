@@ -137,6 +137,7 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post ginside.Post) error {
 	}
 
 	messages, err := discord.SendComplexWithVars(
+		p.redis,
 		session,
 		p.Localisations(),
 		entry.ChannelID,
@@ -154,6 +155,7 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post ginside.Post) error {
 				},
 			},
 		},
+		false, // TODO: add DM support
 		"post", post, "board", entry,
 	)
 	if err != nil {
