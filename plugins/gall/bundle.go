@@ -1,9 +1,8 @@
 package gall
 
 import (
-	"errors"
-
 	"github.com/bwmarrin/discordgo"
+	"github.com/pkg/errors"
 	"gitlab.com/Cacophony/Worker/plugins/common"
 	"gitlab.com/Cacophony/go-kit/discord"
 	"go.uber.org/zap"
@@ -30,29 +29,42 @@ func (p *Plugin) bundleEntries(run *common.Run, entries []Entry) boardCheckBundl
 	for _, entry := range entries {
 		logger := run.Logger().With(zap.Uint("id", entry.ID))
 
-		_, err = p.state.Channel(entry.ChannelID)
-		if err != nil {
-			logger.Debug("skipped entry because of error",
-				zap.Error(err),
-			)
-			continue
-		}
+		if !entry.DM {
 
-		botID, err := p.state.BotForGuild(entry.GuildID)
-		if err != nil {
-			logger.Debug("skipped entry because of error",
-				zap.Error(err),
-			)
-			continue
-		}
-		if !discord.UserHasPermission(p.state, botID, entry.ChannelID,
-			discordgo.PermissionSendMessages,
-			discordgo.PermissionEmbedLinks,
-		) {
-			logger.Debug("skipped entry because of error",
-				zap.Error(errors.New("missing required permissions")),
-			)
-			continue
+			_, err = p.state.Channel(entry.ChannelID)
+			if err != nil {
+				logger.Debug("skipped entry because of channel state error",
+					zap.Error(err),
+				)
+				continue
+			}
+
+			botID, err := p.state.BotForGuild(entry.GuildID)
+			if err != nil {
+				logger.Debug("skipped entry because of bot for guild error",
+					zap.Error(err),
+				)
+				continue
+			}
+			if !discord.UserHasPermission(p.state, botID, entry.ChannelID,
+				discordgo.PermissionSendMessages,
+				discordgo.PermissionEmbedLinks,
+			) {
+				logger.Debug("skipped entry because of user permissions error",
+					zap.Error(errors.New("missing required permissions")),
+				)
+				continue
+			}
+
+		} else {
+
+			_, err = p.state.User(entry.ChannelID)
+			if err != nil {
+				logger.Debug("skipped entry because of user state error",
+					zap.Error(err),
+				)
+				continue
+			}
 		}
 
 		// bundle feed entry if everything is good

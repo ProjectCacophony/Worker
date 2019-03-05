@@ -14,8 +14,10 @@ import (
 type Entry struct {
 	gorm.Model
 	GuildID   string
-	ChannelID string
+	ChannelID string // UserID in case of DMs
 	AddedBy   string
+	BotID     string // only relevant for DMs
+	DM        bool
 
 	Name    string
 	URL     string

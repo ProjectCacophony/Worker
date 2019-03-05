@@ -5,6 +5,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/pkg/errors"
+
 	"github.com/mmcdole/gofeed"
 
 	"github.com/bwmarrin/discordgo"
@@ -112,7 +114,7 @@ func (p *Plugin) checkEntry(run *common.Run, entry Entry, feed *gofeed.Feed) err
 
 		err = p.post(run, entry, post)
 		if err != nil {
-			return err
+			return errors.Wrap(err, "error posting")
 		}
 		posted++
 	}
@@ -121,10 +123,17 @@ func (p *Plugin) checkEntry(run *common.Run, entry Entry, feed *gofeed.Feed) err
 }
 
 func (p *Plugin) post(_ *common.Run, entry Entry, post *gofeed.Item) error {
+	var err error
 
-	botID, err := p.state.BotForGuild(entry.GuildID)
-	if err != nil {
-		return err
+	botID := entry.BotID
+	if !entry.DM {
+		botID, err = p.state.BotForGuild(entry.GuildID)
+		if err != nil {
+			return err
+		}
+	}
+	if botID == "" {
+		return errors.New("no Bot ID")
 	}
 
 	session, err := discord.NewSession(p.tokens, botID)
@@ -154,7 +163,7 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post *gofeed.Item) error {
 				},
 			},
 		},
-		false, // TODO: add DM support
+		entry.DM,
 		"post", post, "entry", entry,
 	)
 	if err != nil {

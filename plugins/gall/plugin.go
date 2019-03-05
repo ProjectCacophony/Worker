@@ -38,7 +38,9 @@ RETURNING
   minor_gallery,
   recommended,
   guild_id,
-  channel_id
+  channel_id,
+  bot_id,
+  dm
 ;
 `
 )
@@ -121,6 +123,8 @@ func (p *Plugin) Run(run *common.Run) (err error) {
 			&entry.Recommended,
 			&entry.GuildID,
 			&entry.ChannelID,
+			&entry.BotID,
+			&entry.DM,
 		)
 		if err != nil {
 			return err

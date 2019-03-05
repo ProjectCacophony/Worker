@@ -37,7 +37,9 @@ RETURNING
   guild_id,
   channel_id,
   feed_url,
-  name
+  name,
+  bot_id,
+  dm
 ;
 `
 )
@@ -119,6 +121,8 @@ func (p *Plugin) Run(run *common.Run) (err error) {
 			&entry.ChannelID,
 			&entry.FeedURL,
 			&entry.Name,
+			&entry.BotID,
+			&entry.DM,
 		)
 		if err != nil {
 			return err

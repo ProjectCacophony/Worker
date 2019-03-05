@@ -14,12 +14,15 @@ import (
 type Entry struct {
 	gorm.Model
 	GuildID   string
-	ChannelID string
+	ChannelID string // UserID in case of DMs
 	AddedBy   string
+	BotID     string // only relevant for DMs
 
 	BoardID      string
 	MinorGallery bool
 	Recommended  bool
+
+	DM bool
 
 	LastCheck time.Time
 	feed.Check
