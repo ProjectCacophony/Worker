@@ -27,6 +27,7 @@ SET last_check = NOW()
 WHERE id IN (
   SELECT id FROM rss_entries
   WHERE last_check < $1
+  AND deleted_at IS NULL
   ORDER BY last_check ASC
   FOR UPDATE SKIP LOCKED
   LIMIT $2
