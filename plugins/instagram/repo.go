@@ -1,5 +1,5 @@
 // nolint: dupl
-package rss
+package instagram
 
 import (
 	"context"
@@ -7,23 +7,19 @@ import (
 	"strconv"
 	"strings"
 
-	"gitlab.com/Cacophony/go-kit/feed"
-
 	"github.com/jinzhu/gorm"
+	"gitlab.com/Cacophony/go-kit/feed"
 )
 
 func postAdd(
 	db *gorm.DB,
 	entryID uint,
-	postGUID string,
-	postLink string,
+	postID string,
 	messageIDs []string,
 ) error {
 	return db.Create(&Post{
-		Model:      gorm.Model{},
 		EntryID:    entryID,
-		PostGUID:   postGUID,
-		PostLink:   postLink,
+		PostID:     postID,
 		MessageIDs: messageIDs,
 	}).Error
 }
@@ -53,7 +49,7 @@ func checkSet(ctx context.Context, tx *sql.Tx, status feed.Status, message strin
 	}
 
 	_, err := tx.ExecContext(ctx, `
-UPDATE rss_entries
+UPDATE gall_entries
 SET check_status = $2, check_message = $3
 WHERE id in ($1)
 `, strings.Join(ids, ","), status, message)

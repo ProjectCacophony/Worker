@@ -1,17 +1,16 @@
 // nolint: dupl
-package rss
+package instagram
 
 import (
-	"errors"
-
 	"github.com/bwmarrin/discordgo"
+	"github.com/pkg/errors"
 	"gitlab.com/Cacophony/Worker/plugins/common"
 	"gitlab.com/Cacophony/go-kit/discord"
 	"go.uber.org/zap"
 )
 
 type boardCheckBundleInfo struct {
-	FeedURL string
+	AccountID string
 }
 
 type boardCheckBundle map[boardCheckBundleInfo][]Entry
@@ -31,7 +30,7 @@ func (p *Plugin) bundleEntries(run *common.Run, entries []Entry) boardCheckBundl
 
 		if !entry.DM {
 
-			_, err = p.state.Channel(entry.ChannelID)
+			_, err = p.state.Channel(entry.ChannelOrUserID)
 			if err != nil {
 				logger.Debug("skipped entry because of channel state error",
 					zap.Error(err),
@@ -46,7 +45,7 @@ func (p *Plugin) bundleEntries(run *common.Run, entries []Entry) boardCheckBundl
 				)
 				continue
 			}
-			if !discord.UserHasPermission(p.state, botID, entry.ChannelID,
+			if !discord.UserHasPermission(p.state, botID, entry.ChannelOrUserID,
 				discordgo.PermissionSendMessages,
 				discordgo.PermissionEmbedLinks,
 			) {
@@ -55,9 +54,10 @@ func (p *Plugin) bundleEntries(run *common.Run, entries []Entry) boardCheckBundl
 				)
 				continue
 			}
+
 		} else {
 
-			_, err = p.state.User(entry.ChannelID)
+			_, err = p.state.User(entry.ChannelOrUserID)
 			if err != nil {
 				logger.Debug("skipped entry because of user state error",
 					zap.Error(err),
@@ -70,7 +70,7 @@ func (p *Plugin) bundleEntries(run *common.Run, entries []Entry) boardCheckBundl
 		addedToBundle = false
 
 		for key := range bundledEntries {
-			if key.FeedURL != entry.FeedURL {
+			if key.AccountID != entry.InstagramAccountID {
 				continue
 			}
 			bundledEntries[key] = append(bundledEntries[key], entry)
@@ -79,7 +79,7 @@ func (p *Plugin) bundleEntries(run *common.Run, entries []Entry) boardCheckBundl
 
 		if !addedToBundle {
 			bundledEntries[boardCheckBundleInfo{
-				FeedURL: entry.FeedURL,
+				AccountID: entry.InstagramAccountID,
 			}] = []Entry{entry}
 		}
 	}

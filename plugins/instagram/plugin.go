@@ -1,15 +1,15 @@
 // nolint: dupl
-package rss
+package instagram
 
 import (
 	"net/http"
 	"time"
 
+	"github.com/Seklfreak/ginsta"
+
 	"github.com/go-redis/redis"
 
 	"gitlab.com/Cacophony/go-kit/state"
-
-	"github.com/mmcdole/gofeed"
 
 	"github.com/jinzhu/gorm"
 	"gitlab.com/Cacophony/Worker/plugins/common"
@@ -19,14 +19,14 @@ import (
 )
 
 const (
-	checkInterval = time.Minute * 15
+	checkInterval = time.Minute * 10
 	limit         = 10
 
 	selectQuery = `
-UPDATE rss_entries
+UPDATE instagram_entries
 SET last_check = NOW()
 WHERE id IN (
-  SELECT id FROM rss_entries
+  SELECT id FROM instagram_entries
   WHERE last_check < $1
   AND deleted_at IS NULL
   ORDER BY last_check ASC
@@ -36,10 +36,10 @@ WHERE id IN (
 RETURNING
   id,
   created_at,
+  instagram_account_id,
+  instagram_username,
   guild_id,
-  channel_id,
-  feed_url,
-  name,
+  channel_or_user_id,
   bot_id,
   dm
 ;
@@ -47,17 +47,16 @@ RETURNING
 )
 
 type Plugin struct {
-	logger     *zap.Logger
-	state      *state.State
-	db         *gorm.DB
-	tokens     map[string]string
-	parser     *gofeed.Parser
-	httpClient *http.Client
-	redis      *redis.Client
+	logger *zap.Logger
+	state  *state.State
+	db     *gorm.DB
+	tokens map[string]string
+	redis  *redis.Client
+	ginsta *ginsta.Ginsta
 }
 
 func (p *Plugin) Name() string {
-	return "rss"
+	return "instagram"
 }
 
 func (p *Plugin) Start(params common.StartParameters) error {
@@ -70,10 +69,14 @@ func (p *Plugin) Start(params common.StartParameters) error {
 	p.db = params.DB
 	p.state = params.State
 	p.tokens = params.Tokens
-	p.parser = gofeed.NewParser()
-	p.httpClient = &http.Client{
-		Timeout: time.Second * 60,
-	}
+
+	p.ginsta = ginsta.NewGinsta(
+		&http.Client{
+			Timeout: 30 * time.Second,
+		},
+		nil,
+	)
+
 	p.redis = params.Redis
 
 	return nil
@@ -84,7 +87,7 @@ func (p *Plugin) Stop(params common.StopParameters) error {
 }
 
 func (p *Plugin) Localisations() []interfaces.Localisation {
-	local, err := localisation.NewFileSource("assets/translations/rss.en.toml", "en")
+	local, err := localisation.NewFileSource("assets/translations/instagram.en.toml", "en")
 	if err != nil {
 		p.logger.Error("failed to load localisation", zap.Error(err))
 	}
@@ -119,10 +122,10 @@ func (p *Plugin) Run(run *common.Run) (err error) {
 		err = rows.Scan(
 			&entry.ID,
 			&entry.CreatedAt,
+			&entry.InstagramAccountID,
+			&entry.InstagramUsername,
 			&entry.GuildID,
-			&entry.ChannelID,
-			&entry.FeedURL,
-			&entry.Name,
+			&entry.ChannelOrUserID,
 			&entry.BotID,
 			&entry.DM,
 		)
