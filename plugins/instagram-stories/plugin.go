@@ -62,7 +62,7 @@ type Plugin struct {
 }
 
 func (p *Plugin) Name() string {
-	return "instagram"
+	return "instagram-stories"
 }
 
 func (p *Plugin) Start(params common.StartParameters) error {
