@@ -4,7 +4,9 @@ import (
 	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
 	"gitlab.com/Cacophony/Worker/plugins/common"
+	"gitlab.com/Cacophony/Worker/plugins/gall"
 	"gitlab.com/Cacophony/Worker/plugins/instagram"
+	"gitlab.com/Cacophony/Worker/plugins/rss"
 	"gitlab.com/Cacophony/go-kit/featureflag"
 	"gitlab.com/Cacophony/go-kit/interfaces"
 	"gitlab.com/Cacophony/go-kit/state"
@@ -28,9 +30,9 @@ type Plugin interface {
 // nolint: gochecknoglobals
 var (
 	PluginList = []Plugin{
-		//&gall.Plugin{},
-		//&rss.Plugin{},
-		&instagram.Plugin{}, // TODO
+		&gall.Plugin{},
+		&rss.Plugin{},
+		&instagram.Plugin{},
 	}
 
 	LocalisationsList []interfaces.Localisation
