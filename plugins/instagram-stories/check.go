@@ -1,4 +1,4 @@
-package instagram
+package instagramstories
 
 import (
 	"database/sql"
@@ -32,9 +32,9 @@ func (p *Plugin) checkBundles(run *common.Run, tx *sql.Tx, bundles boardCheckBun
 		zap.Int("amount", len(bundles)),
 	)
 
-	var posts []*ginsta.Post
+	var stories []*ginsta.Story
 	for checkInfo, entries := range bundles {
-		posts, err = p.ginsta.PostsByID(run.Context(), checkInfo.AccountID)
+		stories, err = p.ginsta.StoriesByID(run.Context(), checkInfo.AccountID)
 		if err != nil {
 			run.Except(err, "account_id", checkInfo.AccountID)
 
@@ -46,7 +46,7 @@ func (p *Plugin) checkBundles(run *common.Run, tx *sql.Tx, bundles boardCheckBun
 		}
 
 		for _, entry := range entries {
-			err = p.checkEntry(run, entry, posts)
+			err = p.checkEntry(run, entry, stories)
 			if err != nil {
 				run.Except(err, "account_id", checkInfo.AccountID)
 
@@ -64,7 +64,7 @@ func (p *Plugin) checkBundles(run *common.Run, tx *sql.Tx, bundles boardCheckBun
 	}
 }
 
-func (p *Plugin) checkEntry(run *common.Run, entry Entry, posts []*ginsta.Post) error {
+func (p *Plugin) checkEntry(run *common.Run, entry Entry, posts []*ginsta.Story) error {
 	var posted int
 
 	for _, post := range posts {
@@ -112,7 +112,7 @@ func (p *Plugin) checkEntry(run *common.Run, entry Entry, posts []*ginsta.Post) 
 	return nil
 }
 
-func (p *Plugin) post(_ *common.Run, entry Entry, post *ginsta.Post) error {
+func (p *Plugin) post(_ *common.Run, entry Entry, post *ginsta.Story) error {
 	var err error
 
 	botID := entry.BotID
@@ -131,7 +131,7 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post *ginsta.Post) error {
 		return err
 	}
 
-	url := fmt.Sprintf("https://instagram.com/p/%s/", post.Shortcode)
+	url := fmt.Sprintf("https://instagram.com/%s/", entry.InstagramUsername)
 
 	messages, err := discord.SendComplexWithVars(
 		p.redis,
@@ -139,7 +139,7 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post *ginsta.Post) error {
 		p.Localisations(),
 		entry.ChannelOrUserID,
 		&discordgo.MessageSend{
-			Content: "instagram.post.content",
+			Content: "instagram-story.post.content",
 		},
 		entry.DM,
 		"post", post, "entry", entry, "url", url,

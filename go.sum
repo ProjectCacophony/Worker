@@ -13,8 +13,8 @@ github.com/PuerkitoBio/goquery v1.5.0 h1:uGvmFXOA73IKluu/F84Xd1tt/z07GYm8X49XKHP
 github.com/PuerkitoBio/goquery v1.5.0/go.mod h1:qD2PgZ9lccMbQlc7eEOjaeRlFQON7xY8kdmcsrnKqMg=
 github.com/Seklfreak/ginside v0.0.0-20190304181936-3c6d866dc362 h1:A2TEqC+nzRjaW0IMMkXUSnQf3mfraFg8tCPUUsN3QAY=
 github.com/Seklfreak/ginside v0.0.0-20190304181936-3c6d866dc362/go.mod h1:8qsq6mWde1YA5QOHDTDwue0MRjTw57fOug7qqMJpHhA=
-github.com/Seklfreak/ginsta v0.0.0-20190320193952-fbe48cb92f58 h1:ZIreR6BBtrFXawhzs/1nYCXVVSyKWQziNMT+0rnmmbY=
-github.com/Seklfreak/ginsta v0.0.0-20190320193952-fbe48cb92f58/go.mod h1:GoCB9oHpK16TDfdPo30avi4drFNgwCr91+9WE05/8pI=
+github.com/Seklfreak/ginsta v0.0.0-20190321213549-3652921bf0cc h1:QdZamRpKWy6FdZG4qZCKIyQxBEupdSqtI3+lBfVxxck=
+github.com/Seklfreak/ginsta v0.0.0-20190321213549-3652921bf0cc/go.mod h1:GoCB9oHpK16TDfdPo30avi4drFNgwCr91+9WE05/8pI=
 github.com/Unleash/unleash-client-go v0.0.0-20181121205122-ae068e0ad68c h1:Q9cN+KwXklNWBgrFLNcWDelKb3b/VKXFXlREmTr8ovg=
 github.com/Unleash/unleash-client-go v0.0.0-20181121205122-ae068e0ad68c/go.mod h1:89lPmFeGRU6Xv5kYZnN1ByXulB4vHW+UepUYSm8s8ws=
 github.com/Unleash/unleash-client-go v0.0.0-20190225211619-9febc6ff26f4 h1:ZxgumCXfW2XHYgZQD/iwl7qCy6uziWsSJDEdQ05hTXE=

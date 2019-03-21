@@ -6,6 +6,7 @@ import (
 	"gitlab.com/Cacophony/Worker/plugins/common"
 	"gitlab.com/Cacophony/Worker/plugins/gall"
 	"gitlab.com/Cacophony/Worker/plugins/instagram"
+	instagramstories "gitlab.com/Cacophony/Worker/plugins/instagram-stories"
 	"gitlab.com/Cacophony/Worker/plugins/rss"
 	"gitlab.com/Cacophony/go-kit/featureflag"
 	"gitlab.com/Cacophony/go-kit/interfaces"
@@ -33,6 +34,7 @@ var (
 		&gall.Plugin{},
 		&rss.Plugin{},
 		&instagram.Plugin{},
+		&instagramstories.Plugin{},
 	}
 
 	LocalisationsList []interfaces.Localisation

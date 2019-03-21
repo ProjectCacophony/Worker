@@ -4,3 +4,9 @@
 {{if .post.Caption}}{{.post.Caption}}\n{{end}}\
 {{range $mediaURL := .post.MediaURLs}}{{$mediaURL}}\n{{end}}\
 "
+
+"instagram-story.post.content" = "\
+**New Instagram Story Post by {{.entry.InstagramUsername}}**\n\
+<{{.url}}>\n\
+{{range $mediaURL := .post.MediaURLs}}{{$mediaURL}}\n{{end}}\
+"
