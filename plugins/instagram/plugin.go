@@ -72,7 +72,7 @@ func (p *Plugin) Start(params common.StartParameters) error {
 
 	p.ginsta = ginsta.NewGinsta(
 		&http.Client{
-			Timeout: 30 * time.Second,
+			Timeout: 2 * time.Minute,
 		},
 		nil,
 	)
