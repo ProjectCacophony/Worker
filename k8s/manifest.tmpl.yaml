@@ -12,6 +12,7 @@ stringData:
   featureflagUnleashURL: "{{FEATUREFLAG_UNLEASH_URL}}"
   featureflagUnleashInstanceID: "{{FEATUREFLAG_UNLEASH_INSTANCE_ID}}"
   errortrackingRavenDSN: "{{ERRORTRACKING_RAVEN_DSN}}"
+  instagramSessionIDs: "{{INSTAGRAM_SESSION_IDS}}"
 
 
 ---
@@ -91,6 +92,11 @@ spec:
                 secretKeyRef:
                   name: worker-secret
                   key: errortrackingRavenDSN
+            - name: INSTAGRAM_SESSION_IDS
+              valueFrom:
+                secretKeyRef:
+                  name: worker-secret
+                  key: instagramSessionIDs
 
 
 ---
