@@ -15,6 +15,8 @@ github.com/Seklfreak/ginside v0.0.0-20190304181936-3c6d866dc362 h1:A2TEqC+nzRjaW
 github.com/Seklfreak/ginside v0.0.0-20190304181936-3c6d866dc362/go.mod h1:8qsq6mWde1YA5QOHDTDwue0MRjTw57fOug7qqMJpHhA=
 github.com/Seklfreak/ginsta v0.0.0-20190321213549-3652921bf0cc h1:QdZamRpKWy6FdZG4qZCKIyQxBEupdSqtI3+lBfVxxck=
 github.com/Seklfreak/ginsta v0.0.0-20190321213549-3652921bf0cc/go.mod h1:GoCB9oHpK16TDfdPo30avi4drFNgwCr91+9WE05/8pI=
+github.com/Seklfreak/ginsta v0.0.0-20190322094735-896267544b4f h1:i6CpT4jFWgUpzxTsc3BFoQAlV1NZB3+W1V6KuOq1GbA=
+github.com/Seklfreak/ginsta v0.0.0-20190322094735-896267544b4f/go.mod h1:GoCB9oHpK16TDfdPo30avi4drFNgwCr91+9WE05/8pI=
 github.com/Unleash/unleash-client-go v0.0.0-20181121205122-ae068e0ad68c h1:Q9cN+KwXklNWBgrFLNcWDelKb3b/VKXFXlREmTr8ovg=
 github.com/Unleash/unleash-client-go v0.0.0-20181121205122-ae068e0ad68c/go.mod h1:89lPmFeGRU6Xv5kYZnN1ByXulB4vHW+UepUYSm8s8ws=
 github.com/Unleash/unleash-client-go v0.0.0-20190225211619-9febc6ff26f4 h1:ZxgumCXfW2XHYgZQD/iwl7qCy6uziWsSJDEdQ05hTXE=
