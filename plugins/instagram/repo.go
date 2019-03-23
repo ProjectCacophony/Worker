@@ -4,6 +4,7 @@ package instagram
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"strconv"
 	"strings"
 
@@ -53,5 +54,18 @@ UPDATE instagram_entries
 SET check_status = $2, check_message = $3
 WHERE id in ($1)
 `, strings.Join(ids, ","), status, message)
+	return err
+}
+
+func updateInstagramUsername(ctx context.Context, tx *sql.Tx, entryID uint, newUsername string) error {
+	if entryID == 0 || newUsername == "" {
+		return errors.New("invalid information passed")
+	}
+
+	_, err := tx.ExecContext(ctx, `
+UPDATE instagram_entries
+SET instagram_username = $2
+WHERE id = $1
+`, entryID, newUsername)
 	return err
 }

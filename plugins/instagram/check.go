@@ -47,7 +47,7 @@ func (p *Plugin) checkBundles(run *common.Run, tx *sql.Tx, bundles boardCheckBun
 		}
 
 		for _, entry := range entries {
-			err = p.checkEntry(run, entry, posts)
+			err = p.checkEntry(run, tx, entry, posts)
 			if err != nil {
 				run.Except(err, "account_id", checkInfo.AccountID)
 
@@ -65,10 +65,24 @@ func (p *Plugin) checkBundles(run *common.Run, tx *sql.Tx, bundles boardCheckBun
 	}
 }
 
-func (p *Plugin) checkEntry(run *common.Run, entry Entry, posts []*ginsta.Post) error {
+func (p *Plugin) checkEntry(run *common.Run, tx *sql.Tx, entry Entry, posts []*ginsta.Post) error {
 	var posted int
+	var updatedInstagramUsername bool
 
 	for _, post := range posts {
+		// update stored instagram username if required
+		if post.AuthorID == entry.InstagramAccountID &&
+			post.AuthorUsername != "" &&
+			post.AuthorUsername != entry.InstagramUsername &&
+			!updatedInstagramUsername {
+
+			err := updateInstagramUsername(run.Context(), tx, entry.ID, post.AuthorUsername)
+			if err != nil {
+				return err
+			}
+			updatedInstagramUsername = true
+		}
+
 		logger := run.Logger().With(
 			zap.String("account_id", entry.InstagramAccountID),
 			zap.String("post_id", post.ID),
