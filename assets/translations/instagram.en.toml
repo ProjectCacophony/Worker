@@ -10,3 +10,8 @@
 <{{.url}}>\n\
 {{range $mediaURL := .post.MediaURLs}}{{$mediaURL}}\n{{end}}\
 "
+
+"instagram-igtv.post.content" = "\
+**New Instagram Video uploaded by {{.entry.InstagramUsername}}**\n\
+{{.url}}\
+"
