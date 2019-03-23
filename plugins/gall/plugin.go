@@ -25,12 +25,18 @@ const (
 UPDATE gall_entries
 SET last_check = NOW()
 WHERE id IN (
-  SELECT id FROM gall_entries
-  WHERE last_check < $1
-  AND deleted_at IS NULL
-  ORDER BY last_check ASC
+  SELECT id
+  FROM gall_entries
+  WHERE deleted_at IS NULL
+  AND board_id IN (
+    SELECT board_id
+    FROM gall_entries
+    WHERE deleted_at IS NULL
+    GROUP BY board_id
+  	HAVING MAX(last_check) < $1
+    LIMIT $2
+  )
   FOR UPDATE SKIP LOCKED
-  LIMIT $2
 )
 RETURNING
   id,

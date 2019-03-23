@@ -26,12 +26,18 @@ const (
 UPDATE rss_entries
 SET last_check = NOW()
 WHERE id IN (
-  SELECT id FROM rss_entries
-  WHERE last_check < $1
-  AND deleted_at IS NULL
-  ORDER BY last_check ASC
+  SELECT id
+  FROM rss_entries
+  WHERE deleted_at IS NULL
+  AND feed_url IN (
+    SELECT feed_url
+    FROM rss_entries
+    WHERE deleted_at IS NULL
+    GROUP BY feed_url
+  	HAVING MAX(last_check) < $1
+    LIMIT $2
+  )
   FOR UPDATE SKIP LOCKED
-  LIMIT $2
 )
 RETURNING
   id,

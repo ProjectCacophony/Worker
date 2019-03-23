@@ -28,12 +28,18 @@ const (
 UPDATE instagram_entries
 SET stories_last_check = NOW()
 WHERE id IN (
-  SELECT id FROM instagram_entries
-  WHERE stories_last_check < $1
-  AND deleted_at IS NULL
-  ORDER BY stories_last_check ASC
+  SELECT id
+  FROM instagram_entries
+  WHERE deleted_at IS NULL
+  AND instagram_account_id IN (
+    SELECT instagram_account_id
+    FROM instagram_entries
+    WHERE deleted_at IS NULL
+    GROUP BY instagram_account_id
+  	HAVING MAX(stories_last_check) < $1
+    LIMIT $2
+  )
   FOR UPDATE SKIP LOCKED
-  LIMIT $2
 )
 RETURNING
   id,
