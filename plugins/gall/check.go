@@ -81,6 +81,7 @@ func (p *Plugin) checkEntry(run *common.Run, entry Entry, posts []ginside.Post) 
 
 	for _, post := range posts {
 		logger := run.Logger().With(
+			zap.Uint("entry_id", entry.ID),
 			zap.String("board_id", entry.BoardID),
 			zap.Bool("board_recommended", entry.Recommended),
 			zap.Bool("board_minor", entry.MinorGallery),

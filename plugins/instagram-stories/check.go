@@ -70,6 +70,7 @@ func (p *Plugin) checkEntry(run *common.Run, entry Entry, posts []*ginsta.Story)
 
 	for _, post := range posts {
 		logger := run.Logger().With(
+			zap.Uint("entry_id", entry.ID),
 			zap.String("account_id", entry.InstagramAccountID),
 			zap.String("post_id", post.ID),
 		)

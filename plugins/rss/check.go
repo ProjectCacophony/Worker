@@ -69,6 +69,7 @@ func (p *Plugin) checkEntry(run *common.Run, entry Entry, feed *gofeed.Feed) err
 
 	for _, post := range feed.Items {
 		logger := run.Logger().With(
+			zap.Uint("entry_id", entry.ID),
 			zap.String("post_guid", post.GUID),
 			zap.String("post_link", post.Link),
 		)

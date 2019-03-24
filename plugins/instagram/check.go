@@ -84,6 +84,7 @@ func (p *Plugin) checkEntry(run *common.Run, tx *sql.Tx, entry Entry, posts []*g
 		}
 
 		logger := run.Logger().With(
+			zap.Uint("entry_id", entry.ID),
 			zap.String("account_id", entry.InstagramAccountID),
 			zap.String("post_id", post.ID),
 		)
