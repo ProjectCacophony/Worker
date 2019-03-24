@@ -49,6 +49,7 @@ func checkSet(ctx context.Context, tx *sql.Tx, status feed.Status, message strin
 		return nil
 	}
 
+	// nolint: gosec
 	_, err := tx.ExecContext(ctx, `
 UPDATE instagram_entries
 SET check_status = $1, check_message = $2

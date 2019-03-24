@@ -48,6 +48,7 @@ func checkSet(ctx context.Context, tx *sql.Tx, status feed.Status, message strin
 		return nil
 	}
 
+	// nolint: gosec
 	_, err := tx.ExecContext(ctx, `
 UPDATE instagram_entries
 SET igtv_check_status = $1, igtv_check_message = $2
