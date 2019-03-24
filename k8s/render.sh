@@ -14,7 +14,8 @@
 # FEATUREFLAG_UNLEASH_URL
 # FEATUREFLAG_UNLEASH_INSTANCE_ID
 # ERRORTRACKING_RAVEN_DSN
-# INSTAGRAM_SESSION_IDS
+# POLR_BASE_URL
+# POLR_API_KEY
 
 template="k8s/manifest.tmpl.yaml"
 target="k8s/manifest.yaml"
@@ -34,3 +35,5 @@ sed -i -e "s|{{FEATUREFLAG_UNLEASH_URL}}|$FEATUREFLAG_UNLEASH_URL|g" "$target"
 sed -i -e "s|{{FEATUREFLAG_UNLEASH_INSTANCE_ID}}|$FEATUREFLAG_UNLEASH_INSTANCE_ID|g" "$target"
 sed -i -e "s|{{ERRORTRACKING_RAVEN_DSN}}|$ERRORTRACKING_RAVEN_DSN|g" "$target"
 sed -i -e "s|{{INSTAGRAM_SESSION_IDS}}|$INSTAGRAM_SESSION_IDS|g" "$target"
+sed -i -e "s|{{POLR_BASE_URL}}|$POLR_BASE_URL|g" "$target"
+sed -i -e "s|{{POLR_API_KEY}}|$POLR_API_KEY|g" "$target"

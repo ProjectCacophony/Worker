@@ -13,6 +13,8 @@ stringData:
   featureflagUnleashInstanceID: "{{FEATUREFLAG_UNLEASH_INSTANCE_ID}}"
   errortrackingRavenDSN: "{{ERRORTRACKING_RAVEN_DSN}}"
   instagramSessionIDs: "{{INSTAGRAM_SESSION_IDS}}"
+  polrBaseURL: "{{POLR_BASE_URL}}"
+  polrAPIKey: "{{POLR_API_KEY}}"
 
 
 ---
@@ -97,6 +99,16 @@ spec:
                 secretKeyRef:
                   name: worker-secret
                   key: instagramSessionIDs
+            - name: POLR_BASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: worker-secret
+                  key: polrBaseURL
+            - name: POLR_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: worker-secret
+                  key: polrAPIKey
 
 
 ---
