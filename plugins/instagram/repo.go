@@ -51,9 +51,9 @@ func checkSet(ctx context.Context, tx *sql.Tx, status feed.Status, message strin
 
 	_, err := tx.ExecContext(ctx, `
 UPDATE instagram_entries
-SET check_status = $2, check_message = $3
-WHERE id in ($1)
-`, strings.Join(ids, ","), status, message)
+SET check_status = $1, check_message = $2
+WHERE id in (`+strings.Join(ids, ",")+`)
+`, status, message)
 	return err
 }
 
