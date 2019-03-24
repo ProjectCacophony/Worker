@@ -140,7 +140,7 @@ func (p *Plugin) Run(run *common.Run) (err error) {
 		entries = append(entries, entry)
 	}
 
-	bundles := p.bundleEntries(run, entries)
+	bundles := p.bundleEntries(run, tx, entries)
 
 	p.checkBundles(run, tx, bundles)
 
