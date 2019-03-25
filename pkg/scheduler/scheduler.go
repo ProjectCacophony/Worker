@@ -4,20 +4,25 @@ import (
 	"context"
 	"time"
 
+	"gitlab.com/Cacophony/go-kit/featureflag"
+
 	"gitlab.com/Cacophony/Worker/plugins"
 	"gitlab.com/Cacophony/Worker/plugins/common"
 	"go.uber.org/zap"
 )
 
 type Scheduler struct {
-	logger *zap.Logger
+	logger         *zap.Logger
+	featureFlagger *featureflag.FeatureFlagger
 }
 
 func NewScheduler(
 	logger *zap.Logger,
+	featureFlagger *featureflag.FeatureFlagger,
 ) *Scheduler {
 	return &Scheduler{
-		logger: logger,
+		logger:         logger,
+		featureFlagger: featureFlagger,
 	}
 }
 
@@ -26,6 +31,12 @@ func (s *Scheduler) Start() {
 
 	for {
 		for _, plugin := range plugins.PluginList {
+			if !s.featureFlagger.IsEnabled(featureFlagPluginKey(plugin.Name()), true) {
+				s.logger.Debug("skipping plugin as it is disabled by feature flags",
+					zap.String("plugin_name", plugin.Name()),
+				)
+				continue
+			}
 
 			run := common.NewRun(plugin.Name())
 
@@ -48,4 +59,8 @@ func (s *Scheduler) Start() {
 
 		time.Sleep(60 * time.Second)
 	}
+}
+
+func featureFlagPluginKey(pluginName string) string {
+	return "plugin-" + pluginName
 }

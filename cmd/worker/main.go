@@ -117,6 +117,7 @@ func main() {
 	// init scheduler
 	sched := scheduler.NewScheduler(
 		logger.With(zap.String("feature", "scheduler")),
+		featureFlagger,
 	)
 	go func() {
 		sched.Start()
