@@ -2,13 +2,27 @@
 **New Instagram Post by {{.entry.InstagramUsername}}**\n\
 <{{.url}}>\n\
 {{if .post.Caption}}{{.post.Caption}}\n{{end}}\
-{{range $mediaURL := .post.MediaURLs}}{{$mediaURL | Shorten}}\n{{end}}\
+{{range $mediaURL := .post.MediaURLs}}\
+{{if Contains $mediaURL \".mp4\"}}\
+{{$mediaURL}}\
+{{else}}\
+{{$mediaURL | Shorten}}\
+{{end}}\
+\n\
+{{end}}\
 "
 
 "instagram-story.post.content" = "\
 **New Instagram Story Post by {{.entry.InstagramUsername}}**\n\
 <{{.url}}>\n\
-{{range $mediaURL := .post.MediaURLs}}{{$mediaURL | Shorten}}\n{{end}}\
+{{range $mediaURL := .post.MediaURLs}}\
+{{if Contains $mediaURL \".mp4\"}}\
+{{$mediaURL}}\
+{{else}}\
+{{$mediaURL | Shorten}}\
+{{end}}\
+\n\
+{{end}}\
 "
 
 "instagram-igtv.post.content" = "\
