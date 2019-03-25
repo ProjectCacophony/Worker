@@ -39,4 +39,4 @@ Sentry Staging:
   stage: staging
   variables:
     SENTRY_ENV: "staging"
-  extends: .Sentry - Sentry Deploy Staging
+  extends: .Sentry - Sentry Deploy
