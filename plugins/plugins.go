@@ -9,6 +9,7 @@ import (
 	instagramigtv "gitlab.com/Cacophony/Worker/plugins/instagram-igtv"
 	instagramstories "gitlab.com/Cacophony/Worker/plugins/instagram-stories"
 	"gitlab.com/Cacophony/Worker/plugins/rss"
+	"gitlab.com/Cacophony/Worker/plugins/serverlist"
 	"gitlab.com/Cacophony/go-kit/featureflag"
 	"gitlab.com/Cacophony/go-kit/interfaces"
 	"gitlab.com/Cacophony/go-kit/state"
@@ -37,6 +38,7 @@ var (
 		&instagram.Plugin{},
 		&instagramstories.Plugin{},
 		&instagramigtv.Plugin{},
+		&serverlist.Plugin{},
 	}
 
 	LocalisationsList []interfaces.Localisation
