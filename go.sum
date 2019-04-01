@@ -77,6 +77,7 @@ github.com/google/go-github v17.0.0+incompatible/go.mod h1:zLgOLi98H3fifZn+44m+u
 github.com/google/go-querystring v1.0.0/go.mod h1:odCYkC5MyYFN7vkCjXpyrEuKhc/BUO6wN/zVPAxq5ck=
 github.com/google/martian v2.1.0+incompatible/go.mod h1:9I4somxYTbIHy5NJKHRl3wXiIaQGbYVAs8BPL6v8lEs=
 github.com/google/pprof v0.0.0-20181206194817-3ea8567a2e57/go.mod h1:zfwlbNMJ+OItoe0UupaVj+oy1omPYYDuagoSzA8v9mc=
+github.com/google/uuid v1.1.1 h1:Gkbcsh/GbpXz7lPftLA3P6TYMwjCLYm83jiFQZF/3gY=
 github.com/google/uuid v1.1.1/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
 github.com/googleapis/gax-go v2.0.0+incompatible/go.mod h1:SFVmujtThgffbyetf+mdk2eWhX2bMyUtNHzFKcPA9HY=
 github.com/googleapis/gax-go/v2 v2.0.3/go.mod h1:LLvjysVCY1JZeum8Z6l8qUty8fiNwE08qbEPm1M08qg=
@@ -176,10 +177,8 @@ github.com/stretchr/testify v1.2.2/go.mod h1:a8OnRcib4nhh0OaRAV+Yts87kKdq0PP7pXf
 github.com/stretchr/testify v1.3.0 h1:TivCn/peBQ7UY8ooIcPgZFpTNSz0Q2U6UrFlUfqbe0Q=
 github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=
 github.com/tarm/serial v0.0.0-20180830185346-98f6abe2eb07/go.mod h1:kDXzergiv9cbyO7IOYJZWg1U88JhDg3PB6klq9Hg2pA=
-gitlab.com/Cacophony/go-kit v0.0.0-20190331164709-f7555ed8175c h1:XVAJTME65Zmld7CpJIFtUSu5nPqpaBgp8gGDUjTG0R0=
-gitlab.com/Cacophony/go-kit v0.0.0-20190331164709-f7555ed8175c/go.mod h1:t0gChpzOZXcswZxcy1mwA4degRFmu268FBOYSaxZfzY=
-gitlab.com/Cacophony/go-kit v0.0.0-20190401164406-0f985629f1c2 h1:psUH46AScsAuJdZSvNQClsw66nl/GfYhRb5xfsXM3oo=
-gitlab.com/Cacophony/go-kit v0.0.0-20190401164406-0f985629f1c2/go.mod h1:xK/dthVpZCyHFurO3VTzhp7plsHodszSp5toP7Wyic4=
+gitlab.com/Cacophony/go-kit v0.0.0-20190401170711-bfc3a0c4e103 h1:QhAq0AByF4ywicJvf6HbIgmJDQyAYYYR4p2wACKI3uo=
+gitlab.com/Cacophony/go-kit v0.0.0-20190401170711-bfc3a0c4e103/go.mod h1:xK/dthVpZCyHFurO3VTzhp7plsHodszSp5toP7Wyic4=
 go.opencensus.io v0.18.0/go.mod h1:vKdFvxhtzZ9onBp9VKHK8z/sRpBMnKAsufL7wlDrCOA=
 go.uber.org/atomic v1.3.2 h1:2Oa65PReHzfn29GpvgsYwloV9AVFHPDk8tYxt2c2tr4=
 go.uber.org/atomic v1.3.2/go.mod h1:gD2HeocX3+yG+ygLZcrzQJaqmWj9AIm7n08wl/qW/PE=

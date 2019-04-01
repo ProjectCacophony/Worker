@@ -57,7 +57,7 @@ func (p *Plugin) checkEntry(run *common.Run, tx *sql.Tx, entry Server) error {
 				return errors.Wrap(err, "cannot set order as expired")
 			}
 
-			return nil
+			return p.sendExpiredEvent(entry)
 		}
 		return errors.Wrap(err, "cannot get Invite from the Discord API")
 	}

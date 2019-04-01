@@ -4,6 +4,8 @@ package serverlist
 import (
 	"time"
 
+	"gitlab.com/Cacophony/go-kit/amqp"
+
 	"github.com/go-redis/redis"
 
 	"github.com/jinzhu/gorm"
@@ -42,10 +44,11 @@ RETURNING
 )
 
 type Plugin struct {
-	logger *zap.Logger
-	db     *gorm.DB
-	redis  *redis.Client
-	tokens map[string]string
+	logger    *zap.Logger
+	db        *gorm.DB
+	redis     *redis.Client
+	tokens    map[string]string
+	publisher *amqp.Publisher
 }
 
 func (p *Plugin) Name() string {
@@ -58,6 +61,7 @@ func (p *Plugin) Start(params common.StartParameters) error {
 	p.db = params.DB
 	p.redis = params.Redis
 	p.tokens = params.Tokens
+	p.publisher = params.Publisher
 
 	return nil
 }
