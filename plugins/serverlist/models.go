@@ -10,12 +10,7 @@ import (
 type State string
 
 const (
-	StateQueued   State = "queued"
-	StatePublic   State = "public"
-	StateExpired  State = "expired" // TODO
-	StateRejected State = "rejected"
-	StateHidden   State = "hidden"
-	StateCensored State = "censored" // TODO
+	StateExpired State = "expired"
 )
 
 // Server model maintained by Processor

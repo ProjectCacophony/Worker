@@ -10,6 +10,7 @@ import (
 	instagramstories "gitlab.com/Cacophony/Worker/plugins/instagram-stories"
 	"gitlab.com/Cacophony/Worker/plugins/rss"
 	"gitlab.com/Cacophony/Worker/plugins/serverlist"
+	"gitlab.com/Cacophony/go-kit/amqp"
 	"gitlab.com/Cacophony/go-kit/featureflag"
 	"gitlab.com/Cacophony/go-kit/interfaces"
 	"gitlab.com/Cacophony/go-kit/state"
@@ -51,6 +52,7 @@ func StartPlugins(
 	tokens map[string]string,
 	state *state.State,
 	featureFlagger *featureflag.FeatureFlagger,
+	publisher *amqp.Publisher,
 ) {
 	var err error
 	for _, plugin := range PluginList {
@@ -61,6 +63,7 @@ func StartPlugins(
 			Tokens:         tokens,
 			State:          state,
 			FeatureFlagger: featureFlagger,
+			Publisher:      publisher,
 		})
 		if err != nil {
 			logger.Error("failed to start plugin",
@@ -80,6 +83,7 @@ func StopPlugins(
 	tokens map[string]string,
 	state *state.State,
 	featureFlagger *featureflag.FeatureFlagger,
+	publisher *amqp.Publisher,
 ) {
 	var err error
 	for _, plugin := range PluginList {
@@ -90,6 +94,7 @@ func StopPlugins(
 			Tokens:         tokens,
 			State:          state,
 			FeatureFlagger: featureFlagger,
+			Publisher:      publisher,
 		})
 		if err != nil {
 			logger.Error("failed to stop plugin",

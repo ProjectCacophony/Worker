@@ -8,6 +8,8 @@ import (
 	"syscall"
 	"time"
 
+	"gitlab.com/Cacophony/go-kit/amqp"
+
 	"gitlab.com/Cacophony/go-kit/featureflag"
 
 	"gitlab.com/Cacophony/go-kit/state"
@@ -104,6 +106,19 @@ func main() {
 		)
 	}
 
+	// init publisher
+	publisher, err := amqp.NewPublisher(
+		logger,
+		config.AMQPDSN,
+		"cacophony",
+		config.EventTTL,
+	)
+	if err != nil {
+		logger.Fatal("unable to initialise Publisher",
+			zap.Error(err),
+		)
+	}
+
 	// init plugins
 	plugins.StartPlugins(
 		logger.With(zap.String("feature", "start_plugins")),
@@ -112,6 +127,7 @@ func main() {
 		config.DiscordTokens,
 		stateClient,
 		featureFlagger,
+		publisher,
 	)
 
 	// init scheduler
@@ -158,6 +174,7 @@ func main() {
 		config.DiscordTokens,
 		stateClient,
 		featureFlagger,
+		publisher,
 	)
 
 	err = httpServer.Shutdown(ctx)

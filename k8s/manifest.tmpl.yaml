@@ -15,6 +15,7 @@ stringData:
   instagramSessionIDs: "{{INSTAGRAM_SESSION_IDS}}"
   polrBaseURL: "{{POLR_BASE_URL}}"
   polrAPIKey: "{{POLR_API_KEY}}"
+  amqpDSN: "{{AMQP_DSN}}"
 
 
 ---
@@ -109,6 +110,11 @@ spec:
                 secretKeyRef:
                   name: worker-secret
                   key: polrAPIKey
+            - name: AMQP_DSN
+              valueFrom:
+                secretKeyRef:
+                  name: gateway-secret
+                  key: amqpDSN
 
 
 ---

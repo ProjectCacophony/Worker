@@ -3,6 +3,7 @@ package common
 import (
 	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
+	"gitlab.com/Cacophony/go-kit/amqp"
 	"gitlab.com/Cacophony/go-kit/featureflag"
 	"gitlab.com/Cacophony/go-kit/state"
 	"go.uber.org/zap"
@@ -15,6 +16,7 @@ type StartParameters struct {
 	Tokens         map[string]string
 	State          *state.State
 	FeatureFlagger *featureflag.FeatureFlagger
+	Publisher      *amqp.Publisher
 }
 
 type StopParameters struct {
@@ -24,4 +26,5 @@ type StopParameters struct {
 	Tokens         map[string]string
 	State          *state.State
 	FeatureFlagger *featureflag.FeatureFlagger
+	Publisher      *amqp.Publisher
 }

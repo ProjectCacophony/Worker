@@ -1,6 +1,8 @@
 package main
 
 import (
+	"time"
+
 	"gitlab.com/Cacophony/go-kit/errortracking"
 	"gitlab.com/Cacophony/go-kit/featureflag"
 	"gitlab.com/Cacophony/go-kit/logging"
@@ -19,4 +21,6 @@ type config struct {
 	DBDSN                 string               `envconfig:"DB_DSN" default:"postgres://postgres:postgres@localhost:5432/?sslmode=disable"`
 	FeatureFlag           featureflag.Config   `envconfig:"FEATUREFLAG"`
 	ErrorTracking         errortracking.Config `envconfig:"ERRORTRACKING"`
+	AMQPDSN               string               `envconfig:"AMQP_DSN" default:"amqp://guest:guest@localhost:5672/"`
+	EventTTL              time.Duration        `envconfig:"EVENT_TTL" default:"10m"`
 }
