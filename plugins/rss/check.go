@@ -74,6 +74,10 @@ func (p *Plugin) checkEntry(run *common.Run, entry Entry, feed *gofeed.Feed) err
 			zap.String("post_link", post.Link),
 		)
 
+		if post.PublishedParsed == nil && post.UpdatedParsed != nil {
+			post.PublishedParsed = post.UpdatedParsed
+		}
+
 		if posted > postsPerCheckLimit {
 			// logger.Debug("skipping post because of the posts per check limit")
 			break
