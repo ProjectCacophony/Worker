@@ -22,7 +22,8 @@ import (
 )
 
 const (
-	ageLimit           = time.Hour * 24 * 3 // three days
+	// ageLimit           = time.Hour * 24 * 3 // three days
+	ageLimit           = time.Hour * 24 * 14 // TODO!
 	postsPerCheckLimit = 5
 )
 
@@ -147,6 +148,25 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post *ginsta.Post) error {
 		return err
 	}
 
+	mediaURLsFirst := post.MediaURLs
+	var mediaURLsLeft [][]string
+	if len(mediaURLsFirst) > 5 {
+		// divide > 5 links into chunks of five
+		toDivide := mediaURLsFirst[5:]
+		chunkSize := 5
+		for i := 0; i < len(toDivide); i += chunkSize {
+			end := i + chunkSize
+
+			if end > len(toDivide) {
+				end = len(toDivide)
+			}
+
+			mediaURLsLeft = append(mediaURLsLeft, toDivide[i:end])
+		}
+
+		mediaURLsFirst = mediaURLsFirst[0:5]
+	}
+
 	url := fmt.Sprintf("https://instagram.com/p/%s/", post.Shortcode)
 
 	messages, err := discord.SendComplexWithVars(
@@ -158,7 +178,7 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post *ginsta.Post) error {
 			Content: "instagram.post.content",
 		},
 		entry.DM,
-		"post", post, "entry", entry, "url", url,
+		"post", post, "entry", entry, "url", url, "mediaURLs", mediaURLsFirst,
 	)
 	if err != nil {
 		return err
@@ -167,6 +187,27 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post *ginsta.Post) error {
 	messageIDs := make([]string, len(messages))
 	for i, message := range messages {
 		messageIDs[i] = message.ID
+	}
+
+	for _, mediaURLsLeftItem := range mediaURLsLeft {
+		messages, err := discord.SendComplexWithVars(
+			p.redis,
+			session,
+			p.Localisations(),
+			entry.ChannelOrUserID,
+			&discordgo.MessageSend{
+				Content: "instagram.post.leftover-links",
+			},
+			entry.DM,
+			"mediaURLs", mediaURLsLeftItem,
+		)
+		if err != nil {
+			return err
+		}
+
+		for _, message := range messages {
+			messageIDs = append(messageIDs, message.ID)
+		}
 	}
 
 	return postAdd(p.db, entry.ID, post.ID, messageIDs)

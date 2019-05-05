@@ -2,7 +2,18 @@
 **New Instagram Post by {{.entry.InstagramUsername}}**\n\
 <{{.url}}>\n\
 {{if .post.Caption}}{{.post.Caption}}\n{{end}}\
-{{range $mediaURL := .post.MediaURLs}}\
+{{range $mediaURL := .mediaURLs}}\
+{{if Contains $mediaURL \".mp4\"}}\
+{{$mediaURL}}\
+{{else}}\
+{{$mediaURL | Shorten}}\
+{{end}}\
+\n\
+{{end}}\
+"
+
+"instagram.post.leftover-links" = "\
+{{range $mediaURL := .mediaURLs}}\
 {{if Contains $mediaURL \".mp4\"}}\
 {{$mediaURL}}\
 {{else}}\
