@@ -22,8 +22,7 @@ import (
 )
 
 const (
-	// ageLimit           = time.Hour * 24 * 3 // three days
-	ageLimit           = time.Hour * 24 * 14 // TODO!
+	ageLimit           = time.Hour * 24 * 3 // three days
 	postsPerCheckLimit = 5
 )
 
