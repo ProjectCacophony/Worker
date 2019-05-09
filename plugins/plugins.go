@@ -31,7 +31,6 @@ type Plugin interface {
 	Run(run *common.Run) error
 }
 
-// nolint: gochecknoglobals
 var (
 	PluginList = []Plugin{
 		&gall.Plugin{},

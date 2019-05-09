@@ -1,4 +1,3 @@
-// nolint: dupl
 package instagramigtv
 
 import (
@@ -106,7 +105,7 @@ func (p *Plugin) Run(run *common.Run) (err error) {
 
 	tx, err := p.db.DB().BeginTx(run.Context(), nil)
 	if err != nil {
-		tx.Rollback() // nolint: errcheck
+		tx.Rollback()
 		return err
 	}
 
@@ -115,11 +114,11 @@ func (p *Plugin) Run(run *common.Run) (err error) {
 		time.Now().Add(-checkInterval), limit,
 	)
 	if err != nil {
-		tx.Rollback() // nolint: errcheck
+		tx.Rollback()
 		return err
 	}
 
-	defer tx.Commit() // nolint: errcheck
+	defer tx.Commit()
 
 	var entries []Entry
 	for rows.Next() {
