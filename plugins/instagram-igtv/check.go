@@ -75,17 +75,17 @@ func (p *Plugin) checkEntry(run *common.Run, entry Entry, posts []*ginsta.Video)
 		)
 
 		if posted > postsPerCheckLimit {
-			logger.Debug("skipping post because of the posts per check limit")
+			// logger.Debug("skipping post because of the posts per check limit")
 			break
 		}
 
 		if !post.TakenAt.After(entry.CreatedAt) {
-			logger.Debug("skipping post because post date is not after entry creation date")
+			// logger.Debug("skipping post because post date is not after entry creation date")
 			continue
 		}
 
 		if time.Since(post.TakenAt) > ageLimit {
-			logger.Debug("skipping post because of the age limit")
+			// logger.Debug("skipping post because of the age limit")
 			continue
 		}
 
@@ -97,7 +97,7 @@ func (p *Plugin) checkEntry(run *common.Run, entry Entry, posts []*ginsta.Video)
 			return err
 		}
 		if existingPost != nil {
-			logger.Debug("skipping post because it has already been posted")
+			// logger.Debug("skipping post because it has already been posted")
 			continue
 		}
 
