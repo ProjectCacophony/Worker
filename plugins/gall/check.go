@@ -149,7 +149,7 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post ginside.Post) error {
 	messages, err := discord.SendComplexWithVars(
 		p.redis,
 		session,
-		p.Localisations(),
+		p.Localizations(),
 		entry.ChannelID,
 		&discordgo.MessageSend{
 			Content: "gall.post.content",

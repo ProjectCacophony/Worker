@@ -137,7 +137,7 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post *ginsta.Story) error {
 	messages, err := discord.SendComplexWithVars(
 		p.redis,
 		session,
-		p.Localisations(),
+		p.Localizations(),
 		entry.ChannelOrUserID,
 		&discordgo.MessageSend{
 			Content: "instagram-story.post.content",

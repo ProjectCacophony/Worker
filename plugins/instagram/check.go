@@ -170,7 +170,7 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post *ginsta.Post) error {
 	messages, err := discord.SendComplexWithVars(
 		p.redis,
 		session,
-		p.Localisations(),
+		p.Localizations(),
 		entry.ChannelOrUserID,
 		&discordgo.MessageSend{
 			Content: "instagram.post.content",
@@ -191,7 +191,7 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post *ginsta.Post) error {
 		messages, err := discord.SendComplexWithVars(
 			p.redis,
 			session,
-			p.Localisations(),
+			p.Localizations(),
 			entry.ChannelOrUserID,
 			&discordgo.MessageSend{
 				Content: "instagram.post.leftover-links",

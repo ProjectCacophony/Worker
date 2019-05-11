@@ -69,7 +69,7 @@ func (p *Plugin) Stop(params common.StopParameters) error {
 	return nil
 }
 
-func (p *Plugin) Localisations() []interfaces.Localisation {
+func (p *Plugin) Localizations() []interfaces.Localization {
 	return nil
 }
 

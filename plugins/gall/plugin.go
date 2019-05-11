@@ -6,6 +6,7 @@ import (
 
 	"github.com/go-redis/redis"
 
+	"gitlab.com/Cacophony/go-kit/localization"
 	"gitlab.com/Cacophony/go-kit/state"
 
 	"github.com/Seklfreak/ginside"
@@ -13,7 +14,6 @@ import (
 	"github.com/jinzhu/gorm"
 	"gitlab.com/Cacophony/Worker/plugins/common"
 	"gitlab.com/Cacophony/go-kit/interfaces"
-	"gitlab.com/Cacophony/go-kit/localisation"
 	"go.uber.org/zap"
 )
 
@@ -89,13 +89,13 @@ func (p *Plugin) Stop(params common.StopParameters) error {
 	return nil
 }
 
-func (p *Plugin) Localisations() []interfaces.Localisation {
-	local, err := localisation.NewFileSource("assets/translations/gall.en.toml", "en")
+func (p *Plugin) Localizations() []interfaces.Localization {
+	local, err := localization.NewFileSource("assets/translations/gall.en.toml", "en")
 	if err != nil {
 		p.logger.Error("failed to load localisation", zap.Error(err))
 	}
 
-	return []interfaces.Localisation{local}
+	return []interfaces.Localization{local}
 }
 
 func (p *Plugin) Run(run *common.Run) (err error) {

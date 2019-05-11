@@ -26,7 +26,7 @@ type Plugin interface {
 	// TODO: add context for deadline
 	Stop(common.StopParameters) error
 
-	Localisations() []interfaces.Localisation
+	Localizations() []interfaces.Localization
 
 	Run(run *common.Run) error
 }
@@ -41,7 +41,7 @@ var (
 		&serverlist.Plugin{},
 	}
 
-	LocalisationsList []interfaces.Localisation
+	LocalizationsList []interfaces.Localization
 )
 
 func StartPlugins(
@@ -71,7 +71,7 @@ func StartPlugins(
 		}
 		// TODO: do not send run plugins that failed to start
 
-		LocalisationsList = append(LocalisationsList, plugin.Localisations()...)
+		LocalizationsList = append(LocalizationsList, plugin.Localizations()...)
 	}
 }
 
