@@ -16,6 +16,7 @@ stringData:
   polrBaseURL: "{{POLR_BASE_URL}}"
   polrAPIKey: "{{POLR_API_KEY}}"
   amqpDSN: "{{AMQP_DSN}}"
+  iexCloudAPISecret: "{{IEXCLOUD_API_SECRET}}"
 
 
 ---
@@ -115,6 +116,11 @@ spec:
                 secretKeyRef:
                   name: gateway-secret
                   key: amqpDSN
+            - name: IEXCLOUD_API_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: processor-secret
+                  key: iexCloudAPISecret
 
 
 ---

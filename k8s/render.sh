@@ -17,6 +17,7 @@
 # POLR_BASE_URL
 # POLR_API_KEY
 # AMQP_DSN
+# IEXCLOUD_API_SECRET
 
 template="k8s/manifest.tmpl.yaml"
 target="k8s/manifest.yaml"
@@ -39,3 +40,4 @@ sed -i -e "s|{{INSTAGRAM_SESSION_IDS}}|$INSTAGRAM_SESSION_IDS|g" "$target"
 sed -i -e "s|{{POLR_BASE_URL}}|$POLR_BASE_URL|g" "$target"
 sed -i -e "s|{{POLR_API_KEY}}|$POLR_API_KEY|g" "$target"
 sed -i -e "s|{{AMQP_DSN}}|$AMQP_DSN|g" "$target"
+sed -i -e "s|{{IEXCLOUD_API_SECRET}}|$IEXCLOUD_API_SECRET|g" "$target"
