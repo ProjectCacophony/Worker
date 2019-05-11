@@ -146,11 +146,19 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post *gofeed.Item) error {
 		return err
 	}
 
+	channelID := entry.ChannelID
+	if entry.DM {
+		channelID, err = discord.DMChannel(p.redis, session, channelID)
+		if err != nil {
+			return err
+		}
+	}
+
 	messages, err := discord.SendComplexWithVars(
 		p.redis,
 		session,
 		p.Localizations(),
-		entry.ChannelID,
+		channelID,
 		&discordgo.MessageSend{
 			Content: "feed.post.content",
 			Embed: &discordgo.MessageEmbed{
@@ -168,7 +176,6 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post *gofeed.Item) error {
 				},
 			},
 		},
-		entry.DM,
 		"post", post, "entry", entry,
 	)
 	if err != nil {

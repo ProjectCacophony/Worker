@@ -134,15 +134,22 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post *ginsta.Video) error {
 
 	url := fmt.Sprintf("https://instagram.com/p/%s/", post.Shortcode)
 
+	channelID := entry.ChannelOrUserID
+	if entry.DM {
+		channelID, err = discord.DMChannel(p.redis, session, channelID)
+		if err != nil {
+			return err
+		}
+	}
+
 	messages, err := discord.SendComplexWithVars(
 		p.redis,
 		session,
 		p.Localizations(),
-		entry.ChannelOrUserID,
+		channelID,
 		&discordgo.MessageSend{
 			Content: "instagram-igtv.post.content",
 		},
-		entry.DM,
 		"post", post, "entry", entry, "url", url,
 	)
 	if err != nil {

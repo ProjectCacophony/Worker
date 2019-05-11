@@ -167,15 +167,22 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post *ginsta.Post) error {
 
 	url := fmt.Sprintf("https://instagram.com/p/%s/", post.Shortcode)
 
+	channelID := entry.ChannelOrUserID
+	if entry.DM {
+		channelID, err = discord.DMChannel(p.redis, session, channelID)
+		if err != nil {
+			return err
+		}
+	}
+
 	messages, err := discord.SendComplexWithVars(
 		p.redis,
 		session,
 		p.Localizations(),
-		entry.ChannelOrUserID,
+		channelID,
 		&discordgo.MessageSend{
 			Content: "instagram.post.content",
 		},
-		entry.DM,
 		"post", post, "entry", entry, "url", url, "mediaURLs", mediaURLsFirst,
 	)
 	if err != nil {
@@ -192,11 +199,10 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post *ginsta.Post) error {
 			p.redis,
 			session,
 			p.Localizations(),
-			entry.ChannelOrUserID,
+			channelID,
 			&discordgo.MessageSend{
 				Content: "instagram.post.leftover-links",
 			},
-			entry.DM,
 			"mediaURLs", mediaURLsLeftItem,
 		)
 		if err != nil {
