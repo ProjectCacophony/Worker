@@ -4,6 +4,7 @@ require (
 	github.com/Seklfreak/ginside v0.0.0-20190304181936-3c6d866dc362
 	github.com/Seklfreak/ginsta v0.0.0-20190505161125-9c0af4b10e02
 	github.com/Unleash/unleash-client-go v0.0.0-20190225211619-9febc6ff26f4 // indirect
+	github.com/bsm/redis-lock v8.0.0+incompatible
 	github.com/bwmarrin/discordgo v0.19.0
 	github.com/getsentry/raven-go v0.2.0
 	github.com/go-chi/chi v4.0.2+incompatible // indirect

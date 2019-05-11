@@ -10,6 +10,7 @@ import (
 	instagramstories "gitlab.com/Cacophony/Worker/plugins/instagram-stories"
 	"gitlab.com/Cacophony/Worker/plugins/rss"
 	"gitlab.com/Cacophony/Worker/plugins/serverlist"
+	stockssymbols "gitlab.com/Cacophony/Worker/plugins/stocks-symbols"
 	"gitlab.com/Cacophony/go-kit/amqp"
 	"gitlab.com/Cacophony/go-kit/featureflag"
 	"gitlab.com/Cacophony/go-kit/interfaces"
@@ -39,6 +40,7 @@ var (
 		&instagramstories.Plugin{},
 		&instagramigtv.Plugin{},
 		&serverlist.Plugin{},
+		&stockssymbols.Plugin{},
 	}
 
 	LocalizationsList []interfaces.Localization
