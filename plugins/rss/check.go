@@ -155,7 +155,6 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post *gofeed.Item) error {
 	}
 
 	messages, err := discord.SendComplexWithVars(
-		p.redis,
 		session,
 		p.Localizations(),
 		channelID,

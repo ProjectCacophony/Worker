@@ -176,7 +176,6 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post *ginsta.Post) error {
 	}
 
 	messages, err := discord.SendComplexWithVars(
-		p.redis,
 		session,
 		p.Localizations(),
 		channelID,
@@ -196,7 +195,6 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post *ginsta.Post) error {
 
 	for _, mediaURLsLeftItem := range mediaURLsLeft {
 		messages, err := discord.SendComplexWithVars(
-			p.redis,
 			session,
 			p.Localizations(),
 			channelID,

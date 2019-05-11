@@ -143,7 +143,6 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post *ginsta.Video) error {
 	}
 
 	messages, err := discord.SendComplexWithVars(
-		p.redis,
 		session,
 		p.Localizations(),
 		channelID,
