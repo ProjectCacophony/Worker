@@ -4,6 +4,7 @@ import (
 	"strings"
 )
 
+// nolint: gosimple
 func isAcceptableError(err error) bool {
 	if strings.Contains(
 		err.Error(),
