@@ -37,7 +37,9 @@ func (p *Plugin) checkBundles(run *common.Run, tx *sql.Tx, bundles boardCheckBun
 	for checkInfo, entries := range bundles {
 		feed, err = getFeed(p.httpClient, p.parser, checkInfo.FeedURL)
 		if err != nil {
-			run.Except(err, "feed_url", checkInfo.FeedURL)
+			if !isAcceptableError(err) {
+				run.Except(err, "feed_url", checkInfo.FeedURL)
+			}
 
 			err = checkSet(run.Context(), tx, kitFeed.ErrorStatus, err.Error(), entries...)
 			if err != nil {
