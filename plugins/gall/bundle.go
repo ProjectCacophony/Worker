@@ -5,11 +5,9 @@ import (
 	"strconv"
 
 	"gitlab.com/Cacophony/go-kit/feed"
+	"gitlab.com/Cacophony/go-kit/permissions"
 
-	"github.com/bwmarrin/discordgo"
-	"github.com/pkg/errors"
 	"gitlab.com/Cacophony/Worker/plugins/common"
-	"gitlab.com/Cacophony/go-kit/discord"
 	"go.uber.org/zap"
 )
 
@@ -49,27 +47,17 @@ func (p *Plugin) bundleEntries(run *common.Run, tx *sql.Tx, entries []Entry) boa
 				continue
 			}
 
-			botID, err := p.state.BotForGuild(entry.GuildID)
+			_, err = p.state.BotForChannel(
+				entry.ChannelID,
+				permissions.DiscordSendMessages,
+				permissions.DiscordEmbedLinks,
+			)
 			if err != nil {
 				logger.Debug("skipped entry because of bot for guild error",
 					zap.Error(err),
 				)
 
 				err = checkSet(run.Context(), tx, feed.ErrorStatus, err.Error(), entry)
-				if err != nil {
-					run.Except(err, "entry_id", strconv.FormatUint(uint64(entry.ID), 10))
-				}
-				continue
-			}
-			if !discord.UserHasPermission(p.state, botID, entry.ChannelID,
-				discordgo.PermissionSendMessages,
-				discordgo.PermissionEmbedLinks,
-			) {
-				logger.Debug("skipped entry because of user permissions error",
-					zap.Error(errors.New("missing required permissions")),
-				)
-
-				err = checkSet(run.Context(), tx, feed.ErrorStatus, "missing permissions", entry)
 				if err != nil {
 					run.Except(err, "entry_id", strconv.FormatUint(uint64(entry.ID), 10))
 				}

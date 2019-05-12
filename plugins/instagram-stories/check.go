@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/Seklfreak/ginsta"
+	"gitlab.com/Cacophony/go-kit/permissions"
 
 	"github.com/pkg/errors"
 
@@ -118,7 +119,10 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post *ginsta.Story) error {
 
 	botID := entry.BotID
 	if !entry.DM {
-		botID, err = p.state.BotForGuild(entry.GuildID)
+		botID, err = p.state.BotForChannel(
+			entry.ChannelOrUserID,
+			permissions.DiscordSendMessages,
+		)
 		if err != nil {
 			return err
 		}

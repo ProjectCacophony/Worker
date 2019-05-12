@@ -11,6 +11,7 @@ import (
 	"github.com/pkg/errors"
 
 	"gitlab.com/Cacophony/go-kit/feed"
+	"gitlab.com/Cacophony/go-kit/permissions"
 
 	"github.com/bwmarrin/discordgo"
 
@@ -118,7 +119,10 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post *ginsta.Video) error {
 
 	botID := entry.BotID
 	if !entry.DM {
-		botID, err = p.state.BotForGuild(entry.GuildID)
+		botID, err = p.state.BotForChannel(
+			entry.ChannelOrUserID,
+			permissions.DiscordSendMessages,
+		)
 		if err != nil {
 			return err
 		}

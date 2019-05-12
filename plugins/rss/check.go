@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/pkg/errors"
+	"gitlab.com/Cacophony/go-kit/permissions"
 
 	"github.com/mmcdole/gofeed"
 
@@ -132,7 +133,11 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post *gofeed.Item) error {
 
 	botID := entry.BotID
 	if !entry.DM {
-		botID, err = p.state.BotForGuild(entry.GuildID)
+		botID, err = p.state.BotForChannel(
+			entry.ChannelID,
+			permissions.DiscordSendMessages,
+			permissions.DiscordEmbedLinks,
+		)
 		if err != nil {
 			return err
 		}
