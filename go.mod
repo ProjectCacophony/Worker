@@ -16,7 +16,7 @@ require (
 	github.com/mmcdole/gofeed v1.0.0-beta2
 	github.com/mmcdole/goxpp v0.0.0-20181012175147-0068e33feabf // indirect
 	github.com/pkg/errors v0.8.1
-	gitlab.com/Cacophony/go-kit v0.0.0-20190512102121-e5a4d793b178
+	gitlab.com/Cacophony/go-kit v0.0.0-20190513191410-45b394586d2d
 	go.uber.org/zap v1.9.1
 	golang.org/x/crypto v0.0.0-20190228161510-8dd112bcdc25 // indirect
 	golang.org/x/net v0.0.0-20190301231341-16b79f2e4e95 // indirect
