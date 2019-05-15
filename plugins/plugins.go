@@ -11,7 +11,7 @@ import (
 	"gitlab.com/Cacophony/Worker/plugins/rss"
 	"gitlab.com/Cacophony/Worker/plugins/serverlist"
 	stockssymbols "gitlab.com/Cacophony/Worker/plugins/stocks-symbols"
-	"gitlab.com/Cacophony/go-kit/amqp"
+	"gitlab.com/Cacophony/go-kit/events"
 	"gitlab.com/Cacophony/go-kit/featureflag"
 	"gitlab.com/Cacophony/go-kit/interfaces"
 	"gitlab.com/Cacophony/go-kit/state"
@@ -53,7 +53,7 @@ func StartPlugins(
 	tokens map[string]string,
 	state *state.State,
 	featureFlagger *featureflag.FeatureFlagger,
-	publisher *amqp.Publisher,
+	publisher *events.Publisher,
 ) {
 	var err error
 	for _, plugin := range PluginList {
@@ -84,7 +84,7 @@ func StopPlugins(
 	tokens map[string]string,
 	state *state.State,
 	featureFlagger *featureflag.FeatureFlagger,
-	publisher *amqp.Publisher,
+	publisher *events.Publisher,
 ) {
 	var err error
 	for _, plugin := range PluginList {

@@ -3,7 +3,7 @@ package serverlist
 import (
 	"time"
 
-	"gitlab.com/Cacophony/go-kit/amqp"
+	"gitlab.com/Cacophony/go-kit/events"
 
 	"github.com/go-redis/redis"
 
@@ -47,7 +47,7 @@ type Plugin struct {
 	db        *gorm.DB
 	redis     *redis.Client
 	tokens    map[string]string
-	publisher *amqp.Publisher
+	publisher *events.Publisher
 }
 
 func (p *Plugin) Name() string {

@@ -8,7 +8,7 @@ import (
 	"syscall"
 	"time"
 
-	"gitlab.com/Cacophony/go-kit/amqp"
+	"gitlab.com/Cacophony/go-kit/events"
 
 	"gitlab.com/Cacophony/go-kit/featureflag"
 
@@ -107,12 +107,7 @@ func main() {
 	}
 
 	// init publisher
-	publisher, err := amqp.NewPublisher(
-		logger,
-		config.AMQPDSN,
-		"cacophony",
-		config.EventTTL,
-	)
+	publisher, err := events.NewPublisher(config.AMQPDSN)
 	if err != nil {
 		logger.Fatal("unable to initialise Publisher",
 			zap.Error(err),

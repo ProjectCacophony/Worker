@@ -1,7 +1,7 @@
 package serverlist
 
 import (
-	"encoding/json"
+	"context"
 
 	"github.com/pkg/errors"
 
@@ -22,17 +22,7 @@ func (p *Plugin) sendExpiredEvent(server Server) error {
 	}
 	event.BotUserID = server.BotID
 
-	routingKey := events.GenerateRoutingKey(event.Type)
-
-	body, err := json.Marshal(event)
-	if err != nil {
-		return errors.Wrap(err, "cannot marshal event")
-	}
-
-	err = p.publisher.Publish(
-		routingKey,
-		body,
-	)
+	err = p.publisher.Publish(context.TODO(), event)
 	if err != nil {
 		return errors.Wrap(err, "cannot publish event")
 	}
