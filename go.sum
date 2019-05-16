@@ -43,8 +43,8 @@ github.com/SAP/go-hdb v0.13.1/go.mod h1:etBT+FAi1t5k3K3tf5vQTnosgYmhDkRi8jEnQqCn
 github.com/SAP/go-hdb v0.13.2/go.mod h1:etBT+FAi1t5k3K3tf5vQTnosgYmhDkRi8jEnQqCnxF0=
 github.com/Seklfreak/ginside v0.0.0-20190304181936-3c6d866dc362 h1:A2TEqC+nzRjaW0IMMkXUSnQf3mfraFg8tCPUUsN3QAY=
 github.com/Seklfreak/ginside v0.0.0-20190304181936-3c6d866dc362/go.mod h1:8qsq6mWde1YA5QOHDTDwue0MRjTw57fOug7qqMJpHhA=
-github.com/Seklfreak/ginsta v0.0.0-20190505161125-9c0af4b10e02 h1:W5HnexKO8sTV6GCR0pE2OGU0XHR3rK/djA5OdiFuJm0=
-github.com/Seklfreak/ginsta v0.0.0-20190505161125-9c0af4b10e02/go.mod h1:GoCB9oHpK16TDfdPo30avi4drFNgwCr91+9WE05/8pI=
+github.com/Seklfreak/ginsta v0.0.0-20190516055424-e66040c5a770 h1:azhYWaSXHcrQFgYRAyOzEcwStSN/taAm8eabZIBDI8U=
+github.com/Seklfreak/ginsta v0.0.0-20190516055424-e66040c5a770/go.mod h1:GoCB9oHpK16TDfdPo30avi4drFNgwCr91+9WE05/8pI=
 github.com/Seklfreak/polr-go v0.0.0-20190324143256-a87fed130937 h1:i7uyK5VEr5L/ZJEL4Bn8ff0dk+a5z0g9zJjSYxGyf0c=
 github.com/Seklfreak/polr-go v0.0.0-20190324143256-a87fed130937/go.mod h1:eoGl/sGHUD/1hNQEHPvNunsRryc3c4Im57OavEzSxiw=
 github.com/SermoDigital/jose v0.9.1/go.mod h1:ARgCUhI1MHQH+ONky/PAtmVHQrP5JlGY0F3poXOp/fA=
