@@ -41,8 +41,8 @@ github.com/PuerkitoBio/goquery v1.5.0/go.mod h1:qD2PgZ9lccMbQlc7eEOjaeRlFQON7xY8
 github.com/RoaringBitmap/roaring v0.4.16/go.mod h1:8khRDP4HmeXns4xIj9oGrKSz7XTQiJx2zgh7AcNke4w=
 github.com/SAP/go-hdb v0.13.1/go.mod h1:etBT+FAi1t5k3K3tf5vQTnosgYmhDkRi8jEnQqCnxF0=
 github.com/SAP/go-hdb v0.13.2/go.mod h1:etBT+FAi1t5k3K3tf5vQTnosgYmhDkRi8jEnQqCnxF0=
-github.com/Seklfreak/ginside v0.0.0-20190304181936-3c6d866dc362 h1:A2TEqC+nzRjaW0IMMkXUSnQf3mfraFg8tCPUUsN3QAY=
-github.com/Seklfreak/ginside v0.0.0-20190304181936-3c6d866dc362/go.mod h1:8qsq6mWde1YA5QOHDTDwue0MRjTw57fOug7qqMJpHhA=
+github.com/Seklfreak/ginside v0.0.0-20190516063456-b84c0470abfb h1:10eDd8gJhc0Hi0Av6JTxsR5j6AFGw1uIHPpLDt1T6ug=
+github.com/Seklfreak/ginside v0.0.0-20190516063456-b84c0470abfb/go.mod h1:8qsq6mWde1YA5QOHDTDwue0MRjTw57fOug7qqMJpHhA=
 github.com/Seklfreak/ginsta v0.0.0-20190516055424-e66040c5a770 h1:azhYWaSXHcrQFgYRAyOzEcwStSN/taAm8eabZIBDI8U=
 github.com/Seklfreak/ginsta v0.0.0-20190516055424-e66040c5a770/go.mod h1:GoCB9oHpK16TDfdPo30avi4drFNgwCr91+9WE05/8pI=
 github.com/Seklfreak/polr-go v0.0.0-20190324143256-a87fed130937 h1:i7uyK5VEr5L/ZJEL4Bn8ff0dk+a5z0g9zJjSYxGyf0c=
