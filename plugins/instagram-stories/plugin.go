@@ -70,6 +70,10 @@ func (p *Plugin) Name() string {
 	return "instagram-stories"
 }
 
+func (p *Plugin) Interval() time.Duration {
+	return 1 * time.Minute
+}
+
 func (p *Plugin) Start(params common.StartParameters) error {
 	var config config
 	err := envconfig.Process("", &config)

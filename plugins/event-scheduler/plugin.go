@@ -1,6 +1,8 @@
 package eventscheduler
 
 import (
+	"time"
+
 	"github.com/jinzhu/gorm"
 	"gitlab.com/Cacophony/Worker/plugins/common"
 	"gitlab.com/Cacophony/go-kit/events"
@@ -38,6 +40,10 @@ type Plugin struct {
 
 func (p *Plugin) Name() string {
 	return "event-scheduler"
+}
+
+func (p *Plugin) Interval() time.Duration {
+	return 10 * time.Second
 }
 
 func (p *Plugin) Start(params common.StartParameters) error {

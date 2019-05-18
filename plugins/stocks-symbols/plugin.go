@@ -33,6 +33,10 @@ func (p *Plugin) Name() string {
 	return "stocks-symbols"
 }
 
+func (p *Plugin) Interval() time.Duration {
+	return 1 * time.Hour
+}
+
 func (p *Plugin) Start(params common.StartParameters) error {
 	err := params.DB.AutoMigrate(Symbol{}).Error
 	if err != nil {

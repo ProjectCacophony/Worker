@@ -63,7 +63,7 @@ func (s *Scheduler) startPluginLoop(plugin plugins.Plugin) {
 			)
 		}
 
-		time.Sleep(1 * time.Minute)
+		time.Sleep(plugin.Interval())
 	}
 }
 

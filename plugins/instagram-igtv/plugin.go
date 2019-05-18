@@ -64,6 +64,10 @@ func (p *Plugin) Name() string {
 	return "instagram-igtv"
 }
 
+func (p *Plugin) Interval() time.Duration {
+	return 1 * time.Minute
+}
+
 func (p *Plugin) Start(params common.StartParameters) error {
 	err := params.DB.AutoMigrate(Post{}).Error
 	if err != nil {

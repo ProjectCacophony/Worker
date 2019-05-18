@@ -1,6 +1,8 @@
 package plugins
 
 import (
+	"time"
+
 	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
 	"gitlab.com/Cacophony/Worker/plugins/common"
@@ -21,6 +23,8 @@ import (
 
 type Plugin interface {
 	Name() string
+
+	Interval() time.Duration
 
 	// TODO: add context for deadline
 	Start(common.StartParameters) error

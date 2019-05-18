@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	checkInterval = time.Minute * 15
+	checkInterval = time.Hour * 24
 	limit         = 10
 
 	selectQuery = `
@@ -52,6 +52,10 @@ type Plugin struct {
 
 func (p *Plugin) Name() string {
 	return "serverlist"
+}
+
+func (p *Plugin) Interval() time.Duration {
+	return 1 * time.Hour
 }
 
 func (p *Plugin) Start(params common.StartParameters) error {
