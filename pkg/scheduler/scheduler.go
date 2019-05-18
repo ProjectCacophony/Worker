@@ -27,37 +27,43 @@ func NewScheduler(
 }
 
 func (s *Scheduler) Start() {
+	for _, plugin := range plugins.PluginList {
+		go s.startPluginLoop(plugin)
+
+		// some terrible way so not all plugins launch at the same time
+		time.Sleep(1 * time.Second)
+	}
+}
+
+func (s *Scheduler) startPluginLoop(plugin plugins.Plugin) {
 	var err error
+	var l *zap.Logger
+
+	logger := s.logger.With(
+		zap.String("plugin", plugin.Name()),
+	)
 
 	for {
-		for _, plugin := range plugins.PluginList {
-			if !s.featureFlagger.IsEnabled(featureFlagPluginKey(plugin.Name()), true) {
-				s.logger.Debug("skipping plugin as it is disabled by feature flags",
-					zap.String("plugin_name", plugin.Name()),
-				)
-				continue
-			}
-
-			run := common.NewRun(plugin.Name())
-
-			logger := s.logger.With(
-				zap.String("plugin", plugin.Name()),
-				zap.String("launch", run.Launch.String()),
-			)
-
-			run.WithContext(context.Background())
-			run.WithLogger(logger)
-
-			err = plugin.Run(run)
-			if err != nil {
-				logger.Error("run execution failed",
-					zap.Error(err),
-				)
-			}
-
+		if !s.featureFlagger.IsEnabled(featureFlagPluginKey(plugin.Name()), true) {
+			logger.Debug("skipping plugin as it is disabled by feature flags")
+			continue
 		}
 
-		time.Sleep(60 * time.Second)
+		run := common.NewRun(plugin.Name())
+
+		l = logger.With(zap.Time("launch", run.Launch))
+
+		run.WithContext(context.Background())
+		run.WithLogger(l)
+
+		err = plugin.Run(run)
+		if err != nil {
+			l.Error("run execution failed",
+				zap.Error(err),
+			)
+		}
+
+		time.Sleep(1 * time.Minute)
 	}
 }
 
