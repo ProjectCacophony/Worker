@@ -4,6 +4,7 @@ import (
 	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
 	"gitlab.com/Cacophony/Worker/plugins/common"
+	eventscheduler "gitlab.com/Cacophony/Worker/plugins/event-scheduler"
 	"gitlab.com/Cacophony/Worker/plugins/gall"
 	"gitlab.com/Cacophony/Worker/plugins/instagram"
 	instagramigtv "gitlab.com/Cacophony/Worker/plugins/instagram-igtv"
@@ -41,6 +42,7 @@ var (
 		&instagramigtv.Plugin{},
 		&serverlist.Plugin{},
 		&stockssymbols.Plugin{},
+		&eventscheduler.Plugin{},
 	}
 
 	LocalizationsList []interfaces.Localization

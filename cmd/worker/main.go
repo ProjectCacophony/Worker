@@ -107,7 +107,7 @@ func main() {
 	}
 
 	// init publisher
-	publisher, err := events.NewPublisher(config.AMQPDSN)
+	publisher, err := events.NewPublisher(config.AMQPDSN, gormDB)
 	if err != nil {
 		logger.Fatal("unable to initialise Publisher",
 			zap.Error(err),
