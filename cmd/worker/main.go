@@ -8,6 +8,7 @@ import (
 	"syscall"
 	"time"
 
+	"gitlab.com/Cacophony/go-kit/discord"
 	"gitlab.com/Cacophony/go-kit/events"
 
 	"gitlab.com/Cacophony/go-kit/featureflag"
@@ -44,6 +45,8 @@ func main() {
 	config.FeatureFlag.Environment = config.ClusterEnvironment
 	config.ErrorTracking.Version = config.Hash
 	config.ErrorTracking.Environment = config.ClusterEnvironment
+
+	discord.SetAPIBase(config.DiscordAPIBase)
 
 	// init logger
 	logger, err := logging.NewLogger(

@@ -22,4 +22,5 @@ type config struct {
 	ErrorTracking         errortracking.Config `envconfig:"ERRORTRACKING"`
 	AMQPDSN               string               `envconfig:"AMQP_DSN" default:"amqp://guest:guest@localhost:5672/"`
 	EventTTL              time.Duration        `envconfig:"EVENT_TTL" default:"10m"`
+	DiscordAPIBase        string               `envconfig:"DISCORD_API_BASE"`
 }

@@ -17,6 +17,7 @@ stringData:
   polrAPIKey: "{{POLR_API_KEY}}"
   amqpDSN: "{{AMQP_DSN}}"
   iexCloudAPISecret: "{{IEXCLOUD_API_SECRET}}"
+  discordAPIBase: "{{DISCORD_API_BASE}}"
 
 
 ---
@@ -121,6 +122,11 @@ spec:
                 secretKeyRef:
                   name: processor-secret
                   key: iexCloudAPISecret
+            - name: DISCORD_API_BASE
+              valueFrom:
+                secretKeyRef:
+                  name: worker-secret
+                  key: discordAPIBase
 
 
 ---
