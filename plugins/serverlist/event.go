@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/pkg/errors"
+	"go.uber.org/zap"
 
 	"gitlab.com/Cacophony/go-kit/events"
 )
@@ -22,8 +23,13 @@ func (p *Plugin) sendExpiredEvent(server Server) error {
 	}
 	event.BotUserID = server.BotID
 
-	err = p.publisher.Publish(context.TODO(), event)
+	err, recoverable := p.publisher.Publish(context.TODO(), event)
 	if err != nil {
+		if !recoverable {
+			p.logger.Fatal("unrecoverable publishing error, shutting down",
+				zap.Error(err),
+			)
+		}
 		return errors.Wrap(err, "cannot publish event")
 	}
 
