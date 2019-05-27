@@ -19,7 +19,7 @@ func (p *Plugin) publishEvents(
 
 		l.Debug("publishing event")
 
-		err = p.publishEvent(run, event)
+		err = p.publishEvent(run, event, l)
 		if err != nil {
 			l.Error("error publish event", zap.Error(err))
 			run.Except(err, "event_id", strconv.FormatUint(uint64(event.ID), 10))
@@ -30,6 +30,15 @@ func (p *Plugin) publishEvents(
 func (p *Plugin) publishEvent(
 	run *common.Run,
 	event Entry,
+	l *zap.Logger,
 ) error {
-	return p.publisher.PublishRaw(run.Context(), event.Body)
+	err, recoverable := p.publisher.PublishRaw(run.Context(), event.Body)
+	if err != nil && !recoverable {
+		l.Fatal(
+			"received unrecoverable error when publishing event, shutting down",
+			zap.Error(err),
+		)
+	}
+
+	return err
 }
