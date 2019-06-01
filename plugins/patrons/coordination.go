@@ -9,8 +9,8 @@ import (
 )
 
 const (
-	lockKey    = "cacophony:worker:stocks-symbols:run-lock"
-	lastRunKey = "cacophony:worker:stocks-symbols:run-last"
+	lockKey    = "cacophony:worker:patrons:run-lock"
+	lastRunKey = "cacophony:worker:patrons:run-last"
 )
 
 func (p *Plugin) getRunLock() *lock.Locker {
