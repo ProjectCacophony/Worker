@@ -18,6 +18,8 @@ stringData:
   amqpDSN: "{{AMQP_DSN}}"
   iexCloudAPISecret: "{{IEXCLOUD_API_SECRET}}"
   discordAPIBase: "{{DISCORD_API_BASE}}"
+  patreonCampaignID: "{{PATREON_CAMPAIGN_ID}}"
+  patreonCreatorsAccessToken: "{{PATREON_CREATORS_ACCESS_TOKEN}}"
 
 
 ---
@@ -115,18 +117,28 @@ spec:
             - name: AMQP_DSN
               valueFrom:
                 secretKeyRef:
-                  name: gateway-secret
+                  name: worker-secret
                   key: amqpDSN
             - name: IEXCLOUD_API_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: processor-secret
+                  name: worker-secret
                   key: iexCloudAPISecret
             - name: DISCORD_API_BASE
               valueFrom:
                 secretKeyRef:
                   name: worker-secret
                   key: discordAPIBase
+            - name: PATREON_CAMPAIGN_ID
+              valueFrom:
+                secretKeyRef:
+                  name: worker-secret
+                  key: patreonCampaignID
+            - name: PATREON_CREATORS_ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: worker-secret
+                  key: patreonCreatorsAccessToken
 
 
 ---

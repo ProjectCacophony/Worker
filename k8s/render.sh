@@ -19,6 +19,8 @@
 # AMQP_DSN
 # IEXCLOUD_API_SECRET
 # DISCORD_API_BASE
+# PATREON_CAMPAIGN_ID
+# PATREON_CREATORS_ACCESS_TOKEN
 
 template="k8s/manifest.tmpl.yaml"
 target="k8s/manifest.yaml"
@@ -43,3 +45,5 @@ sed -i -e "s|{{POLR_API_KEY}}|$POLR_API_KEY|g" "$target"
 sed -i -e "s|{{AMQP_DSN}}|$AMQP_DSN|g" "$target"
 sed -i -e "s|{{IEXCLOUD_API_SECRET}}|$IEXCLOUD_API_SECRET|g" "$target"
 sed -i -e "s|{{DISCORD_API_BASE}}|$DISCORD_API_BASE|g" "$target"
+sed -i -e "s|{{PATREON_CAMPAIGN_ID}}|$PATREON_CAMPAIGN_ID|g" "$target"
+sed -i -e "s|{{PATREON_CREATORS_ACCESS_TOKEN}}|$PATREON_CREATORS_ACCESS_TOKEN|g" "$target"

@@ -11,6 +11,7 @@ import (
 	"gitlab.com/Cacophony/Worker/plugins/instagram"
 	instagramigtv "gitlab.com/Cacophony/Worker/plugins/instagram-igtv"
 	instagramstories "gitlab.com/Cacophony/Worker/plugins/instagram-stories"
+	"gitlab.com/Cacophony/Worker/plugins/patrons"
 	"gitlab.com/Cacophony/Worker/plugins/rss"
 	"gitlab.com/Cacophony/Worker/plugins/serverlist"
 	stockssymbols "gitlab.com/Cacophony/Worker/plugins/stocks-symbols"
@@ -47,6 +48,7 @@ var (
 		&serverlist.Plugin{},
 		&stockssymbols.Plugin{},
 		&eventscheduler.Plugin{},
+		&patrons.Plugin{},
 	}
 
 	LocalizationsList []interfaces.Localization
