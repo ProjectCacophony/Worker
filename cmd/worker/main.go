@@ -99,7 +99,7 @@ func main() {
 		botIDs[i] = botID
 		i++
 	}
-	stateClient := state.NewSate(redisClient, botIDs)
+	stateClient := state.NewSate(redisClient, gormDB, botIDs)
 
 	// init feature flagger
 	featureFlagger, err := featureflag.New(&config.FeatureFlag)
