@@ -20,6 +20,7 @@ stringData:
   discordAPIBase: "{{DISCORD_API_BASE}}"
   patreonCampaignID: "{{PATREON_CAMPAIGN_ID}}"
   patreonCreatorsAccessToken: "{{PATREON_CREATORS_ACCESS_TOKEN}}"
+  weverseToken: "{{WEVERSE_TOKEN}}"
 
 
 ---
@@ -139,6 +140,11 @@ spec:
                 secretKeyRef:
                   name: worker-secret
                   key: patreonCreatorsAccessToken
+            - name: WEVERSE_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: worker-secret
+                  key: weverseToken
 
 
 ---
