@@ -15,6 +15,7 @@ import (
 	"gitlab.com/Cacophony/Worker/plugins/rss"
 	"gitlab.com/Cacophony/Worker/plugins/serverlist"
 	stockssymbols "gitlab.com/Cacophony/Worker/plugins/stocks-symbols"
+	weverseartist "gitlab.com/Cacophony/Worker/plugins/weverse-artist"
 	"gitlab.com/Cacophony/go-kit/events"
 	"gitlab.com/Cacophony/go-kit/featureflag"
 	"gitlab.com/Cacophony/go-kit/interfaces"
@@ -49,6 +50,7 @@ var (
 		&stockssymbols.Plugin{},
 		&eventscheduler.Plugin{},
 		&patrons.Plugin{},
+		&weverseartist.Plugin{},
 	}
 
 	LocalizationsList []interfaces.Localization

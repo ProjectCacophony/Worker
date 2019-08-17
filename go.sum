@@ -36,6 +36,8 @@ github.com/Masterminds/sprig v2.20.0+incompatible h1:dJTKKuUkYW3RMFdQFXPU/s6hg10
 github.com/Masterminds/sprig v2.20.0+incompatible/go.mod h1:y6hNFY5UBTIWBxnzTeuNhlNS5hqE0NB0E6fgfo2Br3o=
 github.com/PuerkitoBio/goquery v1.5.0 h1:uGvmFXOA73IKluu/F84Xd1tt/z07GYm8X49XKHP7EJk=
 github.com/PuerkitoBio/goquery v1.5.0/go.mod h1:qD2PgZ9lccMbQlc7eEOjaeRlFQON7xY8kdmcsrnKqMg=
+github.com/Seklfreak/geverse v0.0.0-20190817092859-48c631630586 h1:/CeD/ANJZ1YWvrnpTf5hCYRxCnb3tlkIc6JAd3R5aEo=
+github.com/Seklfreak/geverse v0.0.0-20190817092859-48c631630586/go.mod h1:wwBflTGJswLXVWg6kBM5vvno3yBNRytF2VeDSUb+Xl0=
 github.com/Seklfreak/ginside v0.0.0-20190628104355-ea7696e2602a h1:Re64c4VzyvWctmR/JUwrmgOEIb4K6mIzX/QwhQcTTHU=
 github.com/Seklfreak/ginside v0.0.0-20190628104355-ea7696e2602a/go.mod h1:8qsq6mWde1YA5QOHDTDwue0MRjTw57fOug7qqMJpHhA=
 github.com/Seklfreak/ginsta v0.0.0-20190516055424-e66040c5a770 h1:azhYWaSXHcrQFgYRAyOzEcwStSN/taAm8eabZIBDI8U=

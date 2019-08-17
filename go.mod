@@ -1,6 +1,7 @@
 module gitlab.com/Cacophony/Worker
 
 require (
+	github.com/Seklfreak/geverse v0.0.0-20190817092859-48c631630586
 	github.com/Seklfreak/ginside v0.0.0-20190628104355-ea7696e2602a
 	github.com/Seklfreak/ginsta v0.0.0-20190516055424-e66040c5a770
 	github.com/bsm/redis-lock v8.0.0+incompatible
