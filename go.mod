@@ -1,7 +1,7 @@
 module gitlab.com/Cacophony/Worker
 
 require (
-	github.com/Seklfreak/geverse v0.0.0-20190817092859-48c631630586
+	github.com/Seklfreak/geverse v0.0.0-20190821202219-e17f58893c10
 	github.com/Seklfreak/ginside v0.0.0-20190628104355-ea7696e2602a
 	github.com/Seklfreak/ginsta v0.0.0-20190516055424-e66040c5a770
 	github.com/bsm/redis-lock v8.0.0+incompatible
@@ -14,6 +14,6 @@ require (
 	github.com/mmcdole/gofeed v1.0.0-beta2
 	github.com/mmcdole/goxpp v0.0.0-20181012175147-0068e33feabf // indirect
 	github.com/pkg/errors v0.8.1
-	gitlab.com/Cacophony/go-kit v0.0.0-20190627193111-88b6e71cda8e
+	gitlab.com/Cacophony/go-kit v0.0.0-20190821200127-bf46b06b0770
 	go.uber.org/zap v1.10.0
 )

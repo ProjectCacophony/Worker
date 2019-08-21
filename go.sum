@@ -36,8 +36,8 @@ github.com/Masterminds/sprig v2.20.0+incompatible h1:dJTKKuUkYW3RMFdQFXPU/s6hg10
 github.com/Masterminds/sprig v2.20.0+incompatible/go.mod h1:y6hNFY5UBTIWBxnzTeuNhlNS5hqE0NB0E6fgfo2Br3o=
 github.com/PuerkitoBio/goquery v1.5.0 h1:uGvmFXOA73IKluu/F84Xd1tt/z07GYm8X49XKHP7EJk=
 github.com/PuerkitoBio/goquery v1.5.0/go.mod h1:qD2PgZ9lccMbQlc7eEOjaeRlFQON7xY8kdmcsrnKqMg=
-github.com/Seklfreak/geverse v0.0.0-20190817092859-48c631630586 h1:/CeD/ANJZ1YWvrnpTf5hCYRxCnb3tlkIc6JAd3R5aEo=
-github.com/Seklfreak/geverse v0.0.0-20190817092859-48c631630586/go.mod h1:wwBflTGJswLXVWg6kBM5vvno3yBNRytF2VeDSUb+Xl0=
+github.com/Seklfreak/geverse v0.0.0-20190821202219-e17f58893c10 h1:XyH3M125PahEeeP9dPq2H5LErvD4uxgMjeGKFcij1No=
+github.com/Seklfreak/geverse v0.0.0-20190821202219-e17f58893c10/go.mod h1:wwBflTGJswLXVWg6kBM5vvno3yBNRytF2VeDSUb+Xl0=
 github.com/Seklfreak/ginside v0.0.0-20190628104355-ea7696e2602a h1:Re64c4VzyvWctmR/JUwrmgOEIb4K6mIzX/QwhQcTTHU=
 github.com/Seklfreak/ginside v0.0.0-20190628104355-ea7696e2602a/go.mod h1:8qsq6mWde1YA5QOHDTDwue0MRjTw57fOug7qqMJpHhA=
 github.com/Seklfreak/ginsta v0.0.0-20190516055424-e66040c5a770 h1:azhYWaSXHcrQFgYRAyOzEcwStSN/taAm8eabZIBDI8U=
@@ -237,8 +237,8 @@ github.com/uber/jaeger-client-go v2.15.0+incompatible/go.mod h1:WVhlPFC8FDjOFMMW
 github.com/uber/jaeger-lib v1.5.0/go.mod h1:ComeNDZlWwrWnDv8aPp0Ba6+uUTzImX/AauajbLI56U=
 github.com/xdg/scram v0.0.0-20180814205039-7eeb5667e42c/go.mod h1:lB8K/P019DLNhemzwFU4jHLhdvlE6uDZjXFejJXr49I=
 github.com/xdg/stringprep v1.0.0/go.mod h1:Jhud4/sHMO4oL310DaZAKk9ZaJ08SJfe+sJh0HrGL1Y=
-gitlab.com/Cacophony/go-kit v0.0.0-20190627193111-88b6e71cda8e h1:urTTXgLUTLTIXz8VyYocV/haQqb2d+Pg1pnThR1XO7g=
-gitlab.com/Cacophony/go-kit v0.0.0-20190627193111-88b6e71cda8e/go.mod h1:HijGEFiq2c2Ii0I8JIcWpvEIrhoj+9wqDEEpwKSC1Gg=
+gitlab.com/Cacophony/go-kit v0.0.0-20190821200127-bf46b06b0770 h1:99aAhfq93uR9wKas+JPDVXfZDAYhK8YpYWbMJhSQ8bs=
+gitlab.com/Cacophony/go-kit v0.0.0-20190821200127-bf46b06b0770/go.mod h1:Khn4hINjJFHKbB0YccNv/0/+C9g6LYHZDS3Ck0jBJlA=
 go.mongodb.org/mongo-driver v1.0.1/go.mod h1:u7ryQJ+DOzQmeO7zB6MHyr8jkEQvC8vH7qLUO4lqsUM=
 go.opencensus.io v0.15.0/go.mod h1:UffZAU+4sDEINUGP/B7UfBBkq4fqLu9zXAX7ke6CHW0=
 go.opencensus.io v0.20.1/go.mod h1:6WKK9ahsWS3RSO+PY9ZHZUfv2irvY6gN279GOPZjmmk=
@@ -398,6 +398,8 @@ honnef.co/go/tools v0.0.0-20180728063816-88497007e858/go.mod h1:rf3lG4BRIbNafJWh
 honnef.co/go/tools v0.0.0-20190102054323-c2f93a96b099/go.mod h1:rf3lG4BRIbNafJWhAfAdb/ePZxsR/4RtNHQocxwk9r4=
 honnef.co/go/tools v0.0.0-20190106161140-3f1c8253044a/go.mod h1:rf3lG4BRIbNafJWhAfAdb/ePZxsR/4RtNHQocxwk9r4=
 honnef.co/go/tools v0.0.0-20190418001031-e561f6794a2a/go.mod h1:rf3lG4BRIbNafJWhAfAdb/ePZxsR/4RtNHQocxwk9r4=
+mvdan.cc/xurls/v2 v2.0.0 h1:r1zSOSNS/kqtpmATyMMMvaZ4/djsesbYz5kr0+qMRWc=
+mvdan.cc/xurls/v2 v2.0.0/go.mod h1:2/webFPYOXN9jp/lzuj0zuAVlF+9g4KPFJANH1oJhRU=
 pack.ag/amqp v0.8.0/go.mod h1:4/cbmt4EJXSKlG6LCfWHoqmN0uFdy5i/+YFz+fTfhV4=
 pack.ag/amqp v0.11.0/go.mod h1:4/cbmt4EJXSKlG6LCfWHoqmN0uFdy5i/+YFz+fTfhV4=
 rsc.io/binaryregexp v0.2.0/go.mod h1:qTv7/COck+e2FymRvadv62gMdZztPaShugOCi3I+8D8=
