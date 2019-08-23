@@ -3,7 +3,7 @@ module gitlab.com/Cacophony/Worker
 require (
 	github.com/Seklfreak/geverse v0.0.0-20190821202219-e17f58893c10
 	github.com/Seklfreak/ginside v0.0.0-20190628104355-ea7696e2602a
-	github.com/Seklfreak/ginsta v0.0.0-20190516055424-e66040c5a770
+	github.com/Seklfreak/ginsta v0.0.0-20190823171228-1f3ad349be89
 	github.com/bsm/redis-lock v8.0.0+incompatible
 	github.com/bwmarrin/discordgo v0.16.1-0.20190608205439-347a4f69b0b5
 	github.com/getsentry/raven-go v0.2.0

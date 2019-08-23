@@ -20,7 +20,7 @@ import (
 )
 
 const (
-	checkInterval = 1 * time.Hour
+	checkInterval = 2 * time.Hour
 	limit         = 10
 
 	selectQuery = `
