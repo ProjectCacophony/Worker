@@ -29,6 +29,9 @@ type Entry struct {
 
 	NoticeFeedLastCheck time.Time
 	NoticeFeedCheck     feed.Check `gorm:"embedded;embedded_prefix:notice_"`
+
+	MomentFeedLastCheck time.Time
+	MomentFeedCheck     feed.Check `gorm:"embedded;embedded_prefix:moment_"`
 }
 
 func (*Entry) TableName() string {
