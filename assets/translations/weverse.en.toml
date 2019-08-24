@@ -15,6 +15,14 @@
 {{end}}\
 "
 
+"weverse-moment.post.content" = "\
+**New {{.post.Community.Name}} Moment by {{.post.CommunityUser.ProfileNickname}} on Weverse**\n\
+{{if .post.Body}}{{.post.Body | HideEmbeds}}\n{{end}}\
+{{range $mediaURL := .mediaURLs}}\
+{{template \"weverse.macro.link\" $mediaURL}}\
+{{end}}\
+"
+
 "weverse-media.post.content" = "\
 **New {{.entry.WeverseChannelName}} Media on Weverse**\n\
 {{if .post.Title}}**{{.post.Title | HideEmbeds}}**\n{{end}}\
