@@ -16,6 +16,7 @@ import (
 	stockssymbols "gitlab.com/Cacophony/Worker/plugins/stocks-symbols"
 	weverseartist "gitlab.com/Cacophony/Worker/plugins/weverse-artist"
 	weversemedia "gitlab.com/Cacophony/Worker/plugins/weverse-media"
+	weversenotice "gitlab.com/Cacophony/Worker/plugins/weverse-notice"
 	"gitlab.com/Cacophony/go-kit/events"
 	"gitlab.com/Cacophony/go-kit/featureflag"
 	"gitlab.com/Cacophony/go-kit/interfaces"
@@ -41,17 +42,19 @@ type Plugin interface {
 
 var (
 	PluginList = []Plugin{
+		// &instagramigtv.Plugin{},
+
 		&gall.Plugin{},
 		&rss.Plugin{},
 		&instagram.Plugin{},
 		&instagramstories.Plugin{},
-		// &instagramigtv.Plugin{},
 		&serverlist.Plugin{},
 		&stockssymbols.Plugin{},
 		&eventscheduler.Plugin{},
 		&patrons.Plugin{},
 		&weverseartist.Plugin{},
 		&weversemedia.Plugin{},
+		&weversenotice.Plugin{},
 	}
 
 	LocalizationsList []interfaces.Localization

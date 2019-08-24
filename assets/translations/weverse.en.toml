@@ -8,19 +8,26 @@
 "
 
 "weverse-artist.post.content" = "\
-**New {{.post.Community.Name}} Weverse Artist Post by {{.post.CommunityUser.ProfileNickname}}**\n\
+**New {{.post.Community.Name}} Post by {{.post.CommunityUser.ProfileNickname}} on Weverse**\n\
 {{if .post.Body}}{{.post.Body | HideEmbeds}}\n{{end}}\
 {{range $mediaURL := .mediaURLs}}\
 {{template \"weverse.macro.link\" $mediaURL}}\
 {{end}}\
 "
+
 "weverse-media.post.content" = "\
-**New {{.entry.WeverseChannelName}} Weverse Media**\n\
+**New {{.entry.WeverseChannelName}} Media on Weverse**\n\
 {{if .post.Title}}**{{.post.Title | HideEmbeds}}**\n{{end}}\
 {{if .post.Body}}{{.post.Body | HideEmbeds}}\n{{end}}\
 {{range $mediaURL := .mediaURLs}}\
 {{template \"weverse.macro.link\" $mediaURL}}\
 {{end}}\
+"
+
+"weverse-notice.post.content" = "\
+**New {{.entry.WeverseChannelName}} Notice on Weverse**\n\
+{{if .post.Label}}`[{{.post.Label}}]` {{end}}**{{.post.Title}}**\n\
+<{{.post.Link}}>\
 "
 
 "weverse.post.leftover-links" = "\
