@@ -9,7 +9,6 @@ import (
 	eventscheduler "gitlab.com/Cacophony/Worker/plugins/event-scheduler"
 	"gitlab.com/Cacophony/Worker/plugins/gall"
 	"gitlab.com/Cacophony/Worker/plugins/instagram"
-	instagramigtv "gitlab.com/Cacophony/Worker/plugins/instagram-igtv"
 	instagramstories "gitlab.com/Cacophony/Worker/plugins/instagram-stories"
 	"gitlab.com/Cacophony/Worker/plugins/patrons"
 	"gitlab.com/Cacophony/Worker/plugins/rss"
@@ -46,7 +45,7 @@ var (
 		&rss.Plugin{},
 		&instagram.Plugin{},
 		&instagramstories.Plugin{},
-		&instagramigtv.Plugin{},
+		// &instagramigtv.Plugin{},
 		&serverlist.Plugin{},
 		&stockssymbols.Plugin{},
 		&eventscheduler.Plugin{},
