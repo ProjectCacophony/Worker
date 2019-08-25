@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/Seklfreak/ginsta"
-
 	"github.com/go-redis/redis"
 
 	"gitlab.com/Cacophony/go-kit/localization"
@@ -28,6 +27,7 @@ WHERE id IN (
   SELECT id
   FROM instagram_entries
   WHERE deleted_at IS NULL
+  AND disable_post_feed = false
   AND instagram_account_id IN (
     SELECT instagram_account_id
     FROM instagram_entries
