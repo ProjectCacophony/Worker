@@ -21,7 +21,7 @@ import (
 
 const (
 	checkInterval = 10 * time.Minute
-	limit         = 10
+	limit         = 50
 	postType      = "moment"
 
 	selectQuery = `

@@ -19,7 +19,7 @@ import (
 
 const (
 	checkInterval = time.Minute * 10
-	limit         = 10
+	limit         = 50
 
 	selectQuery = `
 UPDATE gall_entries

@@ -18,7 +18,7 @@ import (
 
 const (
 	checkInterval = 10 * time.Minute
-	limit         = 10
+	limit         = 50
 
 	selectQuery = `
 UPDATE instagram_entries

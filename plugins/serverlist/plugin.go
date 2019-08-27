@@ -15,7 +15,7 @@ import (
 
 const (
 	checkInterval = time.Hour * 24
-	limit         = 10
+	limit         = 25
 
 	selectQuery = `
 UPDATE serverlist_servers

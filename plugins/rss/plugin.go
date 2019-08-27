@@ -19,7 +19,7 @@ import (
 
 const (
 	checkInterval = time.Minute * 15
-	limit         = 10
+	limit         = 100
 
 	selectQuery = `
 UPDATE rss_entries
