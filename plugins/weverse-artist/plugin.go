@@ -35,6 +35,7 @@ WHERE id IN (
     SELECT weverse_channel_id
     FROM weverse_entries
     WHERE deleted_at IS NULL
+    AND disable_artist_feed = false
     GROUP BY weverse_channel_id
   	HAVING MAX(artist_feed_last_check) < $1
     LIMIT $2

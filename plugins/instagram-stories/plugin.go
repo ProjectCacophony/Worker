@@ -30,11 +30,11 @@ WHERE id IN (
   SELECT id
   FROM instagram_entries
   WHERE deleted_at IS NULL
-  AND disable_story_feed = false
   AND instagram_account_id IN (
     SELECT instagram_account_id
     FROM instagram_entries
     WHERE deleted_at IS NULL
+    AND disable_story_feed = false
     GROUP BY instagram_account_id
   	HAVING MAX(stories_last_check) < $1
     LIMIT $2
