@@ -1,7 +1,7 @@
 "instagram.post.content" = "\
 **New Instagram Post by {{.entry.InstagramUsername}}**\n\
 <{{.url}}>\n\
-{{if .post.Caption}}{{.post.Caption | HideEmbeds}}\n{{end}}\
+{{if .post.Caption}}{{.post.Caption | HideEmbeds | QuoteText}}\n{{end}}\
 {{range $mediaURL := .mediaURLs}}\
 {{if Contains $mediaURL \".mp4\"}}\
 {{$mediaURL}}\
