@@ -142,7 +142,7 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post *ginsta.Video) error {
 	if entry.DM {
 		channelID, err = discord.DMChannel(p.redis, session, channelID)
 		if err != nil {
-			return err
+			return errors.Wrap(err, "unable to create dm channel")
 		}
 	}
 
@@ -156,7 +156,7 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post *ginsta.Video) error {
 		"post", post, "entry", entry, "url", url,
 	)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "unable to send message")
 	}
 
 	messageIDs := make([]string, len(messages))

@@ -3,13 +3,13 @@ package instagram
 import (
 	"database/sql"
 	"fmt"
+	"strconv"
 	"strings"
 	"time"
 
 	"github.com/Seklfreak/ginsta"
-	"gitlab.com/Cacophony/go-kit/permissions"
-
 	"github.com/pkg/errors"
+	"gitlab.com/Cacophony/go-kit/permissions"
 
 	"gitlab.com/Cacophony/go-kit/feed"
 
@@ -49,16 +49,16 @@ func (p *Plugin) checkBundles(run *common.Run, tx *sql.Tx, bundles boardCheckBun
 		for _, entry := range entries {
 			err = p.checkEntry(run, tx, entry, posts)
 			if err != nil {
-				run.Except(err, "account_id", checkInfo.AccountID)
+				run.Except(err, "account_id", checkInfo.AccountID, "entry_id", strconv.Itoa(int(entry.ID)))
 
 				err = checkSet(run.Context(), tx, feed.ErrorStatus, err.Error(), entry)
 				if err != nil {
-					run.Except(err, "account_id", checkInfo.AccountID)
+					run.Except(err, "account_id", checkInfo.AccountID, "entry_id", strconv.Itoa(int(entry.ID)))
 				}
 			} else {
 				err = checkSet(run.Context(), tx, feed.SuccessStatus, "", entry)
 				if err != nil {
-					run.Except(err, "account_id", checkInfo.AccountID)
+					run.Except(err, "account_id", checkInfo.AccountID, "entry_id", strconv.Itoa(int(entry.ID)))
 				}
 			}
 		}
@@ -175,7 +175,7 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post *ginsta.Post) error {
 	if entry.DM {
 		channelID, err = discord.DMChannel(p.redis, session, channelID)
 		if err != nil {
-			return err
+			return errors.Wrap(err, "unable to create dm channel")
 		}
 	}
 
@@ -189,7 +189,7 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post *ginsta.Post) error {
 		"post", post, "entry", entry, "url", url, "mediaURLs", mediaURLsFirst,
 	)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "unable to send main message")
 	}
 
 	messageIDs := make([]string, len(messages))
@@ -208,7 +208,7 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post *ginsta.Post) error {
 			"mediaURLs", mediaURLsLeftItem,
 		)
 		if err != nil {
-			return err
+			return errors.Wrap(err, "unable to send media url message")
 		}
 
 		for _, message := range messages {
