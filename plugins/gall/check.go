@@ -180,6 +180,7 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post ginside.Post) error {
 		"post", post, "board", entry,
 	)
 	if err != nil {
+		discord.CheckBlockDMChannel(p.redis, session, channelID, err)
 		return err
 	}
 

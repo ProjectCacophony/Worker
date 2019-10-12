@@ -156,6 +156,7 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post *ginsta.Video) error {
 		"post", post, "entry", entry, "url", url,
 	)
 	if err != nil {
+		discord.CheckBlockDMChannel(p.redis, session, channelID, err)
 		return errors.Wrap(err, "unable to send message")
 	}
 
