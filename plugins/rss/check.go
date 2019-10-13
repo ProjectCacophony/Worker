@@ -185,7 +185,7 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post *gofeed.Item) error {
 		"post", post, "entry", entry,
 	)
 	if err != nil {
-		discord.CheckBlockDMChannel(p.redis, session, channelID, err)
+		discord.CheckBlockDMChannel(p.redis, session, entry.ChannelID, err)
 		return err
 	}
 

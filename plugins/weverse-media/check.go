@@ -171,7 +171,7 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post *geverse.MediaPost) error
 		"post", post, "entry", entry, "mediaURLs", mediaURLsFirst,
 	)
 	if err != nil {
-		discord.CheckBlockDMChannel(p.redis, session, channelID, err)
+		discord.CheckBlockDMChannel(p.redis, session, entry.ChannelOrUserID, err)
 		return err
 	}
 
@@ -192,7 +192,7 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post *geverse.MediaPost) error
 				"mediaURLs", mediaURLsLeftItem,
 			)
 			if err != nil {
-				discord.CheckBlockDMChannel(p.redis, session, channelID, err)
+				discord.CheckBlockDMChannel(p.redis, session, entry.ChannelOrUserID, err)
 				return err
 			}
 

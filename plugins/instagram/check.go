@@ -189,7 +189,7 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post *ginsta.Post) error {
 		"post", post, "entry", entry, "url", url, "mediaURLs", mediaURLsFirst,
 	)
 	if err != nil {
-		discord.CheckBlockDMChannel(p.redis, session, channelID, err)
+		discord.CheckBlockDMChannel(p.redis, session, entry.ChannelOrUserID, err)
 		return errors.Wrap(err, "unable to send main message")
 	}
 
@@ -209,7 +209,7 @@ func (p *Plugin) post(_ *common.Run, entry Entry, post *ginsta.Post) error {
 			"mediaURLs", mediaURLsLeftItem,
 		)
 		if err != nil {
-			discord.CheckBlockDMChannel(p.redis, session, channelID, err)
+			discord.CheckBlockDMChannel(p.redis, session, entry.ChannelOrUserID, err)
 			return errors.Wrap(err, "unable to send media url message")
 		}
 
