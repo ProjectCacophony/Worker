@@ -7,6 +7,7 @@ import (
 	"github.com/jinzhu/gorm"
 	"gitlab.com/Cacophony/Worker/plugins/common"
 	eventscheduler "gitlab.com/Cacophony/Worker/plugins/event-scheduler"
+	eventlogauditlog "gitlab.com/Cacophony/Worker/plugins/eventlog-auditlog"
 	"gitlab.com/Cacophony/Worker/plugins/gall"
 	"gitlab.com/Cacophony/Worker/plugins/instagram"
 	instagramstories "gitlab.com/Cacophony/Worker/plugins/instagram-stories"
@@ -57,6 +58,7 @@ var (
 		&weversemedia.Plugin{},
 		&weversenotice.Plugin{},
 		&weversemoment.Plugin{},
+		&eventlogauditlog.Plugin{},
 	}
 
 	LocalizationsList []interfaces.Localization
