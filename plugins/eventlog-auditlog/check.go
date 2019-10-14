@@ -84,6 +84,12 @@ func (p *Plugin) handleEntry(run *common.Run, tx *sql.Tx, item Item, auditlog *d
 						run.Except(err)
 					}
 				}
+				if entry.UserID != "" {
+					err = setAuthor(run.Context(), tx, item.ID, entry.UserID)
+					if err != nil {
+						run.Except(err)
+					}
+				}
 
 				changed = true
 			}
@@ -93,6 +99,12 @@ func (p *Plugin) handleEntry(run *common.Run, tx *sql.Tx, item Item, auditlog *d
 			if matchesTarget(auditlog, i, item, discordgo.AuditLogActionMemberBanRemove) {
 				if entry.Reason != "" {
 					err = addReason(run.Context(), tx, item.ID, entry.Reason)
+					if err != nil {
+						run.Except(err)
+					}
+				}
+				if entry.UserID != "" {
+					err = setAuthor(run.Context(), tx, item.ID, entry.UserID)
 					if err != nil {
 						run.Except(err)
 					}
@@ -110,6 +122,12 @@ func (p *Plugin) handleEntry(run *common.Run, tx *sql.Tx, item Item, auditlog *d
 						run.Except(err)
 					}
 				}
+				if entry.UserID != "" {
+					err = setAuthor(run.Context(), tx, item.ID, entry.UserID)
+					if err != nil {
+						run.Except(err)
+					}
+				}
 
 				err = addItemOption(run.Context(), tx, item.ID, "leave_type", "", "ban", "text")
 				if err != nil {
@@ -120,6 +138,12 @@ func (p *Plugin) handleEntry(run *common.Run, tx *sql.Tx, item Item, auditlog *d
 			if matchesTarget(auditlog, i, item, discordgo.AuditLogActionMemberKick) {
 				if entry.Reason != "" {
 					err = addReason(run.Context(), tx, item.ID, entry.Reason)
+					if err != nil {
+						run.Except(err)
+					}
+				}
+				if entry.UserID != "" {
+					err = setAuthor(run.Context(), tx, item.ID, entry.UserID)
 					if err != nil {
 						run.Except(err)
 					}

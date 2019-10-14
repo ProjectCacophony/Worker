@@ -26,6 +26,25 @@ WHERE id = $2
 	return err
 }
 
+func setAuthor(ctx context.Context, tx *sql.Tx, entryID uint, authorID string) error {
+	if entryID == 0 {
+		return errors.New("entryID cannot be empty")
+	}
+	if authorID == "" {
+		return errors.New("authorID cannot be empty")
+	}
+
+	query := `
+UPDATE eventlog_items
+SET author_id = $1
+WHERE id = $2
+;
+`
+
+	_, err := tx.ExecContext(ctx, query, authorID, entryID)
+	return err
+}
+
 func addItemOption(ctx context.Context, tx *sql.Tx, entryID uint, key, previousValue, newValue, optionType string) error {
 	if entryID == 0 {
 		return errors.New("entryID cannot be empty")
