@@ -59,7 +59,7 @@ func (p *Plugin) checkBundles(run *common.Run, tx *sql.Tx, bundles boardCheckBun
 		}
 
 		for _, item := range bundle {
-			changed = p.handleEntry(run, tx, item, &bigAuditLog)
+			changed = p.handleEntry(run, tx, info.BotID, item, &bigAuditLog)
 			if changed {
 				updated = append(updated, item)
 			}
@@ -69,7 +69,7 @@ func (p *Plugin) checkBundles(run *common.Run, tx *sql.Tx, bundles boardCheckBun
 	return updated
 }
 
-func (p *Plugin) handleEntry(run *common.Run, tx *sql.Tx, item Item, auditlog *discordgo.GuildAuditLog) (changed bool) {
+func (p *Plugin) handleEntry(run *common.Run, tx *sql.Tx, botID string, item Item, auditlog *discordgo.GuildAuditLog) (changed bool) {
 	var err error
 
 	for i, entry := range auditlog.AuditLogEntries {
@@ -79,7 +79,7 @@ func (p *Plugin) handleEntry(run *common.Run, tx *sql.Tx, item Item, auditlog *d
 
 			if matchesTarget(auditlog, i, item, discordgo.AuditLogActionMemberBanAdd) {
 				if entry.Reason != "" {
-					err = addReason(run.Context(), tx, item.ID, entry.Reason)
+					err = addItemOption(run.Context(), tx, item.ID, "reason", "", entry.Reason, "text", botID)
 					if err != nil {
 						run.Except(err)
 					}
@@ -98,7 +98,7 @@ func (p *Plugin) handleEntry(run *common.Run, tx *sql.Tx, item Item, auditlog *d
 
 			if matchesTarget(auditlog, i, item, discordgo.AuditLogActionMemberBanRemove) {
 				if entry.Reason != "" {
-					err = addReason(run.Context(), tx, item.ID, entry.Reason)
+					err = addItemOption(run.Context(), tx, item.ID, "reason", "", entry.Reason, "text", botID)
 					if err != nil {
 						run.Except(err)
 					}
@@ -117,7 +117,7 @@ func (p *Plugin) handleEntry(run *common.Run, tx *sql.Tx, item Item, auditlog *d
 
 			if matchesTarget(auditlog, i, item, discordgo.AuditLogActionMemberBanAdd) {
 				if entry.Reason != "" {
-					err = addReason(run.Context(), tx, item.ID, entry.Reason)
+					err = addItemOption(run.Context(), tx, item.ID, "reason", "", entry.Reason, "text", botID)
 					if err != nil {
 						run.Except(err)
 					}
@@ -129,7 +129,7 @@ func (p *Plugin) handleEntry(run *common.Run, tx *sql.Tx, item Item, auditlog *d
 					}
 				}
 
-				err = addItemOption(run.Context(), tx, item.ID, "leave_type", "", "ban", "text")
+				err = addItemOption(run.Context(), tx, item.ID, "leave_type", "", "ban", "text", botID)
 				if err != nil {
 					run.Except(err)
 				}
@@ -137,7 +137,7 @@ func (p *Plugin) handleEntry(run *common.Run, tx *sql.Tx, item Item, auditlog *d
 
 			if matchesTarget(auditlog, i, item, discordgo.AuditLogActionMemberKick) {
 				if entry.Reason != "" {
-					err = addReason(run.Context(), tx, item.ID, entry.Reason)
+					err = addItemOption(run.Context(), tx, item.ID, "reason", "", entry.Reason, "text", botID)
 					if err != nil {
 						run.Except(err)
 					}
@@ -149,7 +149,7 @@ func (p *Plugin) handleEntry(run *common.Run, tx *sql.Tx, item Item, auditlog *d
 					}
 				}
 
-				err = addItemOption(run.Context(), tx, item.ID, "leave_type", "", "kick", "text")
+				err = addItemOption(run.Context(), tx, item.ID, "leave_type", "", "kick", "text", botID)
 				if err != nil {
 					run.Except(err)
 				}

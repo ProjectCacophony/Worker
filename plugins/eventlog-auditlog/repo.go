@@ -7,25 +7,6 @@ import (
 	"time"
 )
 
-func addReason(ctx context.Context, tx *sql.Tx, entryID uint, reason string) error {
-	if entryID == 0 {
-		return errors.New("entryID cannot be empty")
-	}
-	if reason == "" {
-		return errors.New("reason cannot be empty")
-	}
-
-	query := `
-UPDATE eventlog_items
-SET reasons = array_append(reasons, $1)
-WHERE id = $2
-;
-`
-
-	_, err := tx.ExecContext(ctx, query, reason, entryID)
-	return err
-}
-
 func setAuthor(ctx context.Context, tx *sql.Tx, entryID uint, authorID string) error {
 	if entryID == 0 {
 		return errors.New("entryID cannot be empty")
@@ -45,7 +26,8 @@ WHERE id = $2
 	return err
 }
 
-func addItemOption(ctx context.Context, tx *sql.Tx, entryID uint, key, previousValue, newValue, optionType string) error {
+// nolint: unparam
+func addItemOption(ctx context.Context, tx *sql.Tx, entryID uint, key, previousValue, newValue, optionType, botID string) error {
 	if entryID == 0 {
 		return errors.New("entryID cannot be empty")
 	}
@@ -57,12 +39,12 @@ func addItemOption(ctx context.Context, tx *sql.Tx, entryID uint, key, previousV
 	}
 
 	query := `
-INSERT INTO eventlog_item_options ("created_at", "updated_at", "item_id", "key", "previous_value", "new_value", "type")
-VALUES ($1, $2, $3, $4, $5, $6, $7)
+INSERT INTO eventlog_item_options ("created_at", "updated_at", "item_id", "key", "previous_value", "new_value", "type", "author_id")
+VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
 ;
 `
 
 	now := time.Now().UTC()
-	_, err := tx.ExecContext(ctx, query, now, now, entryID, key, previousValue, newValue, optionType)
+	_, err := tx.ExecContext(ctx, query, now, now, entryID, key, previousValue, newValue, optionType, botID)
 	return err
 }
