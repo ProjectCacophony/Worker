@@ -43,10 +43,10 @@ INSERT INTO eventlog_item_options ("created_at", "updated_at", "item_id", "key",
 VALUES ($1, $1, $2, $3, $4, $5, $6, $7)
 ON CONFLICT ("author_id", "key")
 DO UPDATE
-SET "updated_at" = $1
-,   "previous_value" = $4
-,   "new_value" = $5
-,   "type" = $6
+SET "updated_at" = EXCLUDED.updated_At
+,   "previous_value" = EXCLUDED.previous_value
+,   "new_value" = EXCLUDED.new_value
+,   "type" = EXCLUDED.type
 ;
 `
 
