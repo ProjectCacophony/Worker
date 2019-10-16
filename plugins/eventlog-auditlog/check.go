@@ -39,6 +39,8 @@ func (p *Plugin) checkBundles(run *common.Run, tx *sql.Tx, bundles boardCheckBun
 			auditLogActionTypes = append(auditLogActionTypes, discordgo.AuditLogActionMemberBanRemove)
 		case "discord_leave":
 			auditLogActionTypes = append(auditLogActionTypes, discordgo.AuditLogActionMemberBanAdd, discordgo.AuditLogActionMemberKick)
+		case "discord_channel_create":
+			auditLogActionTypes = append(auditLogActionTypes, discordgo.AuditLogActionChannelCreate)
 		}
 
 		if len(auditLogActionTypes) <= 0 {
@@ -156,6 +158,26 @@ func (p *Plugin) handleEntry(run *common.Run, tx *sql.Tx, botID string, item Ite
 			}
 
 			changed = true
+
+		case "discord_channel_create":
+
+			if matchesTarget(auditlog, i, item, discordgo.AuditLogActionChannelCreate) {
+				if entry.Reason != "" {
+					err = addItemOption(run.Context(), tx, item.ID, "reason", "", entry.Reason, "text", botID)
+					if err != nil {
+						run.Except(err)
+					}
+				}
+				if entry.UserID != "" {
+					err = setAuthor(run.Context(), tx, item.ID, entry.UserID)
+					if err != nil {
+						run.Except(err)
+					}
+				}
+
+				changed = true
+			}
+
 		}
 
 	}
