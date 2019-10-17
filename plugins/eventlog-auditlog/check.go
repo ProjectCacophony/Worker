@@ -43,6 +43,8 @@ func (p *Plugin) checkBundles(run *common.Run, tx *sql.Tx, bundles boardCheckBun
 			auditLogActionTypes = append(auditLogActionTypes, discordgo.AuditLogActionChannelCreate)
 		case "discord_role_create":
 			auditLogActionTypes = append(auditLogActionTypes, discordgo.AuditLogActionRoleCreate)
+		case "discord_guild_update":
+			auditLogActionTypes = append(auditLogActionTypes, discordgo.AuditLogActionGuildUpdate)
 		}
 
 		if len(auditLogActionTypes) <= 0 {
@@ -183,6 +185,25 @@ func (p *Plugin) handleEntry(run *common.Run, tx *sql.Tx, botID string, item Ite
 		case "discord_role_create":
 
 			if matchesTarget(auditlog, i, item, discordgo.AuditLogActionRoleCreate) {
+				if entry.Reason != "" {
+					err = addItemOption(run.Context(), tx, item.ID, "reason", "", entry.Reason, "text", botID)
+					if err != nil {
+						run.Except(err)
+					}
+				}
+				if entry.UserID != "" {
+					err = setAuthor(run.Context(), tx, item.ID, entry.UserID)
+					if err != nil {
+						run.Except(err)
+					}
+				}
+
+				changed = true
+			}
+
+		case "discord_guild_update":
+
+			if matchesTarget(auditlog, i, item, discordgo.AuditLogActionGuildUpdate) {
 				if entry.Reason != "" {
 					err = addItemOption(run.Context(), tx, item.ID, "reason", "", entry.Reason, "text", botID)
 					if err != nil {
