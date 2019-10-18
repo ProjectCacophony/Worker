@@ -55,6 +55,12 @@ func (p *Plugin) checkBundles(run *common.Run, tx *sql.Tx, bundles boardCheckBun
 			auditLogActionTypes = append(auditLogActionTypes, discordgo.AuditLogActionRoleUpdate)
 		case "discord_role_delete":
 			auditLogActionTypes = append(auditLogActionTypes, discordgo.AuditLogActionRoleDelete)
+		case "discord_emoji_create":
+			auditLogActionTypes = append(auditLogActionTypes, discordgo.AuditLogActionEmojiCreate)
+		case "discord_emoji_update":
+			auditLogActionTypes = append(auditLogActionTypes, discordgo.AuditLogActionEmojiUpdate)
+		case "discord_emoji_delete":
+			auditLogActionTypes = append(auditLogActionTypes, discordgo.AuditLogActionEmojiDelete)
 		}
 
 		if len(auditLogActionTypes) <= 0 {
@@ -309,6 +315,63 @@ func (p *Plugin) handleEntry(run *common.Run, tx *sql.Tx, botID string, item Ite
 		case "discord_role_delete":
 
 			if matchesTarget(auditlog, i, item, discordgo.AuditLogActionRoleDelete) {
+				if entry.Reason != "" {
+					err = addItemOption(run.Context(), tx, item.ID, "reason", "", entry.Reason, "text", botID)
+					if err != nil {
+						run.Except(err)
+					}
+				}
+				if entry.UserID != "" {
+					err = setAuthor(run.Context(), tx, item.ID, entry.UserID)
+					if err != nil {
+						run.Except(err)
+					}
+				}
+
+				changed = true
+			}
+
+		case "discord_emoji_create":
+
+			if matchesTarget(auditlog, i, item, discordgo.AuditLogActionEmojiCreate) {
+				if entry.Reason != "" {
+					err = addItemOption(run.Context(), tx, item.ID, "reason", "", entry.Reason, "text", botID)
+					if err != nil {
+						run.Except(err)
+					}
+				}
+				if entry.UserID != "" {
+					err = setAuthor(run.Context(), tx, item.ID, entry.UserID)
+					if err != nil {
+						run.Except(err)
+					}
+				}
+
+				changed = true
+			}
+
+		case "discord_emoji_update":
+
+			if matchesTarget(auditlog, i, item, discordgo.AuditLogActionEmojiUpdate) {
+				if entry.Reason != "" {
+					err = addItemOption(run.Context(), tx, item.ID, "reason", "", entry.Reason, "text", botID)
+					if err != nil {
+						run.Except(err)
+					}
+				}
+				if entry.UserID != "" {
+					err = setAuthor(run.Context(), tx, item.ID, entry.UserID)
+					if err != nil {
+						run.Except(err)
+					}
+				}
+
+				changed = true
+			}
+
+		case "discord_emoji_delete":
+
+			if matchesTarget(auditlog, i, item, discordgo.AuditLogActionEmojiDelete) {
 				if entry.Reason != "" {
 					err = addItemOption(run.Context(), tx, item.ID, "reason", "", entry.Reason, "text", botID)
 					if err != nil {
