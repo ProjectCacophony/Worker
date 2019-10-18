@@ -51,6 +51,10 @@ func (p *Plugin) checkBundles(run *common.Run, tx *sql.Tx, bundles boardCheckBun
 			auditLogActionTypes = append(auditLogActionTypes, discordgo.AuditLogActionChannelUpdate)
 		case "discord_channel_delete":
 			auditLogActionTypes = append(auditLogActionTypes, discordgo.AuditLogActionChannelDelete)
+		case "discord_role_update":
+			auditLogActionTypes = append(auditLogActionTypes, discordgo.AuditLogActionRoleUpdate)
+		case "discord_role_delete":
+			auditLogActionTypes = append(auditLogActionTypes, discordgo.AuditLogActionRoleDelete)
 		}
 
 		if len(auditLogActionTypes) <= 0 {
@@ -267,6 +271,44 @@ func (p *Plugin) handleEntry(run *common.Run, tx *sql.Tx, botID string, item Ite
 		case "discord_channel_delete":
 
 			if matchesTarget(auditlog, i, item, discordgo.AuditLogActionChannelDelete) {
+				if entry.Reason != "" {
+					err = addItemOption(run.Context(), tx, item.ID, "reason", "", entry.Reason, "text", botID)
+					if err != nil {
+						run.Except(err)
+					}
+				}
+				if entry.UserID != "" {
+					err = setAuthor(run.Context(), tx, item.ID, entry.UserID)
+					if err != nil {
+						run.Except(err)
+					}
+				}
+
+				changed = true
+			}
+
+		case "discord_role_update":
+
+			if matchesTarget(auditlog, i, item, discordgo.AuditLogActionRoleUpdate) {
+				if entry.Reason != "" {
+					err = addItemOption(run.Context(), tx, item.ID, "reason", "", entry.Reason, "text", botID)
+					if err != nil {
+						run.Except(err)
+					}
+				}
+				if entry.UserID != "" {
+					err = setAuthor(run.Context(), tx, item.ID, entry.UserID)
+					if err != nil {
+						run.Except(err)
+					}
+				}
+
+				changed = true
+			}
+
+		case "discord_role_delete":
+
+			if matchesTarget(auditlog, i, item, discordgo.AuditLogActionRoleDelete) {
 				if entry.Reason != "" {
 					err = addItemOption(run.Context(), tx, item.ID, "reason", "", entry.Reason, "text", botID)
 					if err != nil {
