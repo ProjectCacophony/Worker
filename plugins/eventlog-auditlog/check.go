@@ -61,6 +61,12 @@ func (p *Plugin) checkBundles(run *common.Run, tx *sql.Tx, bundles boardCheckBun
 			auditLogActionTypes = append(auditLogActionTypes, discordgo.AuditLogActionEmojiUpdate)
 		case "discord_emoji_delete":
 			auditLogActionTypes = append(auditLogActionTypes, discordgo.AuditLogActionEmojiDelete)
+		case "discord_webhook_create":
+			auditLogActionTypes = append(auditLogActionTypes, discordgo.AuditLogActionWebhookCreate)
+		case "discord_webhook_update":
+			auditLogActionTypes = append(auditLogActionTypes, discordgo.AuditLogActionWebhookUpdate)
+		case "discord_webhook_delete":
+			auditLogActionTypes = append(auditLogActionTypes, discordgo.AuditLogActionWebhookDelete)
 		}
 
 		if len(auditLogActionTypes) <= 0 {
@@ -372,6 +378,63 @@ func (p *Plugin) handleEntry(run *common.Run, tx *sql.Tx, botID string, item Ite
 		case "discord_emoji_delete":
 
 			if matchesTarget(auditlog, i, item, discordgo.AuditLogActionEmojiDelete) {
+				if entry.Reason != "" {
+					err = addItemOption(run.Context(), tx, item.ID, "reason", "", entry.Reason, "text", botID)
+					if err != nil {
+						run.Except(err)
+					}
+				}
+				if entry.UserID != "" {
+					err = setAuthor(run.Context(), tx, item.ID, entry.UserID)
+					if err != nil {
+						run.Except(err)
+					}
+				}
+
+				changed = true
+			}
+
+		case "discord_webhook_create":
+
+			if matchesTarget(auditlog, i, item, discordgo.AuditLogActionWebhookCreate) {
+				if entry.Reason != "" {
+					err = addItemOption(run.Context(), tx, item.ID, "reason", "", entry.Reason, "text", botID)
+					if err != nil {
+						run.Except(err)
+					}
+				}
+				if entry.UserID != "" {
+					err = setAuthor(run.Context(), tx, item.ID, entry.UserID)
+					if err != nil {
+						run.Except(err)
+					}
+				}
+
+				changed = true
+			}
+
+		case "discord_webhook_update":
+
+			if matchesTarget(auditlog, i, item, discordgo.AuditLogActionWebhookUpdate) {
+				if entry.Reason != "" {
+					err = addItemOption(run.Context(), tx, item.ID, "reason", "", entry.Reason, "text", botID)
+					if err != nil {
+						run.Except(err)
+					}
+				}
+				if entry.UserID != "" {
+					err = setAuthor(run.Context(), tx, item.ID, entry.UserID)
+					if err != nil {
+						run.Except(err)
+					}
+				}
+
+				changed = true
+			}
+
+		case "discord_webhook_delete":
+
+			if matchesTarget(auditlog, i, item, discordgo.AuditLogActionWebhookDelete) {
 				if entry.Reason != "" {
 					err = addItemOption(run.Context(), tx, item.ID, "reason", "", entry.Reason, "text", botID)
 					if err != nil {
