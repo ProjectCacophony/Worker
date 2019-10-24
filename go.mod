@@ -2,7 +2,7 @@ module gitlab.com/Cacophony/Worker
 
 require (
 	github.com/Seklfreak/geverse v0.0.0-20190824095322-5749a883618f
-	github.com/Seklfreak/ginside v0.0.0-20190628104355-ea7696e2602a
+	github.com/Seklfreak/ginside v0.0.0-20191024170614-28a1a8d723ad
 	github.com/Seklfreak/ginsta v0.0.0-20190823171228-1f3ad349be89
 	github.com/bsm/redis-lock v8.0.0+incompatible
 	github.com/bwmarrin/discordgo v0.16.1-0.20190608205439-347a4f69b0b5
