@@ -67,6 +67,10 @@ func (p *Plugin) checkBundles(run *common.Run, tx *sql.Tx, bundles boardCheckBun
 			auditLogActionTypes = append(auditLogActionTypes, discordgo.AuditLogActionWebhookUpdate)
 		case "discord_webhook_delete":
 			auditLogActionTypes = append(auditLogActionTypes, discordgo.AuditLogActionWebhookDelete)
+		case "discord_invite_update":
+			auditLogActionTypes = append(auditLogActionTypes, discordgo.AuditLogActionInviteUpdate)
+		case "discord_invite_delete":
+			auditLogActionTypes = append(auditLogActionTypes, discordgo.AuditLogActionInviteDelete)
 		}
 
 		if len(auditLogActionTypes) <= 0 {
@@ -447,6 +451,74 @@ func (p *Plugin) handleEntry(run *common.Run, tx *sql.Tx, botID string, item Ite
 						run.Except(err)
 					}
 				}
+				at, err := discordgo.SnowflakeTimestamp(entry.ID)
+				if err != nil {
+					run.Except(err)
+				}
+				if !at.IsZero() {
+					err = setCreatedAt(run.Context(), tx, item.ID, at)
+					if err != nil {
+						run.Except(err)
+					}
+				}
+
+				changed = true
+			}
+
+		case "discord_invite_update":
+
+			if matchesInvite(auditlog, i, item, discordgo.AuditLogActionInviteUpdate) {
+				if entry.Reason != "" {
+					err = addItemOption(run.Context(), tx, item.ID, "reason", "", entry.Reason, "text", botID)
+					if err != nil {
+						run.Except(err)
+					}
+				}
+				if entry.UserID != "" {
+					err = setAuthor(run.Context(), tx, item.ID, entry.UserID)
+					if err != nil {
+						run.Except(err)
+					}
+				}
+				at, err := discordgo.SnowflakeTimestamp(entry.ID)
+				if err != nil {
+					run.Except(err)
+				}
+				if !at.IsZero() {
+					err = setCreatedAt(run.Context(), tx, item.ID, at)
+					if err != nil {
+						run.Except(err)
+					}
+				}
+
+				changed = true
+			}
+
+		case "discord_invite_delete":
+
+			if matchesInvite(auditlog, i, item, discordgo.AuditLogActionInviteDelete) {
+				if entry.Reason != "" {
+					err = addItemOption(run.Context(), tx, item.ID, "reason", "", entry.Reason, "text", botID)
+					if err != nil {
+						run.Except(err)
+					}
+				}
+				if entry.UserID != "" {
+					err = setAuthor(run.Context(), tx, item.ID, entry.UserID)
+					if err != nil {
+						run.Except(err)
+					}
+				}
+				at, err := discordgo.SnowflakeTimestamp(entry.ID)
+				if err != nil {
+					run.Except(err)
+				}
+				if !at.IsZero() {
+					err = setCreatedAt(run.Context(), tx, item.ID, at)
+					if err != nil {
+						run.Except(err)
+					}
+				}
 
 				changed = true
 			}
@@ -475,9 +547,30 @@ func matchesTarget(auditlog *discordgo.GuildAuditLog, i int, item Item, auditLog
 	}
 
 	deltaDuration := item.CreatedAt.Sub(*entryTime).Seconds()
-	if deltaDuration > 5 || deltaDuration < -5 {
+	if deltaDuration > 1 || deltaDuration < -5 {
 		return false
 	}
 
 	return true
+}
+
+func matchesInvite(auditlog *discordgo.GuildAuditLog, i int, item Item, auditLogType int) bool {
+	entry := auditlog.AuditLogEntries[i]
+
+	if entry.ActionType != auditLogType {
+		return false
+	}
+
+	for _, change := range entry.Changes {
+		if change.Key != "code" {
+			continue
+		}
+
+		if change.OldValue == item.TargetValue ||
+			change.NewValue == item.TargetValue {
+			return true
+		}
+	}
+
+	return false
 }

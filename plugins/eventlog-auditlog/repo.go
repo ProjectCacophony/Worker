@@ -26,6 +26,25 @@ WHERE id = $2
 	return err
 }
 
+func setCreatedAt(ctx context.Context, tx *sql.Tx, entryID uint, createdAt time.Time) error {
+	if entryID == 0 {
+		return errors.New("entryID cannot be empty")
+	}
+	if createdAt.IsZero() {
+		return errors.New("createdAt cannot be empty")
+	}
+
+	query := `
+UPDATE eventlog_items
+SET created_at = $1, updated_at = $3
+WHERE id = $2
+;
+`
+
+	_, err := tx.ExecContext(ctx, query, createdAt, entryID, time.Now().UTC())
+	return err
+}
+
 // nolint: unparam
 func addItemOption(ctx context.Context, tx *sql.Tx, entryID uint, key, previousValue, newValue, optionType, botID string) error {
 	if entryID == 0 {
