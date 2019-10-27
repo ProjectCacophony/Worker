@@ -46,7 +46,7 @@ func (p *Plugin) checkBundles(run *common.Run, tx *sql.Tx, bundles boardCheckBun
 		case "discord_guild_update":
 			auditLogActionTypes = append(auditLogActionTypes, discordgo.AuditLogActionGuildUpdate)
 		case "discord_member_update":
-			auditLogActionTypes = append(auditLogActionTypes, discordgo.AuditLogActionMemberUpdate)
+			auditLogActionTypes = append(auditLogActionTypes, discordgo.AuditLogActionMemberUpdate, discordgo.AuditLogActionMemberRoleUpdate)
 		case "discord_channel_update":
 			auditLogActionTypes = append(auditLogActionTypes, discordgo.AuditLogActionChannelUpdate)
 		case "discord_channel_delete":
@@ -248,7 +248,8 @@ func (p *Plugin) handleEntry(run *common.Run, tx *sql.Tx, botID string, item Ite
 
 		case "discord_member_update":
 
-			if matchesTarget(auditlog, i, item, discordgo.AuditLogActionMemberUpdate) {
+			if matchesTarget(auditlog, i, item, discordgo.AuditLogActionMemberUpdate) ||
+				matchesTarget(auditlog, i, item, discordgo.AuditLogActionMemberRoleUpdate) {
 				if entry.Reason != "" {
 					err = addItemOption(run.Context(), tx, item.ID, "reason", "", entry.Reason, "text", botID)
 					if err != nil {
@@ -547,7 +548,7 @@ func matchesTarget(auditlog *discordgo.GuildAuditLog, i int, item Item, auditLog
 	}
 
 	deltaDuration := item.CreatedAt.Sub(*entryTime).Seconds()
-	if deltaDuration > 1 || deltaDuration < -5 {
+	if deltaDuration > 5 || deltaDuration < -5 {
 		return false
 	}
 
