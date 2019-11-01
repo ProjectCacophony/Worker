@@ -89,6 +89,8 @@ func main() {
 			zap.Error(err),
 		)
 	}
+	gormDB.DB().SetMaxIdleConns(1)
+	gormDB.DB().SetMaxOpenConns(5)
 	// gormDB.SetLogger(logger) TODO: write logger
 	defer gormDB.Close()
 
