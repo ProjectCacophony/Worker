@@ -40,8 +40,8 @@ github.com/Seklfreak/geverse v0.0.0-20190824095322-5749a883618f h1:N0c635aQbEJK+
 github.com/Seklfreak/geverse v0.0.0-20190824095322-5749a883618f/go.mod h1:wwBflTGJswLXVWg6kBM5vvno3yBNRytF2VeDSUb+Xl0=
 github.com/Seklfreak/ginside v0.0.0-20191024170614-28a1a8d723ad h1:l3wkhbs5RDStyzxcnZh/ke69svSWcZSzJ1hNyV8kowI=
 github.com/Seklfreak/ginside v0.0.0-20191024170614-28a1a8d723ad/go.mod h1:8qsq6mWde1YA5QOHDTDwue0MRjTw57fOug7qqMJpHhA=
-github.com/Seklfreak/ginsta v0.0.0-20200523123425-60dd257a03ea h1:MbLGsI4VPqIrTzIfwZCn+rN1qCnVWxa5G4b3uhCGB6Y=
-github.com/Seklfreak/ginsta v0.0.0-20200523123425-60dd257a03ea/go.mod h1:GoCB9oHpK16TDfdPo30avi4drFNgwCr91+9WE05/8pI=
+github.com/Seklfreak/ginsta v0.0.0-20200523125153-24bc434c0998 h1:BMPN37OSVnXwgrD7HnGxEBg8Xt0jE4jNgGz/VM0JhTE=
+github.com/Seklfreak/ginsta v0.0.0-20200523125153-24bc434c0998/go.mod h1:BhXsnALhs0yA8HnVqp2Z8q1evwunUSK/qt4Iqj0La3Q=
 github.com/Seklfreak/polr-go v0.0.0-20190324143256-a87fed130937 h1:i7uyK5VEr5L/ZJEL4Bn8ff0dk+a5z0g9zJjSYxGyf0c=
 github.com/Seklfreak/polr-go v0.0.0-20190324143256-a87fed130937/go.mod h1:eoGl/sGHUD/1hNQEHPvNunsRryc3c4Im57OavEzSxiw=
 github.com/Shopify/sarama v1.19.0/go.mod h1:FVkBWblsNy7DGZRfXLU0O9RCGt5g3g3yEuWXgklEdEo=
@@ -209,6 +209,8 @@ github.com/pierrec/lz4 v2.0.5+incompatible/go.mod h1:pdkljMzZIN41W+lC3N2tnIh5sFi
 github.com/pkg/errors v0.8.0/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pkg/errors v0.8.1 h1:iURUrRGxPUNPdy5/HRSm+Yj6okJ6UtLINN0Q9M4+h3I=
 github.com/pkg/errors v0.8.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
+github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
+github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/prometheus/client_golang v0.9.1/go.mod h1:7SWBe2y4D6OKWSNQJUaRYU/AaXPKyh/dDVn+NZz0KFw=
