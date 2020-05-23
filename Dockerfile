@@ -17,7 +17,7 @@ COPY ./assets ./assets
 EXPOSE 8000
 
 # switch to user without permissions
-USER nobody
+#USER nobody
 
 # run the binary
 ENTRYPOINT [ "/worker" ]
