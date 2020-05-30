@@ -46,7 +46,7 @@ func (p *Plugin) checkBundles(run *common.Run, tx *sql.Tx, bundles boardCheckBun
 		}
 
 		for _, entry := range entries {
-			err = p.checkEntry(run, tx, entry, posts)
+			err = p.checkEntry(run, entry, posts)
 			if err != nil {
 				run.Except(err, "account_id", checkInfo.AccountID, "entry_id", strconv.Itoa(int(entry.ID)))
 
@@ -64,7 +64,7 @@ func (p *Plugin) checkBundles(run *common.Run, tx *sql.Tx, bundles boardCheckBun
 	}
 }
 
-func (p *Plugin) checkEntry(run *common.Run, tx *sql.Tx, entry Entry, posts []*client.Post) error {
+func (p *Plugin) checkEntry(run *common.Run, entry Entry, posts []*client.Post) error {
 	var posted int
 
 	for _, post := range posts {

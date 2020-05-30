@@ -13,12 +13,12 @@ import (
 )
 
 type Client struct {
-	HttpClient *http.Client
+	HTTPClient *http.Client
 	BaseURL    string
 }
 
 func NewClient(httpClient *http.Client, baseURL string) *Client {
-	return &Client{HttpClient: httpClient, BaseURL: baseURL}
+	return &Client{HTTPClient: httpClient, BaseURL: baseURL}
 }
 
 func (c *Client) Posts(ctx context.Context, username string) ([]*Post, error) {
@@ -27,7 +27,7 @@ func (c *Client) Posts(ctx context.Context, username string) ([]*Post, error) {
 		return nil, errors.Wrap(err, "failure creating tiktok api request")
 	}
 
-	resp, err := c.HttpClient.Do(req.WithContext(ctx))
+	resp, err := c.HTTPClient.Do(req.WithContext(ctx))
 	if err != nil {
 		return nil, errors.Wrap(err, "failure performing tiktok api request")
 	}

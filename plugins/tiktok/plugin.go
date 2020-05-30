@@ -69,7 +69,7 @@ func (p *Plugin) Interval() time.Duration {
 }
 
 type config struct {
-	TikTokApiBaseURL string `envconfig:"TIKTOK_API_BASE_URL"`
+	TikTokAPIBaseURL string `envconfig:"TIKTOK_API_BASE_URL"`
 }
 
 func (p *Plugin) Start(params common.StartParameters) error {
@@ -95,7 +95,7 @@ func (p *Plugin) Start(params common.StartParameters) error {
 		&http.Client{
 			Timeout: 2 * time.Minute,
 		},
-		config.TikTokApiBaseURL,
+		config.TikTokAPIBaseURL,
 	)
 
 	return nil
