@@ -15,6 +15,7 @@ import (
 	"gitlab.com/Cacophony/Worker/plugins/rss"
 	"gitlab.com/Cacophony/Worker/plugins/serverlist"
 	stockssymbols "gitlab.com/Cacophony/Worker/plugins/stocks-symbols"
+	"gitlab.com/Cacophony/Worker/plugins/tiktok"
 	weverseartist "gitlab.com/Cacophony/Worker/plugins/weverse-artist"
 	weversemedia "gitlab.com/Cacophony/Worker/plugins/weverse-media"
 	weversemoment "gitlab.com/Cacophony/Worker/plugins/weverse-moment"
@@ -59,6 +60,7 @@ var (
 		&weversenotice.Plugin{},
 		&weversemoment.Plugin{},
 		&eventlogauditlog.Plugin{},
+		&tiktok.Plugin{},
 	}
 
 	LocalizationsList []interfaces.Localization

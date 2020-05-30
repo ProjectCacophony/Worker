@@ -21,6 +21,7 @@ stringData:
   patreonCampaignID: "{{PATREON_CAMPAIGN_ID}}"
   patreonCreatorsAccessToken: "{{PATREON_CREATORS_ACCESS_TOKEN}}"
   weverseToken: "{{WEVERSE_TOKEN}}"
+  tikTokApiBaseURL: "{{TIKTOK_API_BASE_URL}}"
 
 
 ---
@@ -145,6 +146,11 @@ spec:
                 secretKeyRef:
                   name: worker-secret
                   key: weverseToken
+            - name: TIKTOK_API_BASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: worker-secret
+                  key: tikTokApiBaseURL
 
 
 ---
