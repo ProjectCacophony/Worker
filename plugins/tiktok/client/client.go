@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"strconv"
 	"time"
 
 	"github.com/pkg/errors"
@@ -49,12 +48,7 @@ func (c *Client) Posts(ctx context.Context, username string) ([]*Post, error) {
 	}
 
 	for i := range postsCol.Collector {
-		postTimeStamp, err := strconv.ParseInt(postsCol.Collector[i].CreateTime, 10, 64)
-		if err != nil {
-			continue
-		}
-
-		postsCol.Collector[i].CreateTimeParsed = time.Unix(postTimeStamp, 0)
+		postsCol.Collector[i].CreateTimeParsed = time.Unix(int64(postsCol.Collector[i].CreateTime), 0)
 	}
 
 	return postsCol.Collector, nil
@@ -67,7 +61,7 @@ type postsCollector struct {
 type Post struct {
 	ID                  string `json:"id"`
 	Text                string `json:"text"`
-	CreateTime          string `json:"createTime"`
+	CreateTime          int    `json:"createTime"`
 	CreateTimeParsed    time.Time
 	AuthorMeta          PostAuthor `json:"authorMeta"`
 	Covers              PostCovers `json:"covers"`
