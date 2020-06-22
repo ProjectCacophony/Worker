@@ -2,6 +2,6 @@
 **New TikTok Post by {{if .post.AuthorMeta.NickName}}{{.post.AuthorMeta.NickName}} (@{{.post.AuthorMeta.Name}}){{else}}@{{.post.AuthorMeta.Name}}{{end}}**\n\
 :globe_with_meridians: <{{.post.WebVideoURL | Shorten}}>\n\
 {{if .post.Text}}{{.post.Text | HideEmbeds | QuoteText}}\n{{end}}\
-:camera: {{.post.ImageURL | Shorten}}\n\
+{{if .post.ImageURL}}:camera: {{.post.ImageURL | Shorten}}\n{{end}}\
 :film_frames: <{{.post.VideoURL | Shorten}}>\
 "
