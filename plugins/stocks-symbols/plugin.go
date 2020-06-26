@@ -77,7 +77,8 @@ func (p *Plugin) Localizations() []interfaces.Localization {
 
 func (p *Plugin) Run(run *common.Run) (err error) {
 	if p.iexClient == nil {
-		return errors.Wrap(err, "could not start iex plugin as iex client is nil")
+		run.Logger().Info("skipped run, iex client is not initialised")
+		return nil
 	}
 
 	run.Logger().Info("run started")
