@@ -32,6 +32,7 @@ WHERE id IN (
     SELECT instagram_account_id
     FROM instagram_entries
     WHERE deleted_at IS NULL
+    AND instagram_account_id <> ''
     GROUP BY instagram_account_id
   	HAVING MAX(igtv_last_check) < $1
     LIMIT $2

@@ -32,6 +32,7 @@ WHERE id IN (
     FROM instagram_entries
     WHERE deleted_at IS NULL
     AND disable_post_feed = false
+    AND instagram_account_id <> ''
     GROUP BY instagram_account_id
   	HAVING MAX(last_check) < $1
     LIMIT $2
