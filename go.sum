@@ -44,6 +44,8 @@ github.com/Seklfreak/ginsta v0.0.0-20200523130624-671bd3151425 h1:z/uZGPL1hxPhpw
 github.com/Seklfreak/ginsta v0.0.0-20200523130624-671bd3151425/go.mod h1:BhXsnALhs0yA8HnVqp2Z8q1evwunUSK/qt4Iqj0La3Q=
 github.com/Seklfreak/ginsta v0.0.0-20200911095122-ed7635ffebfb h1:7pPFra4sx3EUR04vCncIouURwrccsDIV02JKXQXAcrw=
 github.com/Seklfreak/ginsta v0.0.0-20200911095122-ed7635ffebfb/go.mod h1:BhXsnALhs0yA8HnVqp2Z8q1evwunUSK/qt4Iqj0La3Q=
+github.com/Seklfreak/ginsta v0.0.0-20200911100602-744631385962 h1:XYAmJyE60Eno3TGZVxvUYOBdV+fXapVDc+EsD8pK4kg=
+github.com/Seklfreak/ginsta v0.0.0-20200911100602-744631385962/go.mod h1:BhXsnALhs0yA8HnVqp2Z8q1evwunUSK/qt4Iqj0La3Q=
 github.com/Seklfreak/polr-go v0.0.0-20190324143256-a87fed130937 h1:i7uyK5VEr5L/ZJEL4Bn8ff0dk+a5z0g9zJjSYxGyf0c=
 github.com/Seklfreak/polr-go v0.0.0-20190324143256-a87fed130937/go.mod h1:eoGl/sGHUD/1hNQEHPvNunsRryc3c4Im57OavEzSxiw=
 github.com/Shopify/sarama v1.19.0/go.mod h1:FVkBWblsNy7DGZRfXLU0O9RCGt5g3g3yEuWXgklEdEo=
