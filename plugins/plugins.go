@@ -10,6 +10,7 @@ import (
 	eventlogauditlog "gitlab.com/Cacophony/Worker/plugins/eventlog-auditlog"
 	"gitlab.com/Cacophony/Worker/plugins/gall"
 	"gitlab.com/Cacophony/Worker/plugins/instagram"
+	instagramfillid "gitlab.com/Cacophony/Worker/plugins/instagram-fill-id"
 	instagramstories "gitlab.com/Cacophony/Worker/plugins/instagram-stories"
 	"gitlab.com/Cacophony/Worker/plugins/patrons"
 	"gitlab.com/Cacophony/Worker/plugins/rss"
@@ -61,6 +62,7 @@ var (
 		&weversemoment.Plugin{},
 		&eventlogauditlog.Plugin{},
 		&tiktok.Plugin{},
+		&instagramfillid.Plugin{},
 	}
 
 	LocalizationsList []interfaces.Localization
