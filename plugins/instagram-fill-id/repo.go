@@ -21,7 +21,7 @@ func findIDByUsername(db *gorm.DB, username string) (string, error) {
 	return entry.InstagramAccountID, err
 }
 
-func checkSet(ctx context.Context, tx *sql.Tx, status feed.Status, message string, entries ...Entry) error {
+func checkSetError(ctx context.Context, tx *sql.Tx, message string, entries ...Entry) error {
 	var ids []string // nolint: prealloc
 	for _, entry := range entries {
 		if entry.ID == 0 {
@@ -39,7 +39,7 @@ func checkSet(ctx context.Context, tx *sql.Tx, status feed.Status, message strin
 UPDATE instagram_entries
 SET check_status = $1, check_message = $2
 WHERE id in (`+strings.Join(ids, ",")+`)
-`, status, message)
+`, feed.ErrorStatus, message)
 	return err
 }
 

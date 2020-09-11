@@ -5,7 +5,6 @@ import (
 	"strconv"
 
 	"gitlab.com/Cacophony/Worker/plugins/common"
-	"gitlab.com/Cacophony/go-kit/feed"
 	"gitlab.com/Cacophony/go-kit/permissions"
 	"go.uber.org/zap"
 )
@@ -37,7 +36,7 @@ func (p *Plugin) bundleEntries(run *common.Run, tx *sql.Tx, entries []Entry) che
 					zap.Error(err),
 				)
 
-				err = checkSet(run.Context(), tx, feed.ErrorStatus, err.Error(), entry)
+				err = checkSetError(run.Context(), tx, err.Error(), entry)
 				if err != nil {
 					run.Except(err, "entry_id", strconv.FormatUint(uint64(entry.ID), 10))
 				}
@@ -53,7 +52,7 @@ func (p *Plugin) bundleEntries(run *common.Run, tx *sql.Tx, entries []Entry) che
 					zap.Error(err),
 				)
 
-				err = checkSet(run.Context(), tx, feed.ErrorStatus, err.Error(), entry)
+				err = checkSetError(run.Context(), tx, err.Error(), entry)
 				if err != nil {
 					run.Except(err, "entry_id", strconv.FormatUint(uint64(entry.ID), 10))
 				}
@@ -68,7 +67,7 @@ func (p *Plugin) bundleEntries(run *common.Run, tx *sql.Tx, entries []Entry) che
 					zap.Error(err),
 				)
 
-				err = checkSet(run.Context(), tx, feed.ErrorStatus, err.Error(), entry)
+				err = checkSetError(run.Context(), tx, err.Error(), entry)
 				if err != nil {
 					run.Except(err, "entry_id", strconv.FormatUint(uint64(entry.ID), 10))
 				}

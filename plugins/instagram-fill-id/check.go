@@ -7,8 +7,6 @@ import (
 	"strings"
 
 	"github.com/jinzhu/gorm"
-	"gitlab.com/Cacophony/go-kit/feed"
-
 	"gitlab.com/Cacophony/Worker/plugins/common"
 	"go.uber.org/zap"
 )
@@ -19,11 +17,11 @@ func (p *Plugin) checkBundles(run *common.Run, tx *sql.Tx, bundles checkBundles)
 	)
 
 	for checkInfo, entries := range bundles {
-		id, err := p.findID(run, tx, checkInfo.Username)
+		id, err := p.findID(run, checkInfo.Username)
 		if err != nil {
 			run.Except(err, "username", checkInfo.Username)
 
-			err = checkSet(run.Context(), tx, feed.ErrorStatus, err.Error(), entries...)
+			err = checkSetError(run.Context(), tx, err.Error(), entries...)
 			if err != nil {
 				run.Except(err, "username", checkInfo.Username)
 			}
@@ -36,7 +34,7 @@ func (p *Plugin) checkBundles(run *common.Run, tx *sql.Tx, bundles checkBundles)
 				if err != nil {
 					run.Except(err, "username", checkInfo.Username, "entry_id", strconv.Itoa(int(entry.ID)))
 
-					err = checkSet(run.Context(), tx, feed.ErrorStatus, err.Error(), entry)
+					err = checkSetError(run.Context(), tx, err.Error(), entry)
 					if err != nil {
 						run.Except(err, "username", checkInfo.Username, "entry_id", strconv.Itoa(int(entry.ID)))
 					}
@@ -51,7 +49,7 @@ func (p *Plugin) checkBundles(run *common.Run, tx *sql.Tx, bundles checkBundles)
 	}
 }
 
-func (p *Plugin) findID(run *common.Run, tx *sql.Tx, username string) (string, error) {
+func (p *Plugin) findID(run *common.Run, username string) (string, error) {
 	logger := run.Logger().With(zap.String("username", username))
 
 	logger.Debug("looking up instagram account id via service db")
