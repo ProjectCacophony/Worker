@@ -6,19 +6,6 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-func postAdd(
-	db *gorm.DB,
-	entryID uint,
-	postID string,
-	messageIDs []string,
-) error {
-	return db.Create(&Post{
-		EntryID:    entryID,
-		PostID:     postID,
-		MessageIDs: messageIDs,
-	}).Error
-}
-
 func findEntriesForChannel(db *gorm.DB, channelID string) ([]*Entry, error) {
 	if channelID == "" {
 		return nil, errors.New("channelID cannot be empty")
