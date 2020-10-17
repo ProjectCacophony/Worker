@@ -4,6 +4,7 @@ require (
 	github.com/Seklfreak/geverse v0.0.0-20190824095322-5749a883618f
 	github.com/Seklfreak/ginside v0.0.0-20191024170614-28a1a8d723ad
 	github.com/Seklfreak/ginsta v0.0.0-20200911101312-65ba3dc8223c
+	github.com/Seklfreak/vlive-go v0.0.0-20201017113405-4cef907e581a
 	github.com/bsm/redis-lock v8.0.0+incompatible
 	github.com/bwmarrin/discordgo v0.20.3-0.20200617034334-9b1ba78bc6f4
 	github.com/getsentry/raven-go v0.2.0

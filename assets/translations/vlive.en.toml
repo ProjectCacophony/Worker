@@ -1,0 +1,6 @@
+"vlive.post.content" = "\
+**New VLive Video on {{.video.ChannelName}} [{{.video.Type}}{{if not (eq .video.Product \"NONE\")}} | {{.video.Product}}{{end}}]**\n\
+{{if .video.Title}}{{.video.Title | HideEmbeds | QuoteText}}\n{{end}}\
+:globe_with_meridians: <{{.video.URL | Shorten}}>\n\
+{{if .video.Thumbnail}}:camera: {{.video.Thumbnail | Shorten}}\n{{end}}\
+"
