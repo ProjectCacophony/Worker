@@ -16,10 +16,11 @@ func (p *Plugin) handleVideo(video *vlive_go.Video) error {
 
 	trx := p.db.Begin()
 
-	rows, err := p.db.Raw(`
+	rows, err := trx.Raw(`
 SELECT *
 FROM vlive_entries
 WHERE v_live_channel_id = ?
+AND deleted_at IS NULL
 FOR UPDATE SKIP LOCKED
 ;
 `, video.ChannelId).Rows()
