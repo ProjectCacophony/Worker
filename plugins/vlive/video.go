@@ -10,19 +10,40 @@ import (
 )
 
 func (p *Plugin) handleVideo(video *vlive_go.Video) error {
-	entries, err := findEntriesForChannel(p.db, video.ChannelId)
-	if err != nil {
-		return errors.Wrap(err, "unable to find entries for channel")
+	if video.ChannelId == "" {
+		return errors.New("channelID cannot be empty")
 	}
 
-	for _, entry := range entries {
-		err = p.postVideo(video, entry)
+	trx := p.db.Begin()
+
+	rows, err := p.db.Raw(`
+SELECT *
+FROM vlive_entries
+WHERE v_live_channel_id = ?
+FOR UPDATE SKIP LOCKED
+;
+`, video.ChannelId).Rows()
+	if err != nil {
+		trx.Rollback()
+		return errors.Wrap(err, "failure fetching vlive entries (for update skip locked)")
+	}
+	defer rows.Close()
+
+	var entry Entry
+	for rows.Next() {
+		err = p.db.ScanRows(rows, &entry)
+		if err != nil {
+			trx.Rollback()
+			return errors.Wrap(err, "failure scanning rows")
+		}
+
+		err = p.postVideo(video, &entry)
 		if err != nil {
 			p.logger.Error("failure posting video to entry", zap.Error(err), zap.String("video_seq", video.Seq), zap.Uint("entry_id", entry.ID))
 		}
 	}
 
-	return nil
+	return trx.Commit().Error
 }
 
 func (p *Plugin) postVideo(video *vlive_go.Video, entry *Entry) error {
