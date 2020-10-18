@@ -34,7 +34,7 @@ FOR UPDATE SKIP LOCKED
 		err = p.db.ScanRows(rows, &entry)
 		if err != nil {
 			trx.Rollback()
-			return errors.Wrap(err, "failure scanning rows")
+			return errors.Wrap(err, "failure scanning row")
 		}
 
 		err = p.postVideo(video, &entry)
