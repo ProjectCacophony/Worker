@@ -30,17 +30,13 @@ func (p *Plugin) postVideo(video *vlive_go.Video, entry *Entry) error {
 		return errors.New("missing fields on video or entry")
 	}
 
-	trx := p.db.Begin()
-
 	var count int
-	err := trx.Model(Post{}).Where("entry_id = ? AND post_id = ?", entry.ID, video.Seq).Count(&count).Error
+	err := p.db.Model(Post{}).Where("entry_id = ? AND post_id = ?", entry.ID, video.Seq).Count(&count).Error
 	if err != nil {
 		p.logger.Error("failure counting posts for entry", zap.Error(err), zap.String("video_seq", video.Seq), zap.Uint("entry_id", entry.ID))
-		trx.Rollback()
 		return nil
 	}
 	if count > 0 {
-		trx.Rollback()
 		return nil
 	}
 
@@ -51,18 +47,15 @@ func (p *Plugin) postVideo(video *vlive_go.Video, entry *Entry) error {
 			permissions.DiscordSendMessages,
 		)
 		if err != nil {
-			trx.Rollback()
 			return err
 		}
 	}
 	if botID == "" {
-		trx.Rollback()
 		return errors.New("no Bot ID")
 	}
 
 	session, err := discord.NewSession(p.tokens, botID)
 	if err != nil {
-		trx.Rollback()
 		return err
 	}
 
@@ -70,7 +63,6 @@ func (p *Plugin) postVideo(video *vlive_go.Video, entry *Entry) error {
 	if entry.DM {
 		channelID, err = discord.DMChannel(p.redis, session, channelID)
 		if err != nil {
-			trx.Rollback()
 			return errors.Wrap(err, "unable to create dm channel")
 		}
 	}
@@ -86,7 +78,6 @@ func (p *Plugin) postVideo(video *vlive_go.Video, entry *Entry) error {
 	)
 	if err != nil {
 		discord.CheckBlockDMChannel(p.redis, session, entry.ChannelOrUserID, err)
-		trx.Rollback()
 		return errors.Wrap(err, "unable to send main message")
 	}
 
@@ -95,15 +86,14 @@ func (p *Plugin) postVideo(video *vlive_go.Video, entry *Entry) error {
 		messageIDs[i] = message.ID
 	}
 
-	err = trx.Create(&Post{
+	err = p.db.Create(&Post{
 		EntryID:    entry.ID,
 		PostID:     video.Seq,
 		MessageIDs: messageIDs,
 	}).Error
 	if err != nil {
-		trx.Rollback()
 		return errors.Wrap(err, "failure storing post for entry")
 	}
 
-	return trx.Commit().Error
+	return nil
 }
