@@ -5,15 +5,12 @@ import (
 	"time"
 
 	"github.com/go-redis/redis"
-
-	"gitlab.com/Cacophony/go-kit/localization"
-	"gitlab.com/Cacophony/go-kit/state"
-
-	"github.com/mmcdole/gofeed"
-
 	"github.com/jinzhu/gorm"
+	"github.com/mmcdole/gofeed"
 	"gitlab.com/Cacophony/Worker/plugins/common"
 	"gitlab.com/Cacophony/go-kit/interfaces"
+	"gitlab.com/Cacophony/go-kit/localization"
+	"gitlab.com/Cacophony/go-kit/state"
 	"go.uber.org/zap"
 )
 

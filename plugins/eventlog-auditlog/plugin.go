@@ -5,11 +5,10 @@ import (
 
 	"github.com/getsentry/raven-go"
 	"github.com/jinzhu/gorm"
-	"gitlab.com/Cacophony/go-kit/events"
-	"gitlab.com/Cacophony/go-kit/state"
-
 	"gitlab.com/Cacophony/Worker/plugins/common"
+	"gitlab.com/Cacophony/go-kit/events"
 	"gitlab.com/Cacophony/go-kit/interfaces"
+	"gitlab.com/Cacophony/go-kit/state"
 	"go.uber.org/zap"
 )
 

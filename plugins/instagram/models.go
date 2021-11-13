@@ -3,11 +3,9 @@ package instagram
 import (
 	"time"
 
-	"gitlab.com/Cacophony/go-kit/feed"
-
-	"github.com/lib/pq"
-
 	"github.com/jinzhu/gorm"
+	"github.com/lib/pq"
+	"gitlab.com/Cacophony/go-kit/feed"
 )
 
 // Entry model maintained by Processor

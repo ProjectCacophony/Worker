@@ -4,10 +4,9 @@ import (
 	"context"
 	"time"
 
-	"gitlab.com/Cacophony/go-kit/featureflag"
-
 	"gitlab.com/Cacophony/Worker/plugins"
 	"gitlab.com/Cacophony/Worker/plugins/common"
+	"gitlab.com/Cacophony/go-kit/featureflag"
 	"go.uber.org/zap"
 )
 

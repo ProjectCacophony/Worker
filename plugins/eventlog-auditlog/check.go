@@ -105,7 +105,6 @@ func (p *Plugin) handleEntry(run *common.Run, tx *sql.Tx, botID string, item Ite
 	var err error
 
 	for i, entry := range auditlog.AuditLogEntries {
-
 		switch item.ActionType {
 		case "discord_ban":
 
@@ -525,7 +524,6 @@ func (p *Plugin) handleEntry(run *common.Run, tx *sql.Tx, botID string, item Ite
 			}
 
 		}
-
 	}
 
 	return

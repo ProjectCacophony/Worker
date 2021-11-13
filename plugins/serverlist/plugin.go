@@ -3,12 +3,10 @@ package serverlist
 import (
 	"time"
 
-	"gitlab.com/Cacophony/go-kit/events"
-
 	"github.com/go-redis/redis"
-
 	"github.com/jinzhu/gorm"
 	"gitlab.com/Cacophony/Worker/plugins/common"
+	"gitlab.com/Cacophony/go-kit/events"
 	"gitlab.com/Cacophony/go-kit/interfaces"
 	"go.uber.org/zap"
 )
@@ -59,7 +57,6 @@ func (p *Plugin) Interval() time.Duration {
 }
 
 func (p *Plugin) Start(params common.StartParameters) error {
-
 	p.logger = params.Logger
 	p.db = params.DB
 	p.redis = params.Redis

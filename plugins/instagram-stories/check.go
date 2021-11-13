@@ -7,17 +7,12 @@ import (
 	"time"
 
 	"github.com/Seklfreak/ginsta"
-	"gitlab.com/Cacophony/go-kit/permissions"
-
-	"github.com/pkg/errors"
-
-	"gitlab.com/Cacophony/go-kit/feed"
-
 	"github.com/bwmarrin/discordgo"
-
-	"gitlab.com/Cacophony/go-kit/discord"
-
+	"github.com/pkg/errors"
 	"gitlab.com/Cacophony/Worker/plugins/common"
+	"gitlab.com/Cacophony/go-kit/discord"
+	"gitlab.com/Cacophony/go-kit/feed"
+	"gitlab.com/Cacophony/go-kit/permissions"
 	"go.uber.org/zap"
 )
 

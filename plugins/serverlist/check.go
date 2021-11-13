@@ -4,12 +4,9 @@ import (
 	"database/sql"
 
 	"github.com/bwmarrin/discordgo"
-
 	"github.com/pkg/errors"
-
-	"gitlab.com/Cacophony/go-kit/discord"
-
 	"gitlab.com/Cacophony/Worker/plugins/common"
+	"gitlab.com/Cacophony/go-kit/discord"
 	"go.uber.org/zap"
 )
 

@@ -4,9 +4,8 @@ import (
 	"context"
 
 	"github.com/pkg/errors"
-	"go.uber.org/zap"
-
 	"gitlab.com/Cacophony/go-kit/events"
+	"go.uber.org/zap"
 )
 
 func (p *Plugin) sendExpiredEvent(server Server) error {

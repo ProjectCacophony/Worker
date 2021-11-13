@@ -5,12 +5,11 @@ import (
 	"time"
 
 	"github.com/go-redis/redis"
+	"github.com/jinzhu/gorm"
 	"github.com/kelseyhightower/envconfig"
 	"github.com/pkg/errors"
-	"gitlab.com/Cacophony/go-kit/external/iexcloud"
-
-	"github.com/jinzhu/gorm"
 	"gitlab.com/Cacophony/Worker/plugins/common"
+	"gitlab.com/Cacophony/go-kit/external/iexcloud"
 	"gitlab.com/Cacophony/go-kit/interfaces"
 	"go.uber.org/zap"
 )

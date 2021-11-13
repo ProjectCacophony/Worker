@@ -6,9 +6,8 @@ import (
 	"strconv"
 	"strings"
 
-	"gitlab.com/Cacophony/go-kit/feed"
-
 	"github.com/jinzhu/gorm"
+	"gitlab.com/Cacophony/go-kit/feed"
 )
 
 func postAdd(

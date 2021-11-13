@@ -31,7 +31,6 @@ import (
 
 type Plugin interface {
 	Name() string
-
 	Interval() time.Duration
 
 	// TODO: add context for deadline
@@ -39,16 +38,13 @@ type Plugin interface {
 
 	// TODO: add context for deadline
 	Stop(common.StopParameters) error
-
 	Localizations() []interfaces.Localization
-
 	Run(run *common.Run) error
 }
 
 var (
 	PluginList = []Plugin{
 		// &instagramigtv.Plugin{},
-
 		&gall.Plugin{},
 		&rss.Plugin{},
 		&instagram.Plugin{},

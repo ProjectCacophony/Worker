@@ -1,9 +1,8 @@
 package vlive
 
 import (
-	"github.com/lib/pq"
-
 	"github.com/jinzhu/gorm"
+	"github.com/lib/pq"
 )
 
 // Entry model maintained by Processor

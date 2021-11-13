@@ -4,16 +4,13 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/go-redis/redis"
-
-	"gitlab.com/Cacophony/go-kit/localization"
-	"gitlab.com/Cacophony/go-kit/state"
-
 	"github.com/Seklfreak/ginside"
-
+	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
 	"gitlab.com/Cacophony/Worker/plugins/common"
 	"gitlab.com/Cacophony/go-kit/interfaces"
+	"gitlab.com/Cacophony/go-kit/localization"
+	"gitlab.com/Cacophony/go-kit/state"
 	"go.uber.org/zap"
 )
 

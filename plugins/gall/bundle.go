@@ -4,10 +4,9 @@ import (
 	"database/sql"
 	"strconv"
 
+	"gitlab.com/Cacophony/Worker/plugins/common"
 	"gitlab.com/Cacophony/go-kit/feed"
 	"gitlab.com/Cacophony/go-kit/permissions"
-
-	"gitlab.com/Cacophony/Worker/plugins/common"
 	"go.uber.org/zap"
 )
 

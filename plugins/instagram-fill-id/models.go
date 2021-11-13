@@ -3,9 +3,8 @@ package instagramfillid
 import (
 	"time"
 
-	"gitlab.com/Cacophony/go-kit/feed"
-
 	"github.com/jinzhu/gorm"
+	"gitlab.com/Cacophony/go-kit/feed"
 )
 
 // Entry model maintained by Processor

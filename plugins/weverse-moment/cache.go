@@ -31,7 +31,6 @@ func get(ctx context.Context, geverseClient *geverse.Geverse, communityID, artis
 	}
 
 	if artistCaches[communityID][artistID] != nil {
-
 		return artistCaches[communityID][artistID], nil
 	}
 
