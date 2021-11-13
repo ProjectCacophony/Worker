@@ -8,25 +8,20 @@ import (
 	"syscall"
 	"time"
 
-	"gitlab.com/Cacophony/go-kit/discord"
-	"gitlab.com/Cacophony/go-kit/events"
-
-	"gitlab.com/Cacophony/go-kit/featureflag"
-
-	"gitlab.com/Cacophony/go-kit/state"
-
-	"gitlab.com/Cacophony/Worker/pkg/scheduler"
-	"gitlab.com/Cacophony/Worker/plugins"
-
-	"gitlab.com/Cacophony/go-kit/errortracking"
-
 	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/kelseyhightower/envconfig"
 	"github.com/pkg/errors"
+	"gitlab.com/Cacophony/Worker/pkg/scheduler"
+	"gitlab.com/Cacophony/Worker/plugins"
 	"gitlab.com/Cacophony/go-kit/api"
+	"gitlab.com/Cacophony/go-kit/discord"
+	"gitlab.com/Cacophony/go-kit/errortracking"
+	"gitlab.com/Cacophony/go-kit/events"
+	"gitlab.com/Cacophony/go-kit/featureflag"
 	"gitlab.com/Cacophony/go-kit/logging"
+	"gitlab.com/Cacophony/go-kit/state"
 	"go.uber.org/zap"
 )
 
