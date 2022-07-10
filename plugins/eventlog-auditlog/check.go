@@ -31,7 +31,7 @@ func (p *Plugin) checkBundles(run *common.Run, tx *sql.Tx, bundles boardCheckBun
 			limit = 100
 		}
 
-		var auditLogActionTypes []int
+		var auditLogActionTypes []discordgo.AuditLogAction
 		switch info.ActionType {
 		case "discord_ban":
 			auditLogActionTypes = append(auditLogActionTypes, discordgo.AuditLogActionMemberBanAdd)
@@ -79,7 +79,7 @@ func (p *Plugin) checkBundles(run *common.Run, tx *sql.Tx, bundles boardCheckBun
 
 		var bigAuditLog discordgo.GuildAuditLog
 		for _, auditLogActionType := range auditLogActionTypes {
-			resp, err := session.Client.GuildAuditLog(info.GuildID, "", "", auditLogActionType, limit)
+			resp, err := session.Client.GuildAuditLog(info.GuildID, "", "", int(auditLogActionType), limit)
 			if err != nil {
 				run.Except(err, "guild_id", info.GuildID, "action_type", string(info.ActionType), "bot_id", info.BotID)
 				continue
@@ -529,10 +529,13 @@ func (p *Plugin) handleEntry(run *common.Run, tx *sql.Tx, botID string, item Ite
 	return
 }
 
-func matchesTarget(auditlog *discordgo.GuildAuditLog, i int, item Item, auditLogType int) bool {
+func matchesTarget(auditlog *discordgo.GuildAuditLog, i int, item Item, auditLogType discordgo.AuditLogAction) bool {
 	entry := auditlog.AuditLogEntries[i]
+	if entry == nil || entry.ActionType == nil {
+		return false
+	}
 
-	if entry.ActionType != auditLogType {
+	if *entry.ActionType != auditLogType {
 		return false
 	}
 
@@ -553,15 +556,22 @@ func matchesTarget(auditlog *discordgo.GuildAuditLog, i int, item Item, auditLog
 	return true
 }
 
-func matchesInvite(auditlog *discordgo.GuildAuditLog, i int, item Item, auditLogType int) bool {
+func matchesInvite(auditlog *discordgo.GuildAuditLog, i int, item Item, auditLogType discordgo.AuditLogAction) bool {
 	entry := auditlog.AuditLogEntries[i]
+	if entry == nil || entry.ActionType == nil {
+		return false
+	}
 
-	if entry.ActionType != auditLogType {
+	if *entry.ActionType != auditLogType {
 		return false
 	}
 
 	for _, change := range entry.Changes {
-		if change.Key != "code" {
+		if change == nil || change.Key == nil {
+			continue
+		}
+
+		if *change.Key != "code" {
 			continue
 		}
 
